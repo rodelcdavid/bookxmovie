@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 
 const FindAndMatch = () => {
   const bookApiKey = "AIzaSyCLSRspHMHw3eFivj1CJHzTksCULHUtMRg";
-  const movieApiKey = "k_vz1az5ol";
+  //   const movieApiKey = "k_vz1az5ol";
+  const movieApiKey = "fbdfc6969e8fbe78212c30a2dcc64f58";
 
   const [inputBook, setInputBook] = useState("");
   const [inputMovie, setInputMovie] = useState("");
@@ -26,7 +27,7 @@ const FindAndMatch = () => {
   const handleSearchMovie = () => {
     //fetch movie search api
     fetch(
-      `https://imdb-api.com/en/API/SearchMovie/${movieApiKey}/${inputMovie}`
+      `https://api.themoviedb.org/3/search/movie?api_key=${movieApiKey}&query=${inputMovie}`
     )
       .then((res) => res.json())
       .then((data) => setMovieResults(data));
@@ -55,9 +56,23 @@ const FindAndMatch = () => {
           {bookResults &&
             bookResults.items.map((book) => {
               return (
-                <div>
-                  <img src={book.volumeInfo.imageLinks.thumbnail} alt="" />
-                  <h2>{book.volumeInfo.title}</h2>
+                <div
+                  style={{
+                    cursor: "pointer",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    width: "200px",
+                  }}
+                  key={book.id}
+                  onClick={() => setSelectedBook(book.volumeInfo.title)}
+                >
+                  <img
+                    src={book.volumeInfo.imageLinks.thumbnail}
+                    alt=""
+                    width="100"
+                  />
+                  <p style={{ textAlign: "center" }}>{book.volumeInfo.title}</p>
                 </div>
               );
             })}
@@ -71,13 +86,33 @@ const FindAndMatch = () => {
           {movieResults &&
             movieResults.results.map((movie) => {
               return (
-                <div>
-                  <img src={movie.image} alt="" width="100px" height="auto" />
-                  <h2>{movie.title}</h2>
+                <div
+                  style={{
+                    cursor: "pointer",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    width: "200px",
+                  }}
+                  key={movie.id}
+                  onClick={() => setSelectedMovie(movie.title)}
+                >
+                  <img
+                    src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                    alt=""
+                    width="100"
+                  />
+                  <p style={{ textAlign: "center" }}>{movie.title}</p>
                 </div>
               );
             })}
         </div>
+      </div>
+      <div>
+        <h3>Selected</h3>
+        <p>Book: {selectedBook ? selectedBook : ""}</p>
+        <p>Movie: {selectedMovie ? selectedMovie : ""}</p>
+        <button>Add to Showdown</button>
       </div>
     </div>
   );
