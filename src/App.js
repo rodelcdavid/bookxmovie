@@ -1,11 +1,18 @@
+import { useState } from "react";
 import FindAndMatch from "./components/FindAndMatch";
 import Showdown from "./components/Showdown";
+import initialState from "./initialStateExample";
 
 function App() {
+  const [showdownPairList, setShowdownPairList] = useState(initialState);
+
   return (
     <>
-      <FindAndMatch />
-      <Showdown />
+      <FindAndMatch setShowdownPairList={setShowdownPairList} />
+      <Showdown
+        showdownPairList={showdownPairList}
+        setShowdownPairList={setShowdownPairList}
+      />
     </>
   );
 }

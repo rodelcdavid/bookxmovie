@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
-const FindAndMatch = () => {
+const FindAndMatch = ({ setShowdownPairList }) => {
   // const showdownPairList = [];
-
-  const [showdownPairList, setShowdownPairList] = useState([]);
 
   //use Promise.all to fetch all bookId
   //get book.selflink
@@ -42,9 +41,9 @@ const FindAndMatch = () => {
 
   const handleAddToShowdown = () => {
     //What about for movies that have multiple parts??
-
+    const id = uuidv4();
     const newPair = {
-      id: showdownPairList.length + 1,
+      id: id,
       bookInfo: selectedBook,
       movieInfo: selectedMovie,
       bookVotes: 0,
@@ -53,17 +52,6 @@ const FindAndMatch = () => {
 
     setShowdownPairList((prev) => [...prev, newPair]);
   };
-
-  const handleVoteForBook = (pairId) => {
-    //update bookVotes where id = pairId
-  };
-  const handleVoteForMovie = (pairId) => {
-    //update bookVotes where id = pairId
-  };
-
-  useEffect(() => {
-    console.log(showdownPairList);
-  }, [showdownPairList]);
 
   return (
     <div style={{ padding: "1rem" }}>
@@ -143,54 +131,6 @@ const FindAndMatch = () => {
         <p>Movie: {selectedMovie ? selectedMovie.title : ""}</p>
         <button onClick={handleAddToShowdown}>Add to Showdown</button>
       </div>
-
-      {/* required data: pairId, bookInfo, movieInfo, bookVotes, movieVotes */}
-      <div>Temporary Showdown Display</div>
-      {showdownPairList.length &&
-        showdownPairList.map((pair) => {
-          return (
-            <div
-              style={{
-                padding: "1rem",
-                border: "1px solid #aaa",
-                width: "800px",
-                display: "flex",
-                gap: "30px",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              key={pair.id}
-            >
-              {/* Book */}
-              <div
-                style={{ width: "200px", textAlign: "center" }}
-                onClick={() => handleVoteForBook(pair.id)}
-              >
-                <img
-                  src={pair.bookInfo.volumeInfo.imageLinks?.thumbnail}
-                  alt=""
-                  width="100"
-                />
-                <p>{pair.bookInfo.volumeInfo.title}</p>
-              </div>
-
-              <h3>VS</h3>
-
-              {/* Movie */}
-              <div
-                style={{ width: "200px", textAlign: "center" }}
-                onClick={() => handleVoteForMovie(pair.id)}
-              >
-                <img
-                  src={`https://image.tmdb.org/t/p/original/${pair.movieInfo.poster_path}`}
-                  alt=""
-                  width="100"
-                />
-                <p>{pair.movieInfo.title}</p>
-              </div>
-            </div>
-          );
-        })}
     </div>
   );
 };
