@@ -12,17 +12,14 @@ import initialState from "../initialStateExample";
 
 const Showdown = ({ showdownPairList, setShowdownPairList }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [inputSearch, setInputSearch] = useState("");
   const [filteredList, setFilteredList] = useState(showdownPairList);
 
-  useEffect(() => {
-    setFilteredList(showdownPairList);
-  }, [showdownPairList]);
-
   const handleSearch = () => {
-    //TODO: showdownpairlist should revert back to initial state
-    // setShowdownPairList(initialState);
-    // const tempShowdownPairList = [...showdownPairList];
+    setSearchQuery(inputSearch);
+  };
 
+  useEffect(() => {
     const tempFilteredList = showdownPairList.filter((pair) => {
       return (
         pair.bookInfo.volumeInfo.title
@@ -33,7 +30,7 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
     });
     //TODO:need to update filtered list when you add a new match, useeffect
     setFilteredList(tempFilteredList);
-  };
+  }, [searchQuery, showdownPairList]);
 
   const handleVoteBook = (pair) => {
     const tempShowdownPairList = [...showdownPairList];
@@ -84,8 +81,6 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
     }
   };
 
-  console.log("showdown", showdownPairList);
-
   return (
     <Box
       sx={{
@@ -108,7 +103,7 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
           // htmlSize="10"
           // width="auto"
           sx={{ backgroundColor: "#fff" }}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => setInputSearch(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               handleSearch();
@@ -153,7 +148,6 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
                     margin: "0 auto",
                     backgroundColor: "#FFDE7D",
                     color: "rgba(0,0,0,0.87)",
-                    // color: "#fff",
                     padding: "0.5rem",
                   }}
                 >
@@ -176,7 +170,8 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
                     // padding: "1rem",
                     // border: "1px solid #aaa",
                     // width: "40%",
-                    height: "300px",
+                    // height: "300px",
+                    padding: "0.5rem 0",
                     display: "flex",
                     // gap: "10px",
                     justifyContent: "center",
@@ -193,10 +188,10 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
                       flexDirection: "column",
                       alignItems: "center",
                     }}
-                    onClick={() => handleVoteBook(pair)}
+                    // onClick={() => handleVoteBook(pair)}
                   >
                     <Heading
-                      size="md"
+                      size="lg"
                       sx={{
                         color:
                           pair.bookVotes >= pair.movieVotes
@@ -206,6 +201,18 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
                     >
                       {votePercentage(pair.bookVotes, pair.movieVotes, "book")}%
                     </Heading>
+
+                    <Button
+                      onClick={() => handleVoteBook(pair)}
+                      colorScheme="teal"
+                      size="xs"
+                      border="2px"
+                      width="80%"
+                      marginTop="0.5rem"
+                      disabled={pair.votedFor ? true : false}
+                    >
+                      Vote for Book
+                    </Button>
 
                     <Box
                       sx={{
@@ -240,12 +247,14 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
                       />
                     </Box>
 
-                    <Text>{pair.bookInfo.volumeInfo.title}</Text>
+                    <Text fontSize="sm" marginTop="0.2rem">
+                      {pair.bookInfo.volumeInfo.title}
+                    </Text>
                   </Box>
 
                   <Heading
                     size="lg"
-                    sx={{ marginTop: "5.5rem", color: "rgba(0,0,0,0.87)" }}
+                    sx={{ marginTop: "8.5rem", color: "rgba(0,0,0,0.87)" }}
                   >
                     VS
                   </Heading>
@@ -260,10 +269,10 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
                       alignItems: "center",
                       // justifyContent: "space-around",
                     }}
-                    onClick={() => handleVoteMovie(pair)}
+                    // onClick={() => handleVoteMovie(pair)}
                   >
                     <Heading
-                      size="md"
+                      size="lg"
                       sx={{
                         color:
                           pair.movieVotes >= pair.bookVotes
@@ -274,6 +283,19 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
                       {votePercentage(pair.bookVotes, pair.movieVotes, "movie")}
                       %
                     </Heading>
+
+                    <Button
+                      onClick={() => handleVoteMovie(pair)}
+                      colorScheme="teal"
+                      size="xs"
+                      width="80%"
+                      border="2px"
+                      marginTop="0.5rem"
+                      isDisabled={pair.votedFor ? true : false}
+                    >
+                      Vote for Movie
+                    </Button>
+
                     <Box
                       sx={{
                         width: "120px",
@@ -308,7 +330,9 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
                       />
                     </Box>
 
-                    <Text>{pair.movieInfo.title}</Text>
+                    <Text fontSize="sm" marginTop="0.2rem">
+                      {pair.movieInfo.title}
+                    </Text>
                   </Box>
                 </Box>
               </Box>

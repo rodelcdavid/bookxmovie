@@ -40,6 +40,7 @@ const FindAndMatch = ({ setShowdownPairList }) => {
       movieInfo: selectedMovie,
       bookVotes: 0,
       movieVotes: 0,
+      //TODO: what if undefined ratingsCount or vote count
       popularity:
         selectedBook.volumeInfo.ratingsCount + selectedMovie.vote_count,
     };
@@ -50,8 +51,6 @@ const FindAndMatch = ({ setShowdownPairList }) => {
       body: JSON.stringify({ match }),
     });
     const data = res.json();
-
-    console.log(data);
 
     setShowdownPairList((prev) => [...prev, match]);
   };

@@ -10,10 +10,20 @@ const FindBook = ({ setSelectedBook, selectedBook }) => {
   //TODO:sort by popularity
   const handleSearchBook = () => {
     fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=${inputBook}&key=${bookApiKey}`
+      `https://www.googleapis.com/books/v1/volumes?q=${inputBook}&key=${bookApiKey}&maxResults=40&printType=books`
     )
       .then((res) => res.json())
-      .then((data) => setBookResults(data));
+      .then((data) => {
+        // setBookResults(data);
+        const sorted = data.items.sort(
+          (a, b) =>
+            parseFloat(b.volumeInfo.ratingsCount) -
+            parseFloat(a.volumeInfo.ratingsCount)
+        );
+        data.items = sorted;
+
+        setBookResults(data);
+      });
   };
 
   return (
@@ -62,7 +72,11 @@ const FindBook = ({ setSelectedBook, selectedBook }) => {
                 onClick={() => setSelectedBook(book)}
               >
                 <Image
-                  src={book.volumeInfo.imageLinks?.thumbnail}
+                  src={
+                    book.volumeInfo.imageLinks
+                      ? book.volumeInfo.imageLinks.thumbnail
+                      : "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"
+                  }
                   alt=""
                   htmlWidth="100%"
                 />

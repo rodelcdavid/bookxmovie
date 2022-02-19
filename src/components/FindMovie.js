@@ -58,7 +58,9 @@ const FindMovie = ({ setSelectedMovie, selectedMovie }) => {
                   },
                 }}
                 key={movie.id}
-                onClick={() => setSelectedMovie(movie)}
+                onClick={() => {
+                  setSelectedMovie(movie);
+                }}
               >
                 <Image
                   src={
