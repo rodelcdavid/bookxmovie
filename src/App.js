@@ -1,11 +1,12 @@
 import { Button, ChakraProvider } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import AppHeader from "./components/AppHeader";
 import FindAndMatch from "./components/FindAndMatch";
 import FindAndMatchDialog from "./components/FindAndMatchDialog";
 import Showdown from "./components/Showdown";
+import { getMatchesListAsync } from "./features/matchesSlice";
 import initialState from "./initialStateExample";
-import theme from "./utils/theme";
 
 function App() {
   // const [showdownPairList, setShowdownPairList] = useState(
@@ -20,42 +21,47 @@ function App() {
     { id: "d5f0b0fa-400f-4393-a199-b1eef09fc320", votedFor: "movie" },
   ]);
 
+  const dispatch = useDispatch();
+
   useEffect(async () => {
     // fetch("http://localhost:7000")
     //   .then((res) => res.json())
     //   .then(console.log);
+    dispatch(getMatchesListAsync());
 
-    const res = await fetch("http://localhost:7000/matches");
-    const data = await res.json();
+    // const res = await fetch("http://localhost:7000/matches");
+    // const data = await res.json();
 
-    const renamedDataProps = data.map((match) => {
-      return {
-        id: match.id,
-        bookInfo: match.book_info,
-        movieInfo: match.movie_info,
-        bookVotes: match.book_votes,
-        movieVotes: match.movie_votes,
-        popularity: match.popularity,
-        votedFor: match.voted_for,
-      };
-    });
+    // const renamedDataProps = data.map((match) => {
+    //   return {
+    //     id: match.id,
+    //     bookInfo: match.book_info,
+    //     movieInfo: match.movie_info,
+    //     bookVotes: match.book_votes,
+    //     movieVotes: match.movie_votes,
+    //     popularity: match.popularity,
+    //     votedFor: match.voted_for,
+    //   };
+    // });
 
-    //TODO: create user object that has info of votes, then combine to each match
-    //Match and Combine
-    //OR use JOINS in database, then fetch that data already combined
+    // //TODO: create user object that has info of votes, then combine to each match
+    // //Match and Combine
+    // //OR use JOINS in database, then fetch that data already combined
 
-    setShowdownPairList(renamedDataProps);
+    // setShowdownPairList(renamedDataProps);
   }, []);
 
+  const { matchesList } = useSelector((state) => state.matchesState);
+
   return (
-    <ChakraProvider theme={theme}>
+    <>
       <AppHeader />
       <Showdown
-        showdownPairList={showdownPairList}
+        showdownPairList={matchesList}
         setShowdownPairList={setShowdownPairList}
       />
       <FindAndMatchDialog setShowdownPairList={setShowdownPairList} />
-    </ChakraProvider>
+    </>
   );
 }
 

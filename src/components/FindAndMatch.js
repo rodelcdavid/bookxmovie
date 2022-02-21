@@ -12,12 +12,14 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
+import { addMatchAsync } from "../features/matchesSlice";
 import FindBook from "./FindBook";
 import FindMovie from "./FindMovie";
 import Selected from "./Selected";
 
-const FindAndMatch = ({ setShowdownPairList }) => {
+const FindAndMatch = ({ setShowdownPairList, setOpenDialog }) => {
   // const showdownPairList = [];
 
   //use Promise.all to fetch all bookId
@@ -31,6 +33,8 @@ const FindAndMatch = ({ setShowdownPairList }) => {
   const [selectedBook, setSelectedBook] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
 
+  const dispatch = useDispatch();
+
   const handleAddToShowdown = async () => {
     //What about for movies that have multiple parts??
     const id = uuidv4();
@@ -42,17 +46,13 @@ const FindAndMatch = ({ setShowdownPairList }) => {
       movieVotes: 0,
       //TODO: what if undefined ratingsCount or vote count
       popularity:
-        selectedBook.volumeInfo.ratingsCount + selectedMovie.vote_count,
+        selectedBook.volumeInfo.ratingsCount ||
+        0 + selectedMovie.vote_count ||
+        0,
     };
 
-    const res = await fetch("http://localhost:7000/add", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ match }),
-    });
-    const data = res.json();
-
-    setShowdownPairList((prev) => [...prev, match]);
+    dispatch(addMatchAsync({ match }));
+    setOpenDialog(false);
   };
 
   return (

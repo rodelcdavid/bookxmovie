@@ -8,45 +8,85 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteMatchAsync } from "../features/matchesSlice";
 import initialState from "../initialStateExample";
 
 const Showdown = ({ showdownPairList, setShowdownPairList }) => {
+  const { matchesList } = useSelector((state) => state.matchesState);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [inputSearch, setInputSearch] = useState("");
-  const [filteredList, setFilteredList] = useState(showdownPairList);
+  const [filteredList, setFilteredList] = useState(matchesList);
 
   const handleSearch = () => {
     setSearchQuery(inputSearch);
   };
 
+  const dispatch = useDispatch();
   useEffect(() => {
-    const tempFilteredList = showdownPairList.filter((pair) => {
-      return (
-        pair.bookInfo.volumeInfo.title
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) ||
-        pair.movieInfo.title.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    });
-    //TODO:need to update filtered list when you add a new match, useeffect
-    setFilteredList(tempFilteredList);
-  }, [searchQuery, showdownPairList]);
+    if (matchesList.length) {
+      const tempFilteredList = matchesList.filter((pair) => {
+        return (
+          pair.bookInfo.volumeInfo.title
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          pair.movieInfo.title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      });
+      //TODO:need to update filtered list when you add a new match, useeffect
+      setFilteredList(tempFilteredList);
+    }
+  }, [searchQuery, matchesList]);
 
-  const handleVoteBook = (pair) => {
+  const handleVoteBook = async (pair) => {
     const tempShowdownPairList = [...showdownPairList];
 
     const index = tempShowdownPairList.findIndex((item) => item === pair);
     tempShowdownPairList[index].bookVotes += 1;
 
     setShowdownPairList(tempShowdownPairList);
+
+    //update in db table matches
+    await fetch(`http://localhost:7000/matches/${pair.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ votedFor: "book" }),
+    });
+    //update in db table user_votes
+    await fetch(`http://localhost:7000/user-votes/1234`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ matchId: pair.id, votedFor: "book" }),
+    });
   };
-  const handleVoteMovie = (pair) => {
+  const handleVoteMovie = async (pair) => {
     const tempShowdownPairList = [...showdownPairList];
     const index = tempShowdownPairList.findIndex((item) => item === pair);
 
     tempShowdownPairList[index].movieVotes += 1;
 
     setShowdownPairList(tempShowdownPairList);
+
+    //update db in matches table
+    await fetch(`http://localhost:7000/matches/${pair.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ votedFor: "movie" }),
+    });
+
+    //update db in user_votes table
+    await fetch(`http://localhost:7000/user-votes/1234`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ matchId: pair.id, votedFor: "movie" }),
+    });
+
+    //TODO: need to update matches list as soon as you vote
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteMatchAsync({ matchId: id }));
   };
 
   const votePercentage = (bookVotes, movieVotes, type) => {
@@ -139,8 +179,11 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
                   width: "300px",
                   overflow: "hidden",
                   backgroundColor: "#fff",
+                  position: "relative",
                 }}
                 key={pair.id}
+                //TODO:remove this
+                // onClick={() => alert(pair.id)}
               >
                 <Box
                   sx={{
@@ -335,6 +378,18 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
                     </Text>
                   </Box>
                 </Box>
+                <Button
+                  colorScheme="red"
+                  onClick={() => handleDelete(pair.id)}
+                  sx={{
+                    position: "absolute",
+                    left: "50%",
+                    bottom: 0,
+                    transform: "translateX(-50%)",
+                  }}
+                >
+                  Delete
+                </Button>
               </Box>
             );
           })

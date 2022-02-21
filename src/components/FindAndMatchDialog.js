@@ -53,7 +53,10 @@ const FindAndMatchDialog = ({ setShowdownPairList }) => {
 
             <AlertDialogBody>
               <Text>Match book with its respective movie adaptation.</Text>
-              <FindAndMatch setShowdownPairList={setShowdownPairList} />
+              <FindAndMatch
+                setShowdownPairList={setShowdownPairList}
+                setOpenDialog={setOpenDialog}
+              />
             </AlertDialogBody>
           </AlertDialogContent>
         </AlertDialogOverlay>
