@@ -83,6 +83,7 @@ const FindBook = ({ setSelectedBook, selectedBook }) => {
                 <Text style={{ textAlign: "center" }}>
                   {book.volumeInfo.title}
                 </Text>
+                <Text>{book.volumeInfo.ratingsCount || 0}</Text>
               </Box>
             );
           })}

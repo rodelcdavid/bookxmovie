@@ -46,9 +46,8 @@ const FindAndMatch = ({ setShowdownPairList, setOpenDialog }) => {
       movieVotes: 0,
       //TODO: what if undefined ratingsCount or vote count
       popularity:
-        selectedBook.volumeInfo.ratingsCount ||
-        0 + selectedMovie.vote_count ||
-        0,
+        (selectedBook.volumeInfo.ratingsCount || 0) +
+        (selectedMovie.vote_count || 0),
     };
 
     dispatch(addMatchAsync({ match }));

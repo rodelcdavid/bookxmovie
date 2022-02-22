@@ -4,7 +4,9 @@ export const getMatchesListAsync = createAsyncThunk(
   "matches/getMatchesListAsync",
   async (payload) => {
     try {
-      const response = await fetch("http://localhost:7000/matches");
+      const response = await fetch(
+        `http://localhost:7000/matches/${payload.userId}`
+      );
       const matchesList = await response.json();
       return { matchesList };
     } catch (err) {
@@ -31,7 +33,50 @@ export const addMatchAsync = createAsyncThunk(
   }
 );
 
-//update votes async
+//update vote matches
+export const updateMatchesVoteAsync = createAsyncThunk(
+  "matches/updateMatchesVoteAsync",
+  async (payload) => {
+    try {
+      const response = await fetch(
+        `http://localhost:7000/matches/${payload.matchId}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ votedFor: payload.votedFor }),
+        }
+      );
+      const updatedMatch = await response.json();
+      return { updatedMatch };
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
+//add vote user record
+export const addUserVoteAsync = createAsyncThunk(
+  "matches/addUserVoteAsync",
+  async (payload) => {
+    try {
+      const response = await fetch(
+        `http://localhost:7000/user-votes/${payload.userId}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            matchId: payload.matchId,
+            votedFor: payload.votedFor,
+          }),
+        }
+      );
+      const userVote = await response.json();
+      return { userVote };
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
 
 //delete match async
 export const deleteMatchAsync = createAsyncThunk(
@@ -121,10 +166,36 @@ export const matchesSlice = createSlice({
     [deleteMatchAsync.rejected]: (state, { payload }) => {
       console.log("error");
     },
+    [updateMatchesVoteAsync.fulfilled]: (state, { payload }) => {
+      state.matchesList = state.matchesList.map((match) => {
+        if (match.id === payload.updatedMatch.id) {
+          match.bookVotes = payload.updatedMatch.book_votes;
+          match.movieVotes = payload.updatedMatch.movie_votes;
+        }
+        return match;
+      });
+    },
+    [updateMatchesVoteAsync.pending]: (state, { payload }) => {
+      console.log("pending");
+    },
+    [updateMatchesVoteAsync.rejected]: (state, { payload }) => {
+      console.log("error");
+    },
+    [addUserVoteAsync.fulfilled]: (state, { payload }) => {
+      state.matchesList = state.matchesList.map((match) => {
+        if (match.id === payload.userVote.match_id) {
+          match.votedFor = payload.userVote.voted_for;
+        }
+        return match;
+      });
+    },
+    [addUserVoteAsync.pending]: (state, { payload }) => {
+      console.log("pending");
+    },
+    [addUserVoteAsync.rejected]: (state, { payload }) => {
+      console.log("error");
+    },
   },
 });
-
-// Action creators are generated for each case reducer function
-// export const { increment, decrement, incrementByAmount } = counterSlice.actions;
 
 export default matchesSlice.reducer;

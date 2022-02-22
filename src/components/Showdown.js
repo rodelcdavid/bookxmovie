@@ -9,10 +9,15 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteMatchAsync } from "../features/matchesSlice";
+import {
+  addUserVoteAsync,
+  deleteMatchAsync,
+  updateMatchesVoteAsync,
+} from "../features/matchesSlice";
 import initialState from "../initialStateExample";
 
 const Showdown = ({ showdownPairList, setShowdownPairList }) => {
+  const userId = "6721";
   const { matchesList } = useSelector((state) => state.matchesState);
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -40,49 +45,19 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
   }, [searchQuery, matchesList]);
 
   const handleVoteBook = async (pair) => {
-    const tempShowdownPairList = [...showdownPairList];
-
-    const index = tempShowdownPairList.findIndex((item) => item === pair);
-    tempShowdownPairList[index].bookVotes += 1;
-
-    setShowdownPairList(tempShowdownPairList);
-
+    //TODO: update both matches and uservote tables, use TRANSACTION in postgres
     //update in db table matches
-    await fetch(`http://localhost:7000/matches/${pair.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ votedFor: "book" }),
-    });
+    dispatch(updateMatchesVoteAsync({ matchId: pair.id, votedFor: "book" }));
+
     //update in db table user_votes
-    await fetch(`http://localhost:7000/user-votes/1234`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ matchId: pair.id, votedFor: "book" }),
-    });
+    dispatch(addUserVoteAsync({ userId, matchId: pair.id, votedFor: "book" }));
   };
   const handleVoteMovie = async (pair) => {
-    const tempShowdownPairList = [...showdownPairList];
-    const index = tempShowdownPairList.findIndex((item) => item === pair);
-
-    tempShowdownPairList[index].movieVotes += 1;
-
-    setShowdownPairList(tempShowdownPairList);
-
     //update db in matches table
-    await fetch(`http://localhost:7000/matches/${pair.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ votedFor: "movie" }),
-    });
+    dispatch(updateMatchesVoteAsync({ matchId: pair.id, votedFor: "movie" }));
 
     //update db in user_votes table
-    await fetch(`http://localhost:7000/user-votes/1234`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ matchId: pair.id, votedFor: "movie" }),
-    });
-
-    //TODO: need to update matches list as soon as you vote
+    dispatch(addUserVoteAsync({ userId, matchId: pair.id, votedFor: "movie" }));
   };
 
   const handleDelete = (id) => {

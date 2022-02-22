@@ -9,6 +9,7 @@ import { getMatchesListAsync } from "./features/matchesSlice";
 import initialState from "./initialStateExample";
 
 function App() {
+  const userId = "6721";
   // const [showdownPairList, setShowdownPairList] = useState(
   //   Array(10).fill(initialState)
   // );
@@ -27,7 +28,7 @@ function App() {
     // fetch("http://localhost:7000")
     //   .then((res) => res.json())
     //   .then(console.log);
-    dispatch(getMatchesListAsync());
+    dispatch(getMatchesListAsync({ userId }));
 
     // const res = await fetch("http://localhost:7000/matches");
     // const data = await res.json();
