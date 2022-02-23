@@ -1,3 +1,4 @@
+import { DeleteIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -6,19 +7,33 @@ import {
   Input,
   Spinner,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  addUserVoteAsync,
-  deleteMatchAsync,
-  updateMatchesVoteAsync,
-} from "../features/matchesSlice";
-import initialState from "../initialStateExample";
 
-const Showdown = ({ showdownPairList, setShowdownPairList }) => {
-  const userId = "6721";
-  const { matchesList } = useSelector((state) => state.matchesState);
+import {
+  useAddUserVoteMutation,
+  useDeleteMatchMutation,
+  useGetMatchesListQuery,
+  useUpdateMatchesVoteMutation,
+} from "../services/matchesApi";
+
+import { toastList } from "../utils/toastList";
+
+const Showdown = () => {
+  const user = { userId: "32432", isAdmin: true };
+  const { userId, isAdmin } = user;
+
+  const toast = useToast();
+  const {
+    data: matchesList,
+    isFetching,
+    isLoading,
+  } = useGetMatchesListQuery(userId);
+  const [deleteMatch] = useDeleteMatchMutation();
+  const [updateMatchesVote] = useUpdateMatchesVoteMutation();
+  const [addUserVote] = useAddUserVoteMutation();
+  // const matchesList = data;
 
   const [searchQuery, setSearchQuery] = useState("");
   const [inputSearch, setInputSearch] = useState("");
@@ -28,9 +43,8 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
     setSearchQuery(inputSearch);
   };
 
-  const dispatch = useDispatch();
   useEffect(() => {
-    if (matchesList.length) {
+    if (matchesList) {
       const tempFilteredList = matchesList.filter((pair) => {
         return (
           pair.bookInfo.volumeInfo.title
@@ -44,24 +58,30 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
     }
   }, [searchQuery, matchesList]);
 
+  //Make vote into one function
   const handleVoteBook = async (pair) => {
     //TODO: update both matches and uservote tables, use TRANSACTION in postgres
     //update in db table matches
-    dispatch(updateMatchesVoteAsync({ matchId: pair.id, votedFor: "book" }));
+    await updateMatchesVote({ matchId: pair.id, votedFor: "book" });
 
     //update in db table user_votes
-    dispatch(addUserVoteAsync({ userId, matchId: pair.id, votedFor: "book" }));
+    await addUserVote({ userId, matchId: pair.id, votedFor: "book" });
+    toast(toastList.voteToast);
   };
   const handleVoteMovie = async (pair) => {
     //update db in matches table
-    dispatch(updateMatchesVoteAsync({ matchId: pair.id, votedFor: "movie" }));
+    await updateMatchesVote({ matchId: pair.id, votedFor: "movie" });
 
     //update db in user_votes table
-    dispatch(addUserVoteAsync({ userId, matchId: pair.id, votedFor: "movie" }));
+    await addUserVote({ userId, matchId: pair.id, votedFor: "movie" });
+
+    toast(toastList.voteToast);
   };
 
-  const handleDelete = (id) => {
-    dispatch(deleteMatchAsync({ matchId: id }));
+  const handleDelete = async (matchId) => {
+    await deleteMatch({ matchId });
+    toast(toastList.deleteToast);
+    // dispatch(deleteMatchAsync({ matchId: id }));
   };
 
   const votePercentage = (bookVotes, movieVotes, type) => {
@@ -141,7 +161,7 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
         }}
       >
         {/* <Heading>Showdown</Heading> */}
-        {filteredList.length ? (
+        {filteredList ? (
           filteredList.map((pair, index) => {
             return (
               <Box
@@ -227,9 +247,10 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
                       border="2px"
                       width="80%"
                       marginTop="0.5rem"
+                      // isLoading={isLoading}
                       disabled={pair.votedFor ? true : false}
                     >
-                      Vote for Book
+                      {pair.votedFor ? "Already Voted" : "Vote for Book"}
                     </Button>
 
                     <Box
@@ -309,9 +330,10 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
                       width="80%"
                       border="2px"
                       marginTop="0.5rem"
+                      // isLoading={isLoading}
                       isDisabled={pair.votedFor ? true : false}
                     >
-                      Vote for Movie
+                      {pair.votedFor ? "Already Voted" : "Vote for Movie"}
                     </Button>
 
                     <Box
@@ -353,18 +375,20 @@ const Showdown = ({ showdownPairList, setShowdownPairList }) => {
                     </Text>
                   </Box>
                 </Box>
-                <Button
-                  colorScheme="red"
-                  onClick={() => handleDelete(pair.id)}
-                  sx={{
-                    position: "absolute",
-                    left: "50%",
-                    bottom: 0,
-                    transform: "translateX(-50%)",
-                  }}
-                >
-                  Delete
-                </Button>
+                {isAdmin && (
+                  <Button
+                    colorScheme="red"
+                    onClick={() => handleDelete(pair.id)}
+                    size="xs"
+                    sx={{
+                      position: "absolute",
+                      right: 1,
+                      top: 1,
+                    }}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                )}
               </Box>
             );
           })

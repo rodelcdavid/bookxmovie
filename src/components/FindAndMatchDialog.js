@@ -12,7 +12,7 @@ import {
 import React, { useRef, useState } from "react";
 import FindAndMatch from "./FindAndMatch";
 
-const FindAndMatchDialog = ({ setShowdownPairList }) => {
+const FindAndMatchDialog = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const cancelRef = useRef();
 
@@ -53,10 +53,7 @@ const FindAndMatchDialog = ({ setShowdownPairList }) => {
 
             <AlertDialogBody>
               <Text>Match book with its respective movie adaptation.</Text>
-              <FindAndMatch
-                setShowdownPairList={setShowdownPairList}
-                setOpenDialog={setOpenDialog}
-              />
+              <FindAndMatch setOpenDialog={setOpenDialog} />
             </AlertDialogBody>
           </AlertDialogContent>
         </AlertDialogOverlay>

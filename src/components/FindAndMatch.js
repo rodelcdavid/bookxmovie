@@ -10,18 +10,19 @@ import {
   TabPanels,
   Tabs,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { addMatchAsync } from "../features/matchesSlice";
+import { useAddMatchMutation } from "../services/matchesApi";
 import FindBook from "./FindBook";
 import FindMovie from "./FindMovie";
 import Selected from "./Selected";
+import { toastList } from "../utils/toastList";
 
-const FindAndMatch = ({ setShowdownPairList, setOpenDialog }) => {
-  // const showdownPairList = [];
-
+const FindAndMatch = ({ setOpenDialog }) => {
   //use Promise.all to fetch all bookId
   //get book.selflink
 
@@ -33,7 +34,9 @@ const FindAndMatch = ({ setShowdownPairList, setOpenDialog }) => {
   const [selectedBook, setSelectedBook] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
 
-  const dispatch = useDispatch();
+  const toast = useToast();
+
+  const [addMatch] = useAddMatchMutation();
 
   const handleAddToShowdown = async () => {
     //What about for movies that have multiple parts??
@@ -50,8 +53,11 @@ const FindAndMatch = ({ setShowdownPairList, setOpenDialog }) => {
         (selectedMovie.vote_count || 0),
     };
 
-    dispatch(addMatchAsync({ match }));
+    await addMatch(match);
+
     setOpenDialog(false);
+
+    toast(toastList.addToast);
   };
 
   return (
