@@ -33,19 +33,10 @@ export const matchesApi = createApi({
       }),
       invalidatesTags: ["Matches"],
     }),
-    //updateMatchesVote
-    updateMatchesVote: builder.mutation({
+
+    addVote: builder.mutation({
       query: ({ matchId, ...rest }) => ({
-        url: `matches/${matchId}`,
-        method: "PATCH",
-        body: rest,
-      }),
-      invalidatesTags: ["Matches"],
-    }),
-    //updateUserVote
-    addUserVote: builder.mutation({
-      query: ({ userId, ...rest }) => ({
-        url: `user-votes/${userId}`,
+        url: `vote/${matchId}`,
         method: "POST",
         body: rest,
       }),
@@ -69,6 +60,5 @@ export const {
   useGetMatchesListQuery,
   useAddMatchMutation,
   useDeleteMatchMutation,
-  useUpdateMatchesVoteMutation,
-  useAddUserVoteMutation,
+  useAddVoteMutation,
 } = matchesApi;

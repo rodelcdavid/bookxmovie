@@ -12,16 +12,15 @@ import {
 import React, { useEffect, useState } from "react";
 
 import {
-  useAddUserVoteMutation,
+  useAddVoteMutation,
   useDeleteMatchMutation,
   useGetMatchesListQuery,
-  useUpdateMatchesVoteMutation,
 } from "../services/matchesApi";
 
 import { toastList } from "../utils/toastList";
 
 const Showdown = () => {
-  const user = { userId: "32432", isAdmin: true };
+  const user = { userId: "3424", isAdmin: true };
   const { userId, isAdmin } = user;
 
   const toast = useToast();
@@ -31,8 +30,8 @@ const Showdown = () => {
     isLoading,
   } = useGetMatchesListQuery(userId);
   const [deleteMatch] = useDeleteMatchMutation();
-  const [updateMatchesVote] = useUpdateMatchesVoteMutation();
-  const [addUserVote] = useAddUserVoteMutation();
+
+  const [addVote] = useAddVoteMutation();
   // const matchesList = data;
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -58,22 +57,8 @@ const Showdown = () => {
     }
   }, [searchQuery, matchesList]);
 
-  //Make vote into one function
-  const handleVoteBook = async (pair) => {
-    //TODO: update both matches and uservote tables, use TRANSACTION in postgres
-    //update in db table matches
-    await updateMatchesVote({ matchId: pair.id, votedFor: "book" });
-
-    //update in db table user_votes
-    await addUserVote({ userId, matchId: pair.id, votedFor: "book" });
-    toast(toastList.voteToast);
-  };
-  const handleVoteMovie = async (pair) => {
-    //update db in matches table
-    await updateMatchesVote({ matchId: pair.id, votedFor: "movie" });
-
-    //update db in user_votes table
-    await addUserVote({ userId, matchId: pair.id, votedFor: "movie" });
+  const handleVote = async (matchId, votedFor) => {
+    await addVote({ userId, matchId, votedFor });
 
     toast(toastList.voteToast);
   };
@@ -81,7 +66,6 @@ const Showdown = () => {
   const handleDelete = async (matchId) => {
     await deleteMatch({ matchId });
     toast(toastList.deleteToast);
-    // dispatch(deleteMatchAsync({ matchId: id }));
   };
 
   const votePercentage = (bookVotes, movieVotes, type) => {
@@ -241,7 +225,7 @@ const Showdown = () => {
                     </Heading>
 
                     <Button
-                      onClick={() => handleVoteBook(pair)}
+                      onClick={() => handleVote(pair.id, "book")}
                       colorScheme="teal"
                       size="xs"
                       border="2px"
@@ -324,7 +308,7 @@ const Showdown = () => {
                     </Heading>
 
                     <Button
-                      onClick={() => handleVoteMovie(pair)}
+                      onClick={() => handleVote(pair.id, "movie")}
                       colorScheme="teal"
                       size="xs"
                       width="80%"
