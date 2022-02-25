@@ -2,6 +2,7 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
+  Divider,
   Heading,
   Image,
   Input,
@@ -32,7 +33,6 @@ const Showdown = () => {
   const [deleteMatch] = useDeleteMatchMutation();
 
   const [addVote] = useAddVoteMutation();
-  // const matchesList = data;
 
   const [searchQuery, setSearchQuery] = useState("");
   const [inputSearch, setInputSearch] = useState("");
@@ -52,7 +52,6 @@ const Showdown = () => {
           pair.movieInfo.title.toLowerCase().includes(searchQuery.toLowerCase())
         );
       });
-      //TODO:need to update filtered list when you add a new match, useeffect
       setFilteredList(tempFilteredList);
     }
   }, [searchQuery, matchesList]);
@@ -104,10 +103,15 @@ const Showdown = () => {
     <Box
       sx={{
         backgroundColor: "#F8F3D4",
-        padding: "0.5rem 0",
+        padding: "1rem 0",
         minHeight: "calc(100vh - 72px)",
       }}
     >
+      <Box sx={{ textAlign: "center", color: "rgba(0,0,0,0.87)" }}>
+        <Heading size="md">
+          Browse for books and movies and see which one was better.
+        </Heading>
+      </Box>
       <Box
         sx={{
           width: "30%",
@@ -115,10 +119,12 @@ const Showdown = () => {
           margin: "0 auto",
           display: "flex",
           gap: "5px",
+          marginTop: "1rem",
         }}
       >
         <Input
           type="search"
+          placeholder="Search for book or movie"
           // htmlSize="10"
           // width="auto"
           sx={{ backgroundColor: "#fff" }}
@@ -133,7 +139,7 @@ const Showdown = () => {
           Search
         </Button>
       </Box>
-
+      <Divider margin="1rem auto" borderColor="rgba(0,0,0,0.87)" />
       <Box
         sx={{
           justifyItems: "center",
@@ -144,15 +150,11 @@ const Showdown = () => {
           marginTop: "1rem",
         }}
       >
-        {/* <Heading>Showdown</Heading> */}
         {filteredList ? (
           filteredList.map((pair, index) => {
             return (
               <Box
                 sx={{
-                  // backgroundColor: index % 2 === 0 ? "#fff" : "#C1DEAE",
-                  // padding: "0.5rem",
-                  // border: "2px solid teal",
                   boxShadow: "0 5px 10px rgba(0,0,0,0.6)",
                   borderRadius: "10px",
                   width: "300px",
@@ -161,8 +163,6 @@ const Showdown = () => {
                   position: "relative",
                 }}
                 key={pair.id}
-                //TODO:remove this
-                // onClick={() => alert(pair.id)}
               >
                 <Box
                   sx={{
@@ -189,15 +189,9 @@ const Showdown = () => {
                 </Box>
                 <Box
                   sx={{
-                    // padding: "1rem",
-                    // border: "1px solid #aaa",
-                    // width: "40%",
-                    // height: "300px",
                     padding: "0.5rem 0",
                     display: "flex",
-                    // gap: "10px",
                     justifyContent: "center",
-                    // alignItems: "center",
                     textAlign: "center",
                   }}
                 >
@@ -290,7 +284,6 @@ const Showdown = () => {
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
-                      // justifyContent: "space-around",
                     }}
                     // onClick={() => handleVoteMovie(pair)}
                   >

@@ -6,24 +6,22 @@ const AppHeader = () => {
   return (
     <Box
       sx={{
-        textAlign: "center",
         backgroundColor: "teal",
-        color: "#fff",
-        fontWeight: "bolder",
-        fontSize: "1.5rem",
         display: "flex",
-        // justifyContent: "flex-start",
-        // paddingLeft: "1rem",
         alignItems: "center",
         height: "72px",
       }}
     >
       <Box
         sx={{
+          color: "#FFDE7D",
+          fontWeight: "bolder",
+          fontSize: "1.5rem",
           display: "flex",
           alignItems: "center",
           marginRight: "auto",
           marginLeft: "10px",
+          cursor: "pointer",
 
           "& > p": {
             display: "none",
@@ -42,9 +40,22 @@ const AppHeader = () => {
         <Text fontSize="5xl">X</Text>
         <Text>movie</Text>
       </Box>
-      <Button colorScheme="yellow" marginLeft="auto" marginRight="10px">
-        Log in
-      </Button>
+      <Box marginLeft="auto" marginRight="10px" display="flex" gap="5px">
+        <Button
+          colorScheme="yellow"
+          color="teal.700"
+          _hover={{ backgroundColor: "yellow.200" }}
+        >
+          Log in
+        </Button>
+        <Button
+          variant="ghost"
+          color="#FFDE7D"
+          _hover={{ backgroundColor: "none", color: "yellow.200" }}
+        >
+          Sign Up
+        </Button>
+      </Box>
     </Box>
   );
 };
