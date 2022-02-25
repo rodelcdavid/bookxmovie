@@ -109,7 +109,7 @@ const Showdown = () => {
     >
       <Box sx={{ textAlign: "center", color: "rgba(0,0,0,0.87)" }}>
         <Heading size="md">
-          Browse for books and movies and see which one was better.
+          Browse for books and movies and see which one people think was better.
         </Heading>
       </Box>
       <Box

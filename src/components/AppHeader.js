@@ -1,8 +1,21 @@
 import { Box, Image, Text, Button } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import logo from "../assets/logo.png";
+import AccessDialog from "./AccessDialog";
 
 const AppHeader = () => {
+  const [openDialog, setOpenDialog] = useState(false);
+  const [initialTab, setInitialTab] = useState("login");
+
+  const handleAccess = (type) => {
+    setOpenDialog(true);
+    if (type === "login") {
+      setInitialTab("login");
+    } else {
+      setInitialTab("signup");
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -45,6 +58,8 @@ const AppHeader = () => {
           colorScheme="yellow"
           color="teal.700"
           _hover={{ backgroundColor: "yellow.200" }}
+          _active={{ backgroundColor: "yellow.200" }}
+          onClick={() => handleAccess("login")}
         >
           Log in
         </Button>
@@ -52,10 +67,21 @@ const AppHeader = () => {
           variant="ghost"
           color="#FFDE7D"
           _hover={{ backgroundColor: "none", color: "yellow.200" }}
+          _active={{
+            backgroundColor: "none",
+            color: "yellow.200",
+          }}
+          _focus={{ outline: "none" }}
+          onClick={() => handleAccess("signup")}
         >
           Sign Up
         </Button>
       </Box>
+      <AccessDialog
+        openDialog={openDialog}
+        setOpenDialog={setOpenDialog}
+        initialTab={initialTab}
+      />
     </Box>
   );
 };
