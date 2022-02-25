@@ -38,15 +38,15 @@ const FindAndMatch = ({ setOpenDialog }) => {
 
   const [addMatch] = useAddMatchMutation();
 
-  const handleAddToShowdown = async () => {
+  const handleAddToShowdown = async (bookVotes, movieVotes) => {
     //What about for movies that have multiple parts??
     const id = uuidv4();
     const match = {
       id: id,
       bookInfo: selectedBook,
       movieInfo: selectedMovie,
-      bookVotes: 0,
-      movieVotes: 0,
+      bookVotes: bookVotes,
+      movieVotes: movieVotes,
       //TODO: what if undefined ratingsCount or vote count
       popularity:
         (selectedBook.volumeInfo.ratingsCount || 0) +
