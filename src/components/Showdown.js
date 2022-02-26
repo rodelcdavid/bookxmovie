@@ -297,7 +297,8 @@ const Showdown = ({ setOpenAccessDialog }) => {
                     </Box>
 
                     <Text fontSize="sm" marginTop="0.2rem">
-                      {pair.bookInfo.volumeInfo.title}
+                      {pair.bookInfo.volumeInfo.title} (
+                      {pair.bookInfo.volumeInfo.publishedDate.slice(0, 4)})
                     </Text>
                   </Box>
 
@@ -385,7 +386,8 @@ const Showdown = ({ setOpenAccessDialog }) => {
                     </Box>
 
                     <Text fontSize="sm" marginTop="0.2rem">
-                      {pair.movieInfo.title}
+                      {pair.movieInfo.title} (
+                      {pair.movieInfo.release_date.slice(0, 4)})
                     </Text>
                   </Box>
                 </Box>

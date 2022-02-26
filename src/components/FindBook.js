@@ -81,7 +81,7 @@ const FindBook = ({ setSelectedBook, selectedBook }) => {
                   htmlWidth="100%"
                 />
                 <Text style={{ textAlign: "center" }}>
-                  {book.volumeInfo.title}
+                  {book.volumeInfo.title} ({book.volumeInfo.publishedDate})
                 </Text>
                 <Text>{book.volumeInfo.ratingsCount || 0}</Text>
               </Box>

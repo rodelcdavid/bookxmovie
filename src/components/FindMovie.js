@@ -71,7 +71,9 @@ const FindMovie = ({ setSelectedMovie, selectedMovie }) => {
                   alt=""
                   htmlWidth="100%"
                 />
-                <Text style={{ textAlign: "center" }}>{movie.title}</Text>
+                <Text style={{ textAlign: "center" }}>
+                  {movie.title} ({movie.release_date.slice(0, 4)})
+                </Text>
                 <Text style={{ textAlign: "center" }}>{movie.vote_count}</Text>
               </Box>
             );

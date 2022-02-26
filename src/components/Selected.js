@@ -29,7 +29,7 @@ const Selected = ({ selectedBook, selectedMovie, handleAddToShowdown }) => {
         }}
       >
         {/* Book */}
-        {selectedBook && (
+        {selectedBook ? (
           <Box sx={{ width: "100px", textAlign: "center" }}>
             <Image
               src={selectedBook.volumeInfo.imageLinks?.thumbnail}
@@ -38,6 +38,8 @@ const Selected = ({ selectedBook, selectedMovie, handleAddToShowdown }) => {
             />
             <Text>{selectedBook.volumeInfo.title}</Text>
           </Box>
+        ) : (
+          <Text>Please select a book.</Text>
         )}
 
         <Box sx={{ textAlign: "center" }}>
@@ -45,7 +47,7 @@ const Selected = ({ selectedBook, selectedMovie, handleAddToShowdown }) => {
         </Box>
 
         {/* Movie */}
-        {selectedMovie && (
+        {selectedMovie ? (
           <Box sx={{ width: "100px", textAlign: "center" }}>
             <Image
               src={`https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`}
@@ -54,6 +56,8 @@ const Selected = ({ selectedBook, selectedMovie, handleAddToShowdown }) => {
             />
             <Text>{selectedMovie.title}</Text>
           </Box>
+        ) : (
+          <Text>Please select a movie</Text>
         )}
       </Box>
       <Box>
