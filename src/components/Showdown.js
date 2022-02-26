@@ -103,7 +103,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
     } else if (movieVotes + bookVotes === 0) {
       return "No votes yet";
     } else {
-      return "BOTH are great";
+      return "BOTH were great";
     }
   };
 
@@ -187,19 +187,31 @@ const Showdown = ({ setOpenAccessDialog }) => {
                     padding: "0.5rem",
                   }}
                 >
-                  <Heading
-                    size="md"
-                    sx={{
-                      borderBottom: "1px solid rgba(0,0,0,0.87)",
-                      width: "70%",
-                      margin: "0 auto",
-                    }}
-                  >
-                    {whichWasBetter(pair.bookVotes, pair.movieVotes)}
-                  </Heading>
-                  <Text sx={{ fontSize: "0.75rem" }}>
-                    Total votes: {pair.bookVotes + pair.movieVotes}
-                  </Text>
+                  {userId === "guest" ? (
+                    <Heading
+                      onClick={handleVote}
+                      fontSize="lg"
+                      cursor="pointer"
+                    >
+                      Reveal Stats
+                    </Heading>
+                  ) : (
+                    <>
+                      <Heading
+                        size="md"
+                        sx={{
+                          borderBottom: "1px solid rgba(0,0,0,0.87)",
+                          width: "70%",
+                          margin: "0 auto",
+                        }}
+                      >
+                        {whichWasBetter(pair.bookVotes, pair.movieVotes)}
+                      </Heading>
+                      <Text sx={{ fontSize: "0.75rem" }}>
+                        Total votes: {pair.bookVotes + pair.movieVotes}
+                      </Text>
+                    </>
+                  )}
                 </Box>
                 <Box
                   sx={{
@@ -220,17 +232,24 @@ const Showdown = ({ setOpenAccessDialog }) => {
                     }}
                     // onClick={() => handleVoteBook(pair)}
                   >
-                    <Heading
-                      size="lg"
-                      sx={{
-                        color:
-                          pair.bookVotes >= pair.movieVotes
-                            ? "#00B8A9"
-                            : "#F6416C",
-                      }}
-                    >
-                      {votePercentage(pair.bookVotes, pair.movieVotes, "book")}%
-                    </Heading>
+                    {userId !== "guest" && (
+                      <Heading
+                        size="lg"
+                        sx={{
+                          color:
+                            pair.bookVotes >= pair.movieVotes
+                              ? "#00B8A9"
+                              : "#F6416C",
+                        }}
+                      >
+                        {votePercentage(
+                          pair.bookVotes,
+                          pair.movieVotes,
+                          "book"
+                        )}
+                        %
+                      </Heading>
+                    )}
 
                     <Button
                       onClick={() => handleVote(pair.id, "book")}
@@ -300,18 +319,24 @@ const Showdown = ({ setOpenAccessDialog }) => {
                     }}
                     // onClick={() => handleVoteMovie(pair)}
                   >
-                    <Heading
-                      size="lg"
-                      sx={{
-                        color:
-                          pair.movieVotes >= pair.bookVotes
-                            ? "#00B8A9"
-                            : "#F6416C",
-                      }}
-                    >
-                      {votePercentage(pair.bookVotes, pair.movieVotes, "movie")}
-                      %
-                    </Heading>
+                    {userId !== "guest" && (
+                      <Heading
+                        size="lg"
+                        sx={{
+                          color:
+                            pair.movieVotes >= pair.bookVotes
+                              ? "#00B8A9"
+                              : "#F6416C",
+                        }}
+                      >
+                        {votePercentage(
+                          pair.bookVotes,
+                          pair.movieVotes,
+                          "movie"
+                        )}
+                        %
+                      </Heading>
+                    )}
 
                     <Button
                       onClick={() => handleVote(pair.id, "movie")}

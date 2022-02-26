@@ -23,4 +23,10 @@ export const toastList = {
     duration: 3000,
     isClosable: true,
   },
+  logOutToast: {
+    title: "You have been logged out",
+    status: "info",
+    duration: 3000,
+    isClosable: true,
+  },
 };

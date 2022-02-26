@@ -1,9 +1,22 @@
 import { TriangleDownIcon } from "@chakra-ui/icons";
-import { Box, Image, Text, Button, Heading, Avatar } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  Text,
+  Button,
+  Heading,
+  Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  useToast,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import logo from "../assets/logo.png";
 import { setUser } from "../features/authSlice";
+import { toastList } from "../utils/toastList";
 import AccessDialog from "./AccessDialog";
 
 const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
@@ -22,12 +35,15 @@ const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
 
   const dispatch = useDispatch();
 
+  const toast = useToast();
+
   const handleLogOut = () => {
     const guestUser = { id: "guest" };
     setTimeout(() => {
       dispatch(setUser({ user: guestUser }));
       localStorage.setItem("user", JSON.stringify(guestUser));
-    }, 2000);
+      toast(toastList.logOutToast);
+    }, 1500);
   };
 
   return (
@@ -40,7 +56,6 @@ const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
       }}
     >
       <Box
-        onClick={handleLogOut}
         sx={{
           color: "#FFDE7D",
           fontWeight: "bolder",
@@ -69,11 +84,17 @@ const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
         <Text>movie</Text>
       </Box>
       {user.id !== "guest" ? (
-        <Box marginRight="10px" display="flex" gap="10px" alignItems="center">
-          <Heading color="#ffde7d" size="sm">
-            {user.name}
-          </Heading>
-          <TriangleDownIcon boxSize={3} color="#ffde7d" cursor="pointer" />
+        <Box marginRight="10px">
+          <Menu>
+            <MenuButton color="#ffde7d" fontWeight="bolder">
+              {user.name} <TriangleDownIcon boxSize={3} />
+            </MenuButton>
+            <MenuList>
+              <MenuItem>My Votes</MenuItem>
+              <MenuItem>Account Settings</MenuItem>
+              <MenuItem onClick={handleLogOut}>Log out</MenuItem>
+            </MenuList>
+          </Menu>
         </Box>
       ) : (
         <Box marginLeft="auto" marginRight="10px" display="flex" gap="5px">
