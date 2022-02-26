@@ -11,6 +11,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import {
   useAddVoteMutation,
@@ -20,9 +21,10 @@ import {
 
 import { toastList } from "../utils/toastList";
 
-const Showdown = () => {
-  const user = { userId: "3424", isAdmin: true };
-  const { userId, isAdmin } = user;
+const Showdown = ({ setOpenAccessDialog }) => {
+  //TODO: set user
+  const { user } = useSelector((state) => state.authState);
+  const { id: userId } = user;
 
   const toast = useToast();
   const {
@@ -57,9 +59,15 @@ const Showdown = () => {
   }, [searchQuery, matchesList]);
 
   const handleVote = async (matchId, votedFor) => {
-    await addVote({ userId, matchId, votedFor });
-
-    toast(toastList.voteToast);
+    if (userId === "guest") {
+      //open login dialog
+      setOpenAccessDialog(true);
+      toast(toastList.accessToast);
+      //proceed vote
+    } else {
+      await addVote({ userId, matchId, votedFor });
+      toast(toastList.voteToast);
+    }
   };
 
   const handleDelete = async (matchId) => {
@@ -107,7 +115,13 @@ const Showdown = () => {
         minHeight: "calc(100vh - 72px)",
       }}
     >
-      <Box sx={{ textAlign: "center", color: "rgba(0,0,0,0.87)" }}>
+      <Box
+        sx={{
+          textAlign: "center",
+          color: "rgba(0,0,0,0.87)",
+          padding: "0.5rem",
+        }}
+      >
         <Heading size="md">
           Browse for books and movies and see which one people think was better.
         </Heading>
@@ -239,7 +253,7 @@ const Showdown = () => {
                         cursor: "pointer",
 
                         "&::before": {
-                          content: `"Vote for book"`,
+                          content: `"View Details"`,
                           color: "#fff",
                           position: "absolute",
                           display: "flex",
@@ -249,7 +263,6 @@ const Showdown = () => {
                           justifyContent: "center",
                           alignItems: "center",
                           fontWeight: "bolder",
-                          fontSize: "1.2rem",
                           backgroundColor: "rgba(0,0,0,0.6)",
                           zIndex: 1,
                           transition: "opacity 150ms ease-in",
@@ -321,7 +334,7 @@ const Showdown = () => {
                         cursor: "pointer",
 
                         "&::before": {
-                          content: `"Vote for movie"`,
+                          content: `"View Details"`,
                           color: "#fff",
                           position: "absolute",
                           display: "flex",
@@ -331,7 +344,6 @@ const Showdown = () => {
                           justifyContent: "center",
                           alignItems: "center",
                           fontWeight: "bolder",
-                          fontSize: "1.2rem",
 
                           backgroundColor: "rgba(0,0,0,0.6)",
                           zIndex: 1,
@@ -352,7 +364,7 @@ const Showdown = () => {
                     </Text>
                   </Box>
                 </Box>
-                {isAdmin && (
+                {userId === 2 && (
                   <Button
                     colorScheme="red"
                     onClick={() => handleDelete(pair.id)}

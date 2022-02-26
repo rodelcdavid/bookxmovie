@@ -17,4 +17,10 @@ export const toastList = {
     duration: 3000,
     isClosable: true,
   },
+  accessToast: {
+    title: "Please login to continue.",
+    status: "warning",
+    duration: 3000,
+    isClosable: true,
+  },
 };

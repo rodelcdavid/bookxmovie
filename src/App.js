@@ -7,16 +7,27 @@ import FindAndMatchDialog from "./components/FindAndMatchDialog";
 import Showdown from "./components/Showdown";
 import { getMatchesListAsync } from "./features/matchesSlice";
 import initialState from "./initialStateExample";
+import { useSignUpMutation } from "./services/authApi";
 import { useGetMatchesListQuery } from "./services/matchesApi";
 
 function App() {
-  const userId = "1234";
+  // const userId = "1234";
+
+  const { user } = useSelector((state) => state.authState);
+  const [openAccessDialog, setOpenAccessDialog] = useState(false);
+
+  useEffect(() => {
+    // const prevUser = localStorage.getItem("user");
+  }, []);
 
   return (
     <>
-      <AppHeader />
-      <Showdown />
-      <FindAndMatchDialog />
+      <AppHeader
+        openAccessDialog={openAccessDialog}
+        setOpenAccessDialog={setOpenAccessDialog}
+      />
+      <Showdown setOpenAccessDialog={setOpenAccessDialog} />
+      {user.id === 2 && <FindAndMatchDialog />}
     </>
   );
 }

@@ -41,11 +41,11 @@ const FindAndMatchDialog = () => {
         leastDestructiveRef={cancelRef}
         onClose={() => setOpenDialog(false)}
         size="xl"
-        isCentered
+        // isCentered
         preserveScrollBarGap
       >
         <AlertDialogOverlay>
-          <AlertDialogContent>
+          <AlertDialogContent margin="auto 0.5rem">
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Find and Match
             </AlertDialogHeader>

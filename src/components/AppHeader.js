@@ -1,19 +1,33 @@
-import { Box, Image, Text, Button } from "@chakra-ui/react";
+import { TriangleDownIcon } from "@chakra-ui/icons";
+import { Box, Image, Text, Button, Heading, Avatar } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import logo from "../assets/logo.png";
+import { setUser } from "../features/authSlice";
 import AccessDialog from "./AccessDialog";
 
-const AppHeader = () => {
-  const [openDialog, setOpenDialog] = useState(false);
-  const [initialTab, setInitialTab] = useState("login");
+const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const { user } = useSelector((state) => state.authState);
 
   const handleAccess = (type) => {
-    setOpenDialog(true);
-    if (type === "login") {
-      setInitialTab("login");
+    setOpenAccessDialog(true);
+    if (type === "signup") {
+      setTabIndex(1);
     } else {
-      setInitialTab("signup");
+      setTabIndex(0);
     }
+  };
+
+  const dispatch = useDispatch();
+
+  const handleLogOut = () => {
+    const guestUser = { id: "guest" };
+    setTimeout(() => {
+      dispatch(setUser({ user: guestUser }));
+      localStorage.setItem("user", JSON.stringify(guestUser));
+    }, 2000);
   };
 
   return (
@@ -26,6 +40,7 @@ const AppHeader = () => {
       }}
     >
       <Box
+        onClick={handleLogOut}
         sx={{
           color: "#FFDE7D",
           fontWeight: "bolder",
@@ -53,34 +68,45 @@ const AppHeader = () => {
         <Text fontSize="5xl">X</Text>
         <Text>movie</Text>
       </Box>
-      <Box marginLeft="auto" marginRight="10px" display="flex" gap="5px">
-        <Button
-          colorScheme="yellow"
-          color="teal.700"
-          _hover={{ backgroundColor: "yellow.200" }}
-          _active={{ backgroundColor: "yellow.200" }}
-          onClick={() => handleAccess("login")}
-        >
-          Log in
-        </Button>
-        <Button
-          variant="ghost"
-          color="#FFDE7D"
-          _hover={{ backgroundColor: "none", color: "yellow.200" }}
-          _active={{
-            backgroundColor: "none",
-            color: "yellow.200",
-          }}
-          _focus={{ outline: "none" }}
-          onClick={() => handleAccess("signup")}
-        >
-          Sign Up
-        </Button>
-      </Box>
+      {user.id !== "guest" ? (
+        <Box marginRight="10px" display="flex" gap="10px" alignItems="center">
+          <Heading color="#ffde7d" size="sm">
+            {user.name}
+          </Heading>
+          <TriangleDownIcon boxSize={3} color="#ffde7d" cursor="pointer" />
+        </Box>
+      ) : (
+        <Box marginLeft="auto" marginRight="10px" display="flex" gap="5px">
+          <Button
+            colorScheme="yellow"
+            color="teal.700"
+            _hover={{ backgroundColor: "yellow.200" }}
+            _active={{ backgroundColor: "yellow.200" }}
+            onClick={() => handleAccess("login")}
+          >
+            Log in
+          </Button>
+          <Button
+            variant="ghost"
+            color="#FFDE7D"
+            _hover={{ backgroundColor: "none", color: "yellow.200" }}
+            _active={{
+              backgroundColor: "none",
+              color: "yellow.200",
+            }}
+            _focus={{ outline: "none" }}
+            onClick={() => handleAccess("signup")}
+          >
+            Sign Up
+          </Button>
+        </Box>
+      )}
+
       <AccessDialog
-        openDialog={openDialog}
-        setOpenDialog={setOpenDialog}
-        initialTab={initialTab}
+        openAccessDialog={openAccessDialog}
+        setOpenAccessDialog={setOpenAccessDialog}
+        tabIndex={tabIndex}
+        setTabIndex={setTabIndex}
       />
     </Box>
   );

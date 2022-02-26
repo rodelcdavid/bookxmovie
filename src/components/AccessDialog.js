@@ -16,20 +16,27 @@ import React, { useRef } from "react";
 import Login from "./Login";
 import SignUp from "./SignUp";
 
-const AccessDialog = ({ openDialog, setOpenDialog, initialTab }) => {
+const AccessDialog = ({
+  openAccessDialog,
+  setOpenAccessDialog,
+  tabIndex,
+  setTabIndex,
+}) => {
   const cancelRef = useRef();
   return (
     <>
       <AlertDialog
-        isOpen={openDialog}
+        isOpen={openAccessDialog}
         leastDestructiveRef={cancelRef}
-        onClose={() => setOpenDialog(false)}
-        size="xl"
-        isCentered
+        onClose={() => {
+          setOpenAccessDialog(false);
+          setTabIndex(0);
+        }}
+        // isCentered
         preserveScrollBarGap
       >
         <AlertDialogOverlay>
-          <AlertDialogContent>
+          <AlertDialogContent margin="auto 0.5rem">
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Log In or Sign Up
             </AlertDialogHeader>
@@ -37,12 +44,14 @@ const AccessDialog = ({ openDialog, setOpenDialog, initialTab }) => {
 
             <AlertDialogBody>
               <Box
-                border="1px solid #000"
+                border="3px solid teal"
                 borderRadius="10px"
-                minHeight="30rem"
+                // minHeight="20rem"
               >
                 <Tabs
-                  defaultIndex={initialTab === "login" ? 0 : 1}
+                  onChange={(index) => setTabIndex(index)}
+                  index={tabIndex}
+                  defaultIndex={0}
                   isFitted
                   variant="enclosed"
                   colorScheme="green"
@@ -54,10 +63,16 @@ const AccessDialog = ({ openDialog, setOpenDialog, initialTab }) => {
 
                   <TabPanels>
                     <TabPanel>
-                      <Login />
+                      <Login
+                        setOpenAccessDialog={setOpenAccessDialog}
+                        setTabIndex={setTabIndex}
+                      />
                     </TabPanel>
                     <TabPanel>
-                      <SignUp />
+                      <SignUp
+                        setOpenAccessDialog={setOpenAccessDialog}
+                        setTabIndex={setTabIndex}
+                      />
                     </TabPanel>
                   </TabPanels>
                 </Tabs>
