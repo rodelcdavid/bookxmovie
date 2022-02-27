@@ -250,6 +250,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
                       marginTop="0.5rem"
                       // isLoading={isLoading}
                       disabled={pair.votedFor ? true : false}
+                      position="relative"
                     >
                       {pair.votedFor ? "You already voted" : "Vote for Book"}
                     </Button>
@@ -281,7 +282,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
                       sx={{
                         position: "relative",
                         cursor: "pointer",
-                        // overflow: "hidden",
+                        overflow: "hidden",
 
                         "&::before": {
                           content: `"View Details"`,
@@ -299,6 +300,19 @@ const Showdown = ({ setOpenAccessDialog }) => {
                           transition: "opacity 150ms ease-in",
                         },
                         "&:hover::before": { opacity: "1" },
+                        "&::after": {
+                          content: `"Voted"`,
+                          position: "absolute",
+                          width: "70px",
+                          fontSize: "0.75rem",
+                          fontWeight: "bolder",
+                          top: "5px",
+                          right: "-20px",
+                          color: "#fff",
+                          backgroundColor: "teal",
+                          transform: "rotate(45deg)",
+                          display: pair.votedFor === "book" ? "block" : "none",
+                        },
                       }}
                     >
                       <Image
@@ -357,6 +371,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
                               ? "#00B8A9"
                               : "#F6416C",
                         }}
+                        position="relative"
                       >
                         {votePercentage(
                           pair.bookVotes,
@@ -371,6 +386,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
                       sx={{
                         position: "relative",
                         cursor: "pointer",
+                        overflow: "hidden",
 
                         "&::before": {
                           content: `"View Details"`,
@@ -389,6 +405,20 @@ const Showdown = ({ setOpenAccessDialog }) => {
                           transition: "opacity 150ms ease-in",
                         },
                         "&:hover::before": { opacity: "1" },
+
+                        "&::after": {
+                          content: `"Voted"`,
+                          position: "absolute",
+                          width: "70px",
+                          fontSize: "0.75rem",
+                          fontWeight: "bolder",
+                          top: "5px",
+                          right: "-20px",
+                          color: "#fff",
+                          backgroundColor: "teal",
+                          transform: "rotate(45deg)",
+                          display: pair.votedFor === "movie" ? "block" : "none",
+                        },
                       }}
                     >
                       <Image
