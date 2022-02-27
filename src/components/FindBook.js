@@ -28,10 +28,12 @@ const FindBook = ({ setSelectedBook, selectedBook }) => {
 
   return (
     <Box sx={{ textAlign: "center" }}>
-      <Input type="search" onChange={(e) => setInputBook(e.target.value)} />
-      <Button onClick={handleSearchBook} colorScheme="teal">
-        Search
-      </Button>
+      <Box width="80%" margin="0 auto" display="flex" gap="5px">
+        <Input type="search" onChange={(e) => setInputBook(e.target.value)} />
+        <Button onClick={handleSearchBook} colorScheme="teal">
+          Search
+        </Button>
+      </Box>
 
       {bookResults && (
         <Box
@@ -40,6 +42,7 @@ const FindBook = ({ setSelectedBook, selectedBook }) => {
             gap: "20px",
             flexWrap: "wrap",
             justifyContent: "center",
+            marginTop: "1rem",
           }}
         >
           {bookResults.items.map((book) => {
@@ -80,8 +83,8 @@ const FindBook = ({ setSelectedBook, selectedBook }) => {
                   alt=""
                   htmlWidth="100%"
                 />
-                <Text style={{ textAlign: "center" }}>
-                  {book.volumeInfo.title} ({book.volumeInfo.publishedDate})
+                <Text sx={{ textAlign: "center" }} fontWeight="bold">
+                  {book.volumeInfo.title}
                 </Text>
                 <Text>{book.volumeInfo.ratingsCount || 0}</Text>
               </Box>

@@ -49,7 +49,13 @@ const Login = ({ setOpenAccessDialog, setTabIndex }) => {
           Email and password combination is incorrect. Please try again.
         </Box>
       )}
-      <FormControl>
+      <FormControl
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleLogin();
+          }
+        }}
+      >
         <FormLabel htmlFor="login-email">Email</FormLabel>
         <Input
           id="login-email"

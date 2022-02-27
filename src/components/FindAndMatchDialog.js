@@ -45,7 +45,7 @@ const FindAndMatchDialog = () => {
         preserveScrollBarGap
       >
         <AlertDialogOverlay>
-          <AlertDialogContent margin="auto 0.5rem">
+          <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Find and Match
             </AlertDialogHeader>

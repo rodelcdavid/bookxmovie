@@ -18,16 +18,19 @@ const FindMovie = ({ setSelectedMovie, selectedMovie }) => {
 
   return (
     <Box sx={{ textAlign: "center" }}>
-      <Input type="search" onChange={(e) => setInputMovie(e.target.value)} />
-      <Button onClick={handleSearchMovie} colorScheme="teal">
-        Search
-      </Button>
+      <Box width="80%" margin="0 auto" display="flex" gap="5px">
+        <Input type="search" onChange={(e) => setInputMovie(e.target.value)} />
+        <Button onClick={handleSearchMovie} colorScheme="teal">
+          Search
+        </Button>
+      </Box>
       <Box
         sx={{
           display: "flex",
           gap: "20px",
           flexWrap: "wrap",
           justifyContent: "center",
+          marginTop: "1rem",
         }}
       >
         {movieResults &&
@@ -71,10 +74,10 @@ const FindMovie = ({ setSelectedMovie, selectedMovie }) => {
                   alt=""
                   htmlWidth="100%"
                 />
-                <Text style={{ textAlign: "center" }}>
-                  {movie.title} ({movie.release_date.slice(0, 4)})
+                <Text sx={{ textAlign: "center" }} fontWeight="bold">
+                  {movie.title}
                 </Text>
-                <Text style={{ textAlign: "center" }}>{movie.vote_count}</Text>
+                <Text sx={{ textAlign: "center" }}>{movie.vote_count}</Text>
               </Box>
             );
           })}

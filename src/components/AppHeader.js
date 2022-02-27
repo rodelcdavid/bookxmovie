@@ -85,7 +85,7 @@ const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
       </Box>
       {user.id !== "guest" ? (
         <Box marginRight="10px">
-          <Menu>
+          <Menu closeOnSelect={false}>
             <MenuButton color="#ffde7d" fontWeight="bolder">
               {user.name} <TriangleDownIcon boxSize={3} />
             </MenuButton>

@@ -185,16 +185,25 @@ const Showdown = ({ setOpenAccessDialog }) => {
                     backgroundColor: "#FFDE7D",
                     color: "rgba(0,0,0,0.87)",
                     padding: "0.5rem",
+                    height: "4rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
                 >
                   {userId === "guest" ? (
-                    <Heading
+                    <Button
+                      variant="solid"
+                      colorScheme="teal"
                       onClick={handleVote}
                       fontSize="lg"
+                      fontWeight="bold"
                       cursor="pointer"
+                      width="100%"
                     >
                       Reveal Stats
-                    </Heading>
+                    </Button>
                   ) : (
                     <>
                       <Heading
@@ -232,7 +241,24 @@ const Showdown = ({ setOpenAccessDialog }) => {
                     }}
                     // onClick={() => handleVoteBook(pair)}
                   >
-                    {userId !== "guest" && (
+                    <Button
+                      onClick={() => handleVote(pair.id, "book")}
+                      colorScheme="teal"
+                      size="xs"
+                      // border="2px"
+                      width="80%"
+                      marginTop="0.5rem"
+                      // isLoading={isLoading}
+                      disabled={pair.votedFor ? true : false}
+                    >
+                      {pair.votedFor ? "You already voted" : "Vote for Book"}
+                    </Button>
+
+                    {userId === "guest" ? (
+                      <Heading size="lg" color="rgba(0,0,0,0.87)">
+                        ?%
+                      </Heading>
+                    ) : (
                       <Heading
                         size="lg"
                         sx={{
@@ -251,25 +277,11 @@ const Showdown = ({ setOpenAccessDialog }) => {
                       </Heading>
                     )}
 
-                    <Button
-                      onClick={() => handleVote(pair.id, "book")}
-                      colorScheme="teal"
-                      size="xs"
-                      border="2px"
-                      width="80%"
-                      marginTop="0.5rem"
-                      // isLoading={isLoading}
-                      disabled={pair.votedFor ? true : false}
-                    >
-                      {pair.votedFor ? "Already Voted" : "Vote for Book"}
-                    </Button>
-
                     <Box
                       sx={{
-                        width: "120px",
-                        margin: "0 auto",
                         position: "relative",
                         cursor: "pointer",
+                        // overflow: "hidden",
 
                         "&::before": {
                           content: `"View Details"`,
@@ -292,13 +304,13 @@ const Showdown = ({ setOpenAccessDialog }) => {
                       <Image
                         src={pair.bookInfo.volumeInfo.imageLinks?.thumbnail}
                         alt=""
-                        htmlWidth="100%"
+                        width="120px"
+                        height="180px"
                       />
                     </Box>
 
                     <Text fontSize="sm" marginTop="0.2rem">
-                      {pair.bookInfo.volumeInfo.title} (
-                      {pair.bookInfo.volumeInfo.publishedDate.slice(0, 4)})
+                      {pair.bookInfo.volumeInfo.title}
                     </Text>
                   </Box>
 
@@ -320,7 +332,23 @@ const Showdown = ({ setOpenAccessDialog }) => {
                     }}
                     // onClick={() => handleVoteMovie(pair)}
                   >
-                    {userId !== "guest" && (
+                    <Button
+                      onClick={() => handleVote(pair.id, "movie")}
+                      colorScheme="teal"
+                      size="xs"
+                      width="80%"
+                      // border="2px"
+                      marginTop="0.5rem"
+                      // isLoading={isLoading}
+                      isDisabled={pair.votedFor ? true : false}
+                    >
+                      {pair.votedFor ? "You already voted" : "Vote for Movie"}
+                    </Button>
+                    {userId === "guest" ? (
+                      <Heading size="lg" color="rgba(0,0,0,0.87)">
+                        ?%
+                      </Heading>
+                    ) : (
                       <Heading
                         size="lg"
                         sx={{
@@ -339,23 +367,8 @@ const Showdown = ({ setOpenAccessDialog }) => {
                       </Heading>
                     )}
 
-                    <Button
-                      onClick={() => handleVote(pair.id, "movie")}
-                      colorScheme="teal"
-                      size="xs"
-                      width="80%"
-                      border="2px"
-                      marginTop="0.5rem"
-                      // isLoading={isLoading}
-                      isDisabled={pair.votedFor ? true : false}
-                    >
-                      {pair.votedFor ? "Already Voted" : "Vote for Movie"}
-                    </Button>
-
                     <Box
                       sx={{
-                        width: "120px",
-                        margin: "0 auto",
                         position: "relative",
                         cursor: "pointer",
 
@@ -381,13 +394,15 @@ const Showdown = ({ setOpenAccessDialog }) => {
                       <Image
                         src={`https://image.tmdb.org/t/p/original/${pair.movieInfo.poster_path}`}
                         alt=""
-                        htmlWidth="100%"
+                        // htmlWidth="100%"
+                        // htmlHeight="100%"
+                        width="120px"
+                        height="180px"
                       />
                     </Box>
 
                     <Text fontSize="sm" marginTop="0.2rem">
-                      {pair.movieInfo.title} (
-                      {pair.movieInfo.release_date.slice(0, 4)})
+                      {pair.movieInfo.title}
                     </Text>
                   </Box>
                 </Box>

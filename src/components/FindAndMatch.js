@@ -64,12 +64,12 @@ const FindAndMatch = ({ setOpenDialog }) => {
     <>
       {/* <Heading>Find and Match</Heading> */}
 
-      <Box sx={{ display: "flex", gap: "30px", padding: "1rem" }}>
+      <Box sx={{ display: "flex", gap: "30px" }}>
         <Box
           sx={{
             width: "800px",
             height: "450px",
-            border: "1px solid #000",
+            border: "1px solid rgba(0,0,0,0.87)",
             overflow: "auto",
           }}
         >

@@ -6,13 +6,18 @@ import {
   Heading,
   Image,
   Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
   Text,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 const Selected = ({ selectedBook, selectedMovie, handleAddToShowdown }) => {
-  const [bookVotes, setBookVotes] = useState(0);
-  const [movieVotes, setMovieVotes] = useState(0);
+  const [bookVotes, setBookVotes] = useState(1);
+  const [movieVotes, setMovieVotes] = useState(1);
   return (
     <Box sx={{ textAlign: "center" }}>
       {/* <Heading textAlign="center">Selected</Heading> */}
@@ -22,70 +27,121 @@ const Selected = ({ selectedBook, selectedMovie, handleAddToShowdown }) => {
         sx={{
           padding: "1rem",
           display: "flex",
-          flexDirection: "row",
+          flexDirection: "column",
           gap: "30px",
           justifyContent: "center",
           alignItems: "center",
+          borderBottom: "1px solid rgba(0,0,0,0.87)",
+
+          "@media (min-width:400px)": {
+            flexDirection: "row",
+            alignItems: "initial",
+          },
         }}
       >
         {/* Book */}
+
         {selectedBook ? (
-          <Box sx={{ width: "100px", textAlign: "center" }}>
-            <Image
-              src={selectedBook.volumeInfo.imageLinks?.thumbnail}
-              alt=""
-              boxSize="100%"
-            />
-            <Text>{selectedBook.volumeInfo.title}</Text>
+          <Box sx={{ width: "120px", textAlign: "center" }}>
+            <Heading size="md">
+              {((bookVotes / (bookVotes + movieVotes)) * 100).toFixed(2)}%
+            </Heading>
+            <Box width="120px">
+              <Image
+                src={selectedBook.volumeInfo.imageLinks?.thumbnail}
+                alt=""
+                boxSize="100%"
+              />
+            </Box>
+            <Text fontWeight="bold">{selectedBook.volumeInfo.title}</Text>
           </Box>
         ) : (
-          <Text>Please select a book.</Text>
+          <Box
+            border="1px solid rgba(0,0,0,0.87)"
+            width="100px"
+            height="150px"
+            display="flex"
+            alignItems="center"
+          >
+            Please select a book
+          </Box>
         )}
 
-        <Box sx={{ textAlign: "center" }}>
+        <Box sx={{ textAlign: "center", alignSelf: "center" }}>
           <Heading>VS</Heading>
         </Box>
 
         {/* Movie */}
         {selectedMovie ? (
-          <Box sx={{ width: "100px", textAlign: "center" }}>
-            <Image
-              src={`https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`}
-              alt=""
-              boxSize="100%"
-            />
-            <Text>{selectedMovie.title}</Text>
+          <Box sx={{ width: "120px", textAlign: "center" }}>
+            <Heading size="md">
+              {((movieVotes / (bookVotes + movieVotes)) * 100).toFixed(2)}%
+            </Heading>
+            <Box width="120px">
+              <Image
+                src={`https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`}
+                alt=""
+                boxSize="100%"
+              />
+            </Box>
+            <Text fontWeight="bold">{selectedMovie.title}</Text>
           </Box>
         ) : (
-          <Text>Please select a movie</Text>
+          <Box
+            border="1px solid rgba(0,0,0,0.87)"
+            width="100px"
+            height="150px"
+            display="flex"
+            alignItems="center"
+          >
+            Please select a movie
+          </Box>
         )}
       </Box>
-      <Box>
-        <FormControl>
+      <Box marginTop="0.5rem" display="flex">
+        <FormControl display="flex" flexDir="column" alignItems="center">
           <FormLabel htmlFor="book-votes">Initial book votes:</FormLabel>
-          <Input
+          <NumberInput
             id="book-votes"
-            type="number"
+            size="md"
+            maxW={24}
+            min={0}
             value={bookVotes}
-            onChange={(e) => setBookVotes(e.target.value)}
-          />
+            onChange={(value) => setBookVotes(Number(value))}
+          >
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </FormControl>
+        <FormControl display="flex" flexDir="column" alignItems="center">
           <FormLabel htmlFor="movie-votes">Initial movie votes:</FormLabel>
-          <Input
+          <NumberInput
             id="movie-votes"
-            type="number"
+            size="md"
+            maxW={24}
+            min={0}
             value={movieVotes}
-            onChange={(e) => setMovieVotes(e.target.value)}
-          />
+            onChange={(value) => setMovieVotes(Number(value))}
+          >
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
         </FormControl>
       </Box>
       <Button
         onClick={() => handleAddToShowdown(bookVotes, movieVotes)}
         colorScheme="teal"
+        marginTop="1rem"
+        disabled={selectedBook && selectedMovie ? false : true}
       >
         Add to Showdown
       </Button>
-
-      {/*  */}
     </Box>
   );
 };
