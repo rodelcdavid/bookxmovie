@@ -5,6 +5,7 @@ import {
   Heading,
   Input,
   Spinner,
+  Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -95,37 +96,45 @@ const Showdown = ({ setOpenAccessDialog }) => {
         </Button>
       </Box>
       <Divider margin="1rem auto" borderColor="rgba(0,0,0,0.87)" />
-      <Box
-        sx={{
-          justifyItems: "center",
-          display: "grid",
-          gridTemplateColumns: "repeat( auto-fit, minmax(320px, 1fr) )",
-          rowGap: "1rem",
-          marginTop: "1rem",
-        }}
-      >
-        {filteredList ? (
-          filteredList.map((pair, index) => {
-            return (
-              <MatchupCard
-                key={pair.id}
-                pair={pair}
-                userId={userId}
-                setOpenAccessDialog={setOpenAccessDialog}
-                setOpenEditVoteDialog={setOpenEditVoteDialog}
-                setSelectedMatchup={setSelectedMatchup}
-              />
-            );
-          })
-        ) : (
+
+      {isLoading ? (
+        <Box textAlign="center">
           <Spinner />
-        )}
-        <EditVoteDialog
-          openEditVoteDialog={openEditVoteDialog}
-          setOpenEditVoteDialog={setOpenEditVoteDialog}
-          selectedMatchup={selectedMatchup}
-        />
-      </Box>
+        </Box>
+      ) : (
+        filteredList && (
+          <Box
+            sx={{
+              justifyItems: "center",
+              display: "grid",
+              gridTemplateColumns: "repeat( auto-fit, minmax(320px, 1fr) )",
+              rowGap: "1rem",
+              marginTop: "1rem",
+            }}
+          >
+            {filteredList.map((pair, index) => {
+              return (
+                <MatchupCard
+                  key={pair.id}
+                  pair={pair}
+                  userId={userId}
+                  setOpenAccessDialog={setOpenAccessDialog}
+                  setOpenEditVoteDialog={setOpenEditVoteDialog}
+                  setSelectedMatchup={setSelectedMatchup}
+                />
+              );
+            })}
+            {!filteredList.length && (
+              <Text fontStyle="italic">No results found.</Text>
+            )}
+          </Box>
+        )
+      )}
+      <EditVoteDialog
+        openEditVoteDialog={openEditVoteDialog}
+        setOpenEditVoteDialog={setOpenEditVoteDialog}
+        selectedMatchup={selectedMatchup}
+      />
     </Box>
   );
 };
