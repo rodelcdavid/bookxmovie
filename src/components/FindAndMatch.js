@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useAddMatchMutation } from "../services/matchesApi";
+import { useAddMatchupMutation } from "../services/matchupsApi";
 import FindBook from "./FindBook";
 import FindMovie from "./FindMovie";
 import Selected from "./Selected";
@@ -29,12 +29,12 @@ const FindAndMatch = ({ setOpenDialog }) => {
 
   const toast = useToast();
 
-  const [addMatch] = useAddMatchMutation();
+  const [addMatchup] = useAddMatchupMutation();
 
   const handleAddToShowdown = async (bookVotes, movieVotes) => {
     //What about for movies that have multiple parts??
     const id = uuidv4();
-    const match = {
+    const matchup = {
       id: id,
       bookInfo: selectedBook,
       movieInfo: selectedMovie,
@@ -45,7 +45,7 @@ const FindAndMatch = ({ setOpenDialog }) => {
         (selectedMovie.vote_count || 0),
     };
 
-    await addMatch(match);
+    await addMatchup(matchup);
 
     setOpenDialog(false);
 

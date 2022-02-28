@@ -2,7 +2,7 @@ import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
 
 import React from "react";
 
-const Book = ({ pair, userId, isVoting, handleVote, votePercentage }) => {
+const Book = ({ matchup, userId, isVoting, handleVote, votePercentage }) => {
   return (
     <Box
       sx={{
@@ -12,10 +12,10 @@ const Book = ({ pair, userId, isVoting, handleVote, votePercentage }) => {
         flexDirection: "column",
         alignItems: "center",
       }}
-      // onClick={() => handleVoteBook(pair)}
+      // onClick={() => handleVoteBook(matchup)}
     >
       <Button
-        onClick={() => handleVote(pair.id, "book")}
+        onClick={() => handleVote(matchup.id, "book")}
         isLoading={isVoting}
         colorScheme="teal"
         size="xs"
@@ -23,10 +23,10 @@ const Book = ({ pair, userId, isVoting, handleVote, votePercentage }) => {
         width="80%"
         marginTop="0.5rem"
         // isLoading={isLoading}
-        disabled={pair.votedFor ? true : false}
+        disabled={matchup.votedFor ? true : false}
         position="relative"
       >
-        {pair.votedFor ? "You already voted" : "Vote for Book"}
+        {matchup.votedFor ? "You already voted" : "Vote for Book"}
       </Button>
 
       {userId === "guest" ? (
@@ -37,10 +37,11 @@ const Book = ({ pair, userId, isVoting, handleVote, votePercentage }) => {
         <Heading
           size="lg"
           sx={{
-            color: pair.bookVotes >= pair.movieVotes ? "#00B8A9" : "#F6416C",
+            color:
+              matchup.bookVotes >= matchup.movieVotes ? "#00B8A9" : "#F6416C",
           }}
         >
-          {votePercentage(pair.bookVotes, pair.movieVotes, "book")}%
+          {votePercentage(matchup.bookVotes, matchup.movieVotes, "book")}%
         </Heading>
       )}
 
@@ -77,12 +78,12 @@ const Book = ({ pair, userId, isVoting, handleVote, votePercentage }) => {
             color: "#000",
             backgroundColor: "gold",
             transform: "rotate(45deg)",
-            display: pair.votedFor === "book" ? "block" : "none",
+            display: matchup.votedFor === "book" ? "block" : "none",
           },
         }}
       >
         <Image
-          src={pair.bookInfo.volumeInfo.imageLinks?.thumbnail}
+          src={matchup.bookInfo.volumeInfo.imageLinks?.thumbnail}
           alt=""
           width="120px"
           height="180px"
@@ -90,7 +91,7 @@ const Book = ({ pair, userId, isVoting, handleVote, votePercentage }) => {
       </Box>
 
       <Text fontSize="sm" marginTop="0.2rem">
-        {pair.bookInfo.volumeInfo.title}
+        {matchup.bookInfo.volumeInfo.title}
       </Text>
     </Box>
   );

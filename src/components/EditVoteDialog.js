@@ -18,7 +18,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useUpdateVoteMutation } from "../services/matchesApi";
+import { useUpdateVoteMutation } from "../services/matchupsApi";
 
 const EditVoteDialog = ({
   openEditVoteDialog,
@@ -37,9 +37,9 @@ const EditVoteDialog = ({
 
   const [updateVote, { isLoading }] = useUpdateVoteMutation();
 
-  const handleEditVote = async (matchId, bookVotes, movieVotes) => {
+  const handleEditVote = async (matchupId, bookVotes, movieVotes) => {
     await updateVote({
-      matchId,
+      matchupId,
       bookVotes: Number(bookVotes),
       movieVotes: Number(movieVotes),
     });

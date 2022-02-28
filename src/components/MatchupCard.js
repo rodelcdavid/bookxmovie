@@ -3,39 +3,39 @@ import { Box, Button, Heading, Text, useToast } from "@chakra-ui/react";
 import React from "react";
 import {
   useAddVoteMutation,
-  useDeleteMatchMutation,
-} from "../services/matchesApi";
+  useDeleteMatchupMutation,
+} from "../services/matchupsApi";
 import { toastList } from "../utils/toastList";
 import Book from "./Book";
 import Movie from "./Movie";
 
 const MatchupCard = ({
-  pair,
+  matchup,
   userId,
   setOpenAccessDialog,
   setOpenEditVoteDialog,
   setSelectedMatchup,
 }) => {
   //Async actions
-  const [deleteMatch, { isLoading: isDeleting }] = useDeleteMatchMutation();
+  const [deleteMatchup, { isLoading: isDeleting }] = useDeleteMatchupMutation();
   const [addVote, { isLoading: isVoting }] = useAddVoteMutation();
 
   const toast = useToast();
 
-  const handleVote = async (matchId, votedFor) => {
+  const handleVote = async (matchupId, votedFor) => {
     if (userId === "guest") {
       //open login dialog
       setOpenAccessDialog(true);
       toast(toastList.accessToast);
       //proceed vote
     } else {
-      await addVote({ userId, matchId, votedFor });
+      await addVote({ userId, matchupId, votedFor });
       toast(toastList.voteToast);
     }
   };
 
-  const handleDelete = async (matchId) => {
-    await deleteMatch({ matchId });
+  const handleDelete = async (matchupId) => {
+    await deleteMatchup({ matchupId });
     toast(toastList.deleteToast);
   };
 
@@ -119,10 +119,10 @@ const MatchupCard = ({
                   margin: "0 auto",
                 }}
               >
-                {whichWasBetter(pair.bookVotes, pair.movieVotes)}
+                {whichWasBetter(matchup.bookVotes, matchup.movieVotes)}
               </Heading>
               <Text sx={{ fontSize: "0.75rem" }}>
-                Total votes: {pair.bookVotes + pair.movieVotes}
+                Total votes: {matchup.bookVotes + matchup.movieVotes}
               </Text>
             </>
           )}
@@ -137,7 +137,7 @@ const MatchupCard = ({
         >
           {/* Book */}
           <Book
-            pair={pair}
+            matchup={matchup}
             userId={userId}
             isVoting={isVoting}
             handleVote={handleVote}
@@ -153,7 +153,7 @@ const MatchupCard = ({
 
           {/* Movie */}
           <Movie
-            pair={pair}
+            matchup={matchup}
             userId={userId}
             isVoting={isVoting}
             handleVote={handleVote}
@@ -165,7 +165,7 @@ const MatchupCard = ({
             <Button
               colorScheme="teal"
               onClick={() => {
-                setSelectedMatchup(pair);
+                setSelectedMatchup(matchup);
                 setOpenEditVoteDialog(true);
               }}
               size="xs"
@@ -179,7 +179,7 @@ const MatchupCard = ({
             </Button>
             <Button
               colorScheme="red"
-              onClick={() => handleDelete(pair.id)}
+              onClick={() => handleDelete(matchup.id)}
               isLoading={isDeleting}
               size="xs"
               sx={{

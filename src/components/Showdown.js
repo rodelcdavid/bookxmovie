@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import { useGetMatchesListQuery } from "../services/matchesApi";
+import { useGetMatchupsQuery } from "../services/matchupsApi";
 
 import EditVoteDialog from "./EditVoteDialog";
 import MatchupCard from "./MatchupCard";
@@ -23,33 +23,31 @@ const Showdown = ({ setOpenAccessDialog }) => {
   const [selectedMatchup, setSelectedMatchup] = useState(null);
   const [openEditVoteDialog, setOpenEditVoteDialog] = useState(false);
 
-  const {
-    data: matchesList,
-    isFetching,
-    isLoading,
-  } = useGetMatchesListQuery(userId);
+  const { data: matchups, isFetching, isLoading } = useGetMatchupsQuery(userId);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [inputSearch, setInputSearch] = useState("");
-  const [filteredList, setFilteredList] = useState(matchesList);
+  const [filteredList, setFilteredList] = useState(matchups);
 
   const handleSearch = () => {
     setSearchQuery(inputSearch);
   };
 
   useEffect(() => {
-    if (matchesList) {
-      const tempFilteredList = matchesList.filter((pair) => {
+    if (matchups) {
+      const tempFilteredList = matchups.filter((matchup) => {
         return (
-          pair.bookInfo.volumeInfo.title
+          matchup.bookInfo.volumeInfo.title
             .toLowerCase()
             .includes(searchQuery.toLowerCase()) ||
-          pair.movieInfo.title.toLowerCase().includes(searchQuery.toLowerCase())
+          matchup.movieInfo.title
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
         );
       });
       setFilteredList(tempFilteredList);
     }
-  }, [searchQuery, matchesList]);
+  }, [searchQuery, matchups]);
 
   return (
     <Box
@@ -112,11 +110,11 @@ const Showdown = ({ setOpenAccessDialog }) => {
               marginTop: "1rem",
             }}
           >
-            {filteredList.map((pair, index) => {
+            {filteredList.map((matchup, index) => {
               return (
                 <MatchupCard
-                  key={pair.id}
-                  pair={pair}
+                  key={matchup.id}
+                  matchup={matchup}
                   userId={userId}
                   setOpenAccessDialog={setOpenAccessDialog}
                   setOpenEditVoteDialog={setOpenEditVoteDialog}

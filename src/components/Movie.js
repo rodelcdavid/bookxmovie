@@ -1,7 +1,7 @@
 import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
 import React from "react";
 
-const Movie = ({ pair, userId, isVoting, handleVote, votePercentage }) => {
+const Movie = ({ matchup, userId, isVoting, handleVote, votePercentage }) => {
   return (
     <Box
       sx={{
@@ -11,10 +11,10 @@ const Movie = ({ pair, userId, isVoting, handleVote, votePercentage }) => {
         flexDirection: "column",
         alignItems: "center",
       }}
-      // onClick={() => handleVoteMovie(pair)}
+      // onClick={() => handleVoteMovie(matchup)}
     >
       <Button
-        onClick={() => handleVote(pair.id, "movie")}
+        onClick={() => handleVote(matchup.id, "movie")}
         isLoading={isVoting}
         colorScheme="teal"
         size="xs"
@@ -22,9 +22,9 @@ const Movie = ({ pair, userId, isVoting, handleVote, votePercentage }) => {
         // border="2px"
         marginTop="0.5rem"
         // isLoading={isLoading}
-        isDisabled={pair.votedFor ? true : false}
+        isDisabled={matchup.votedFor ? true : false}
       >
-        {pair.votedFor ? "You already voted" : "Vote for Movie"}
+        {matchup.votedFor ? "You already voted" : "Vote for Movie"}
       </Button>
       {userId === "guest" ? (
         <Heading size="lg" color="rgba(0,0,0,0.87)">
@@ -34,11 +34,12 @@ const Movie = ({ pair, userId, isVoting, handleVote, votePercentage }) => {
         <Heading
           size="lg"
           sx={{
-            color: pair.movieVotes >= pair.bookVotes ? "#00B8A9" : "#F6416C",
+            color:
+              matchup.movieVotes >= matchup.bookVotes ? "#00B8A9" : "#F6416C",
           }}
           position="relative"
         >
-          {votePercentage(pair.bookVotes, pair.movieVotes, "movie")}%
+          {votePercentage(matchup.bookVotes, matchup.movieVotes, "movie")}%
         </Heading>
       )}
 
@@ -77,12 +78,12 @@ const Movie = ({ pair, userId, isVoting, handleVote, votePercentage }) => {
             color: "#000",
             backgroundColor: "gold",
             transform: "rotate(45deg)",
-            display: pair.votedFor === "movie" ? "block" : "none",
+            display: matchup.votedFor === "movie" ? "block" : "none",
           },
         }}
       >
         <Image
-          src={`https://image.tmdb.org/t/p/original/${pair.movieInfo.poster_path}`}
+          src={`https://image.tmdb.org/t/p/original/${matchup.movieInfo.poster_path}`}
           alt=""
           // htmlWidth="100%"
           // htmlHeight="100%"
@@ -92,7 +93,7 @@ const Movie = ({ pair, userId, isVoting, handleVote, votePercentage }) => {
       </Box>
 
       <Text fontSize="sm" marginTop="0.2rem">
-        {pair.movieInfo.title}
+        {matchup.movieInfo.title}
       </Text>
     </Box>
   );
