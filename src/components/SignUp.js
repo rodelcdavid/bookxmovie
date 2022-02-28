@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
@@ -49,9 +49,6 @@ const schema = yup.object({
     .string()
     .required("This field is required.")
     .oneOf([yup.ref("password"), null], "Passwords must match"),
-  // .test("passwords-match", "Passwords must match.", function (value) {
-  //   return this.parent.password === value;
-  // })
 });
 
 const SignUp = ({ setOpenAccessDialog, setTabIndex }) => {
@@ -73,7 +70,7 @@ const SignUp = ({ setOpenAccessDialog, setTabIndex }) => {
       localStorage.user = JSON.stringify(user);
       setOpenAccessDialog(false);
     }
-  }, [user]);
+  }, [user, dispatch, setOpenAccessDialog]);
 
   const onSignUp = async (data) => {
     if (data) {

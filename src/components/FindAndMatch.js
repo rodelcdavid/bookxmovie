@@ -1,21 +1,14 @@
 import {
   Box,
-  Button,
-  Heading,
-  Image,
-  Input,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { addMatchAsync } from "../features/matchesSlice";
 import { useAddMatchMutation } from "../services/matchesApi";
 import FindBook from "./FindBook";
 import FindMovie from "./FindMovie";
@@ -47,7 +40,6 @@ const FindAndMatch = ({ setOpenDialog }) => {
       movieInfo: selectedMovie,
       bookVotes: bookVotes,
       movieVotes: movieVotes,
-      //TODO: what if undefined ratingsCount or vote count
       popularity:
         (selectedBook.volumeInfo.ratingsCount || 0) +
         (selectedMovie.vote_count || 0),
@@ -62,8 +54,6 @@ const FindAndMatch = ({ setOpenDialog }) => {
 
   return (
     <>
-      {/* <Heading>Find and Match</Heading> */}
-
       <Box sx={{ display: "flex", gap: "30px" }}>
         <Box
           sx={{

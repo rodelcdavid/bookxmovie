@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Image, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Image, Input, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 const FindMovie = ({ setSelectedMovie, selectedMovie }) => {
@@ -72,7 +72,8 @@ const FindMovie = ({ setSelectedMovie, selectedMovie }) => {
                       : "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"
                   }
                   alt=""
-                  htmlWidth="100%"
+                  width="150px"
+                  height="200px"
                 />
                 <Text sx={{ textAlign: "center" }} fontWeight="bold">
                   {movie.title}

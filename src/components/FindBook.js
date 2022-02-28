@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Image, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Image, Input, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 const FindBook = ({ setSelectedBook, selectedBook }) => {
@@ -7,21 +7,18 @@ const FindBook = ({ setSelectedBook, selectedBook }) => {
   const [inputBook, setInputBook] = useState("");
   const [bookResults, setBookResults] = useState(null);
 
-  //TODO:sort by popularity
   const handleSearchBook = () => {
     fetch(
       `https://www.googleapis.com/books/v1/volumes?q=${inputBook}&key=${bookApiKey}&maxResults=40&printType=books`
     )
       .then((res) => res.json())
       .then((data) => {
-        // setBookResults(data);
         const sorted = data.items.sort(
           (a, b) =>
             parseFloat(b.volumeInfo.ratingsCount) -
             parseFloat(a.volumeInfo.ratingsCount)
         );
         data.items = sorted;
-
         setBookResults(data);
       });
   };
@@ -81,7 +78,8 @@ const FindBook = ({ setSelectedBook, selectedBook }) => {
                       : "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"
                   }
                   alt=""
-                  htmlWidth="100%"
+                  width="150px"
+                  height="200px"
                 />
                 <Text sx={{ textAlign: "center" }} fontWeight="bold">
                   {book.volumeInfo.title}

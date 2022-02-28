@@ -14,7 +14,6 @@ import { useLogInMutation } from "../services/authApi";
 const Login = ({ setOpenAccessDialog, setTabIndex }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [error, setError] = useState(false);
 
   const [logIn, { data: user, error }] = useLogInMutation();
 
@@ -30,7 +29,7 @@ const Login = ({ setOpenAccessDialog, setTabIndex }) => {
       localStorage.user = JSON.stringify(user);
       setOpenAccessDialog(false);
     }
-  }, [user]);
+  }, [user, dispatch, setOpenAccessDialog]);
 
   return (
     <>

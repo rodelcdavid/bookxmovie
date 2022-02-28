@@ -42,7 +42,12 @@ const Selected = ({ selectedBook, selectedMovie, handleAddToShowdown }) => {
         {/* Book */}
 
         {selectedBook ? (
-          <Box sx={{ width: "120px", textAlign: "center" }}>
+          <Box
+            sx={{
+              width: "120px",
+              textAlign: "center",
+            }}
+          >
             <Heading size="md">
               {((bookVotes / (bookVotes + movieVotes)) * 100).toFixed(2)}%
             </Heading>
@@ -50,7 +55,8 @@ const Selected = ({ selectedBook, selectedMovie, handleAddToShowdown }) => {
               <Image
                 src={selectedBook.volumeInfo.imageLinks?.thumbnail}
                 alt=""
-                boxSize="100%"
+                width="120px"
+                height="180px"
               />
             </Box>
             <Text fontWeight="bold">{selectedBook.volumeInfo.title}</Text>
@@ -81,7 +87,8 @@ const Selected = ({ selectedBook, selectedMovie, handleAddToShowdown }) => {
               <Image
                 src={`https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`}
                 alt=""
-                boxSize="100%"
+                width="120px"
+                height="180px"
               />
             </Box>
             <Text fontWeight="bold">{selectedMovie.title}</Text>

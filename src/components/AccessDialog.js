@@ -32,7 +32,6 @@ const AccessDialog = ({
           setOpenAccessDialog(false);
           setTabIndex(0);
         }}
-        // isCentered
         preserveScrollBarGap
       >
         <AlertDialogOverlay>

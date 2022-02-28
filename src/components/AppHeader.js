@@ -4,8 +4,6 @@ import {
   Image,
   Text,
   Button,
-  Heading,
-  Avatar,
   Menu,
   MenuButton,
   MenuList,
