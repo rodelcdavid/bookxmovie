@@ -20,9 +20,9 @@ import {
 import React, { useEffect, useState } from "react";
 import { useUpdateVoteMutation } from "../services/matchupsApi";
 
-const EditVoteDialog = ({
-  openEditVoteDialog,
-  setOpenEditVoteDialog,
+const EditVoteModal = ({
+  openEditVoteModal,
+  setOpenEditVoteModal,
   selectedMatchup,
 }) => {
   const [bookVotes, setBookVotes] = useState(0);
@@ -44,16 +44,16 @@ const EditVoteDialog = ({
       movieVotes: Number(movieVotes),
     });
     if (!isLoading) {
-      setOpenEditVoteDialog(false);
+      setOpenEditVoteModal(false);
     }
   };
 
   return (
     <Modal
-      isOpen={openEditVoteDialog}
+      isOpen={openEditVoteModal}
       preserveScrollBarGap={true}
       onClose={() => {
-        setOpenEditVoteDialog(false);
+        setOpenEditVoteModal(false);
       }}
       isCentered
     >
@@ -112,7 +112,7 @@ const EditVoteDialog = ({
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={() => setOpenEditVoteDialog(false)}>Cancel</Button>
+            <Button onClick={() => setOpenEditVoteModal(false)}>Cancel</Button>
             <Button
               isLoading={isLoading}
               colorScheme="red"
@@ -130,4 +130,4 @@ const EditVoteDialog = ({
   );
 };
 
-export default EditVoteDialog;
+export default EditVoteModal;

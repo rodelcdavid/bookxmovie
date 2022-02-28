@@ -15,7 +15,7 @@ import FindMovie from "./FindMovie";
 import Selected from "./Selected";
 import { toastList } from "../utils/toastList";
 
-const FindAndMatch = ({ setOpenDialog }) => {
+const FindAndMatch = ({ setOpenModal }) => {
   //use Promise.all to fetch all bookId
   //get book.selflink
 
@@ -47,7 +47,7 @@ const FindAndMatch = ({ setOpenDialog }) => {
 
     await addMatchup(matchup);
 
-    setOpenDialog(false);
+    setOpenModal(false);
 
     toast(toastList.addToast);
   };

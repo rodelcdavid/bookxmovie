@@ -13,7 +13,7 @@ const MatchupCard = ({
   matchup,
   userId,
   setOpenAccessDialog,
-  setOpenEditVoteDialog,
+  setOpenEditVoteModal,
   setSelectedMatchup,
 }) => {
   //Async actions
@@ -166,7 +166,7 @@ const MatchupCard = ({
               colorScheme="teal"
               onClick={() => {
                 setSelectedMatchup(matchup);
-                setOpenEditVoteDialog(true);
+                setOpenEditVoteModal(true);
               }}
               size="xs"
               sx={{

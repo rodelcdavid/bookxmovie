@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 
 import { useGetMatchupsQuery } from "../services/matchupsApi";
 
-import EditVoteDialog from "./EditVoteDialog";
+import EditVoteModal from "./EditVoteModal";
 import MatchupCard from "./MatchupCard";
 
 const Showdown = ({ setOpenAccessDialog }) => {
@@ -21,7 +21,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
 
   // Modal
   const [selectedMatchup, setSelectedMatchup] = useState(null);
-  const [openEditVoteDialog, setOpenEditVoteDialog] = useState(false);
+  const [openEditVoteModal, setOpenEditVoteModal] = useState(false);
 
   const { data: matchups, isFetching, isLoading } = useGetMatchupsQuery(userId);
 
@@ -117,7 +117,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
                   matchup={matchup}
                   userId={userId}
                   setOpenAccessDialog={setOpenAccessDialog}
-                  setOpenEditVoteDialog={setOpenEditVoteDialog}
+                  setOpenEditVoteModal={setOpenEditVoteModal}
                   setSelectedMatchup={setSelectedMatchup}
                 />
               );
@@ -128,9 +128,9 @@ const Showdown = ({ setOpenAccessDialog }) => {
           </Box>
         )
       )}
-      <EditVoteDialog
-        openEditVoteDialog={openEditVoteDialog}
-        setOpenEditVoteDialog={setOpenEditVoteDialog}
+      <EditVoteModal
+        openEditVoteModal={openEditVoteModal}
+        setOpenEditVoteModal={setOpenEditVoteModal}
         selectedMatchup={selectedMatchup}
       />
     </Box>
