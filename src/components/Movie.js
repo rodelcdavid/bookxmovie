@@ -62,7 +62,6 @@ const Movie = ({ matchup, userId, isVoting, handleVote, votePercentage }) => {
             fontWeight: "bolder",
 
             backgroundColor: "rgba(0,0,0,0.6)",
-            zIndex: 1,
             transition: "opacity 150ms ease-in",
           },
           "&:hover::before": { opacity: "1" },

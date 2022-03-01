@@ -37,6 +37,7 @@ const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
 
   const handleLogOut = () => {
     const guestUser = { id: "guest" };
+    //TODO: reset other states (filter)
     setTimeout(() => {
       dispatch(setUser({ user: guestUser }));
       localStorage.setItem("user", JSON.stringify(guestUser));
@@ -88,8 +89,7 @@ const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
               {user.name} <TriangleDownIcon boxSize={3} />
             </MenuButton>
             <MenuList>
-              <MenuItem>My Votes</MenuItem>
-              <MenuItem>Account Settings</MenuItem>
+              <MenuItem>Help</MenuItem>
               <MenuItem onClick={handleLogOut}>Log out</MenuItem>
             </MenuList>
           </Menu>

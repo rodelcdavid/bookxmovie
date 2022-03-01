@@ -3,10 +3,18 @@ import {
   Button,
   Divider,
   Heading,
+  IconButton,
   Input,
+  Menu,
+  MenuButton,
+  MenuItemOption,
+  MenuList,
+  MenuOptionGroup,
   Spinner,
   Text,
 } from "@chakra-ui/react";
+
+import { BiFilter, BiSort } from "react-icons/bi";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -14,6 +22,12 @@ import { useGetMatchupsQuery } from "../services/matchupsApi";
 
 import EditVoteModal from "./EditVoteModal";
 import MatchupCard from "./MatchupCard";
+import {
+  onBetterFilter,
+  onSearchFilter,
+  onSortFilter,
+  onVotedFilter,
+} from "../utils/filters";
 
 const Showdown = ({ setOpenAccessDialog }) => {
   const { user } = useSelector((state) => state.authState);
@@ -23,31 +37,54 @@ const Showdown = ({ setOpenAccessDialog }) => {
   const [selectedMatchup, setSelectedMatchup] = useState(null);
   const [openEditVoteModal, setOpenEditVoteModal] = useState(false);
 
-  const { data: matchups, isFetching, isLoading } = useGetMatchupsQuery(userId);
+  const { data: matchups, isLoading } = useGetMatchupsQuery(userId);
 
-  const [searchQuery, setSearchQuery] = useState("");
+  // const [searchQuery, setSearchQuery] = useState("");
   const [inputSearch, setInputSearch] = useState("");
-  const [filteredList, setFilteredList] = useState(matchups);
-
-  const handleSearch = () => {
-    setSearchQuery(inputSearch);
-  };
+  const [filteredList, setFilteredList] = useState(null);
 
   useEffect(() => {
     if (matchups) {
-      const tempFilteredList = matchups.filter((matchup) => {
-        return (
-          matchup.bookInfo.volumeInfo.title
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase()) ||
-          matchup.movieInfo.title
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase())
-        );
-      });
-      setFilteredList(tempFilteredList);
+      setFilteredList(matchups);
     }
-  }, [searchQuery, matchups]);
+  }, [matchups]);
+
+  const [filters, setFilters] = useState({
+    sortBy: null,
+    search: "",
+    better: null,
+    voted: null,
+  });
+
+  const applyFilters = () => {
+    let tempFilteredList = matchups;
+
+    /* Search Filter */
+    if (filters.search.length) {
+      tempFilteredList = onSearchFilter(tempFilteredList, filters.search);
+    }
+
+    /* Sort Filter */
+    if (filters.sortBy) {
+      tempFilteredList = onSortFilter(tempFilteredList, filters.sortBy);
+    }
+
+    /* Better Filter */
+    if (filters.better) {
+      tempFilteredList = onBetterFilter(tempFilteredList, filters.better);
+    }
+
+    /* Voted Filter */
+    if (filters.voted) {
+      tempFilteredList = onVotedFilter(tempFilteredList, filters.voted);
+    }
+
+    setFilteredList(tempFilteredList);
+  };
+
+  useEffect(() => {
+    applyFilters();
+  }, [filters]);
 
   return (
     <Box
@@ -82,18 +119,92 @@ const Showdown = ({ setOpenAccessDialog }) => {
           type="search"
           placeholder="Search for book or movie"
           sx={{ backgroundColor: "#fff" }}
+          value={inputSearch}
           onChange={(e) => setInputSearch(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              handleSearch();
+              setFilters({ ...filters, search: inputSearch });
             }
           }}
         />
-        <Button onClick={handleSearch} colorScheme="teal">
+        <Button
+          onClick={() => setFilters({ ...filters, search: inputSearch })}
+          colorScheme="teal"
+        >
           Search
         </Button>
       </Box>
       <Divider margin="1rem auto" borderColor="rgba(0,0,0,0.87)" />
+      {!isLoading && userId !== "guest" && (
+        <Box
+          display="flex"
+          gap="10px"
+          justifyContent="center"
+          marginRight="1rem"
+          sx={{
+            "@media (min-width:960px)": {
+              justifyContent: "flex-end",
+            },
+          }}
+        >
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              leftIcon={<BiSort />}
+              padding="0 0.5rem"
+              backgroundColor="white"
+            >
+              Sort
+            </MenuButton>
+            <MenuList>
+              <MenuOptionGroup
+                type="radio"
+                value={filters.sortBy || "popularity"}
+                onChange={(value) => setFilters({ ...filters, sortBy: value })}
+              >
+                <MenuItemOption value="popularity">Popularity</MenuItemOption>
+                <MenuItemOption value="numvotes">
+                  Number of votes
+                </MenuItemOption>
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
+
+          <Menu closeOnSelect={false}>
+            <MenuButton
+              as={IconButton}
+              leftIcon={<BiFilter />}
+              padding="0 0.5rem"
+              backgroundColor="white"
+            >
+              Filter
+            </MenuButton>
+            <MenuList>
+              <MenuOptionGroup
+                title="Which was better"
+                type="radio"
+                value={filters.better || "all"}
+                onChange={(value) => setFilters({ ...filters, better: value })}
+              >
+                <MenuItemOption value="all">Show all</MenuItemOption>
+                <MenuItemOption value="book">Book was better</MenuItemOption>
+                <MenuItemOption value="movie">Movie was better</MenuItemOption>
+                <MenuItemOption value="both">Both were great</MenuItemOption>
+              </MenuOptionGroup>
+              <MenuOptionGroup
+                title="Voted"
+                type="radio"
+                value={filters.voted || "all"}
+                onChange={(value) => setFilters({ ...filters, voted: value })}
+              >
+                <MenuItemOption value="all">Show all</MenuItemOption>
+                <MenuItemOption value="voted">Already voted</MenuItemOption>
+                <MenuItemOption value="not-voted">Not yet voted</MenuItemOption>
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
+        </Box>
+      )}
 
       {isLoading ? (
         <Box textAlign="center">
