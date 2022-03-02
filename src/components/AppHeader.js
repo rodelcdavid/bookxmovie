@@ -90,7 +90,6 @@ const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
               {user.name} <TriangleDownIcon boxSize={3} />
             </MenuButton>
             <MenuList>
-              <MenuItem>Help</MenuItem>
               <MenuItem onClick={handleLogOut}>Log out</MenuItem>
             </MenuList>
           </Menu>
