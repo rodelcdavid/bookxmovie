@@ -28,26 +28,21 @@ import {
   onSortFilter,
   onVotedFilter,
 } from "../utils/filters";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Showdown = ({ setOpenAccessDialog }) => {
   const { user } = useSelector((state) => state.authState);
   const { id: userId } = user;
 
-  // Modal
+  // Edit Vote Modal
   const [selectedMatchup, setSelectedMatchup] = useState(null);
   const [openEditVoteModal, setOpenEditVoteModal] = useState(false);
 
   const { data: matchups, isLoading } = useGetMatchupsQuery(userId);
 
-  // const [searchQuery, setSearchQuery] = useState("");
+  /* Filters */
   const [inputSearch, setInputSearch] = useState("");
   const [filteredList, setFilteredList] = useState(null);
-
-  useEffect(() => {
-    if (matchups) {
-      setFilteredList(matchups);
-    }
-  }, [matchups]);
 
   const [filters, setFilters] = useState({
     sortBy: null,
@@ -85,6 +80,37 @@ const Showdown = ({ setOpenAccessDialog }) => {
   useEffect(() => {
     applyFilters();
   }, [filters]);
+
+  /* Infinite Scroll */
+  const [displayList, setDisplayList] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [visible, setVisible] = useState(8);
+  const loadCount = 16;
+
+  const fetchMoreData = () => {
+    if (displayList.length >= filteredList.length) {
+      setHasMore(false);
+      return;
+    }
+
+    setDisplayList(filteredList.slice(0, visible + loadCount));
+    setVisible((prev) => prev + loadCount);
+  };
+
+  useEffect(() => {
+    if (matchups) {
+      setFilteredList(matchups);
+    }
+  }, [matchups]);
+
+  useEffect(() => {
+    if (filteredList) {
+      setDisplayList(filteredList.slice(0, visible));
+      setVisible(
+        filteredList.length > loadCount ? loadCount : filteredList.length
+      );
+    }
+  }, [filteredList]);
 
   return (
     <Box
@@ -211,32 +237,39 @@ const Showdown = ({ setOpenAccessDialog }) => {
           <Spinner />
         </Box>
       ) : (
-        filteredList && (
-          <Box
-            sx={{
-              justifyItems: "center",
-              display: "grid",
-              gridTemplateColumns: "repeat( auto-fit, minmax(320px, 1fr) )",
-              rowGap: "1rem",
-              marginTop: "1rem",
-            }}
-          >
-            {filteredList.map((matchup, index) => {
-              return (
-                <MatchupCard
-                  key={matchup.id}
-                  matchup={matchup}
-                  userId={userId}
-                  setOpenAccessDialog={setOpenAccessDialog}
-                  setOpenEditVoteModal={setOpenEditVoteModal}
-                  setSelectedMatchup={setSelectedMatchup}
-                />
-              );
-            })}
+        displayList && (
+          <>
+            <InfiniteScroll
+              dataLength={displayList.length}
+              next={fetchMoreData}
+              hasMore={hasMore}
+              style={{
+                justifyItems: "center",
+                display: "grid",
+                gridTemplateColumns: "repeat( auto-fit, minmax(320px, 1fr) )",
+                rowGap: "1rem",
+                padding: "1rem 0",
+              }}
+            >
+              {displayList.map((matchup, index) => {
+                return (
+                  <MatchupCard
+                    key={matchup.id}
+                    matchup={matchup}
+                    userId={userId}
+                    setOpenAccessDialog={setOpenAccessDialog}
+                    setOpenEditVoteModal={setOpenEditVoteModal}
+                    setSelectedMatchup={setSelectedMatchup}
+                  />
+                );
+              })}
+            </InfiniteScroll>
             {!filteredList.length && (
-              <Text fontStyle="italic">No results found.</Text>
+              <Text fontStyle="italic" textAlign="center">
+                Nothing to show.
+              </Text>
             )}
-          </Box>
+          </>
         )
       )}
       <EditVoteModal

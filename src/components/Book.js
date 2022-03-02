@@ -48,24 +48,8 @@ const Book = ({ matchup, userId, isVoting, handleVote, votePercentage }) => {
       <Box
         sx={{
           position: "relative",
-          cursor: "pointer",
           overflow: "hidden",
 
-          "&::before": {
-            content: `"View Details"`,
-            color: "#fff",
-            position: "absolute",
-            display: "flex",
-            opacity: "0",
-            width: "100%",
-            height: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-            fontWeight: "bolder",
-            backgroundColor: "rgba(0,0,0,0.6)",
-            transition: "opacity 150ms ease-in",
-          },
-          "&:hover::before": { opacity: "1" },
           "&::after": {
             content: `"Voted"`,
             position: "absolute",
