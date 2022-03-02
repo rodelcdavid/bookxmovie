@@ -50,12 +50,6 @@ const Showdown = ({ setOpenAccessDialog }) => {
   const [inputSearch, setInputSearch] = useState("");
   const [filteredList, setFilteredList] = useState(null);
 
-  // const [filters, setFilters] = useState({
-  //   sortBy: null,
-  //   search: "",
-  //   better: null,
-  //   voted: null,
-  // });
   const { filters } = useSelector((state) => state.filterState);
   const dispatch = useDispatch();
 
@@ -90,10 +84,11 @@ const Showdown = ({ setOpenAccessDialog }) => {
   }, [filters]);
 
   /* Infinite Scroll */
+  const loadCount = 16;
+  const initialVisible = 8;
   const [displayList, setDisplayList] = useState(null);
   const [hasMore, setHasMore] = useState(true);
-  const [visible, setVisible] = useState(8);
-  const loadCount = 16;
+  const [visible, setVisible] = useState(initialVisible);
 
   const fetchMoreData = () => {
     if (displayList.length >= filteredList.length) {
@@ -113,10 +108,9 @@ const Showdown = ({ setOpenAccessDialog }) => {
 
   useEffect(() => {
     if (filteredList) {
-      setDisplayList(filteredList.slice(0, visible));
-      setVisible(
-        filteredList.length > loadCount ? loadCount : filteredList.length
-      );
+      setDisplayList(filteredList.slice(0, initialVisible));
+      setVisible(initialVisible);
+      setHasMore(true);
     }
   }, [filteredList]);
 
