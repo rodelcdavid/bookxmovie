@@ -160,7 +160,7 @@ const MatchupCard = ({
             votePercentage={votePercentage}
           />
         </Box>
-        {userId === 2 && (
+        {userId === 1 && (
           <>
             <Button
               colorScheme="teal"

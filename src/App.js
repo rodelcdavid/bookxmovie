@@ -19,7 +19,7 @@ function App() {
         setOpenAccessDialog={setOpenAccessDialog}
       />
       <Showdown setOpenAccessDialog={setOpenAccessDialog} />
-      {user.id === 2 && <FindAndMatchModal />}
+      {user.id === 1 && <FindAndMatchModal />}
     </>
   );
 }

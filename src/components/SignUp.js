@@ -30,7 +30,7 @@ const schema = yup.object({
         return new Promise(async (resolve, reject) => {
           try {
             const res = await fetch(
-              `http://localhost:7000/check-email/${email}`
+              `https://bookxmovie-api.herokuapp.com/check-email/${email}`
             );
             if (res.ok) {
               resolve(true);
