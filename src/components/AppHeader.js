@@ -14,6 +14,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import logo from "../assets/logo.png";
 import { setUser } from "../features/authSlice";
+import { resetFilters } from "../features/filterSlice";
 import { toastList } from "../utils/toastList";
 import AccessDialog from "./AccessDialog";
 
@@ -21,6 +22,8 @@ const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
   const [tabIndex, setTabIndex] = useState(0);
 
   const { user } = useSelector((state) => state.authState);
+
+  const dispatch = useDispatch();
 
   const handleAccess = (type) => {
     setOpenAccessDialog(true);
@@ -31,8 +34,6 @@ const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
     }
   };
 
-  const dispatch = useDispatch();
-
   const toast = useToast();
 
   const handleLogOut = () => {
@@ -41,6 +42,7 @@ const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
     setTimeout(() => {
       dispatch(setUser({ user: guestUser }));
       localStorage.setItem("user", JSON.stringify(guestUser));
+      dispatch(resetFilters());
       toast(toastList.logOutToast);
     }, 1500);
   };

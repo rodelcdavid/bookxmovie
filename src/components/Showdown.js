@@ -16,7 +16,7 @@ import {
 
 import { BiFilter, BiSort } from "react-icons/bi";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useGetMatchupsQuery } from "../services/matchupsApi";
 
@@ -29,6 +29,12 @@ import {
   onVotedFilter,
 } from "../utils/filters";
 import InfiniteScroll from "react-infinite-scroll-component";
+import {
+  setBetter,
+  setSearch,
+  setSortBy,
+  setVoted,
+} from "../features/filterSlice";
 
 const Showdown = ({ setOpenAccessDialog }) => {
   const { user } = useSelector((state) => state.authState);
@@ -44,12 +50,14 @@ const Showdown = ({ setOpenAccessDialog }) => {
   const [inputSearch, setInputSearch] = useState("");
   const [filteredList, setFilteredList] = useState(null);
 
-  const [filters, setFilters] = useState({
-    sortBy: null,
-    search: "",
-    better: null,
-    voted: null,
-  });
+  // const [filters, setFilters] = useState({
+  //   sortBy: null,
+  //   search: "",
+  //   better: null,
+  //   voted: null,
+  // });
+  const { filters } = useSelector((state) => state.filterState);
+  const dispatch = useDispatch();
 
   const applyFilters = () => {
     let tempFilteredList = matchups;
@@ -149,12 +157,13 @@ const Showdown = ({ setOpenAccessDialog }) => {
           onChange={(e) => setInputSearch(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              setFilters({ ...filters, search: inputSearch });
+              // setFilters({ ...filters, search: inputSearch });
+              dispatch(setSearch({ search: inputSearch }));
             }
           }}
         />
         <Button
-          onClick={() => setFilters({ ...filters, search: inputSearch })}
+          onClick={() => dispatch(setSearch({ search: inputSearch }))}
           colorScheme="teal"
         >
           Search
@@ -186,7 +195,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
               <MenuOptionGroup
                 type="radio"
                 value={filters.sortBy || "popularity"}
-                onChange={(value) => setFilters({ ...filters, sortBy: value })}
+                onChange={(value) => dispatch(setSortBy({ sortBy: value }))}
               >
                 <MenuItemOption value="popularity">Popularity</MenuItemOption>
                 <MenuItemOption value="numvotes">
@@ -210,7 +219,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
                 title="Which was better"
                 type="radio"
                 value={filters.better || "all"}
-                onChange={(value) => setFilters({ ...filters, better: value })}
+                onChange={(value) => dispatch(setBetter({ better: value }))}
               >
                 <MenuItemOption value="all">Show all</MenuItemOption>
                 <MenuItemOption value="book">Book was better</MenuItemOption>
@@ -221,7 +230,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
                 title="Voted"
                 type="radio"
                 value={filters.voted || "all"}
-                onChange={(value) => setFilters({ ...filters, voted: value })}
+                onChange={(value) => dispatch(setVoted({ voted: value }))}
               >
                 <MenuItemOption value="all">Show all</MenuItemOption>
                 <MenuItemOption value="voted">Already voted</MenuItemOption>

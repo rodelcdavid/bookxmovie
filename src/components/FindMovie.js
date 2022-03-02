@@ -7,7 +7,6 @@ const FindMovie = ({ setSelectedMovie, selectedMovie }) => {
 
   const [movieResults, setMovieResults] = useState(null);
 
-  //TODO: sort by popularity
   const handleSearchMovie = () => {
     fetch(
       `https://api.themoviedb.org/3/search/movie?api_key=${movieApiKey}&query=${inputMovie}`
