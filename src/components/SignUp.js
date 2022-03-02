@@ -119,7 +119,13 @@ const SignUp = ({ setOpenAccessDialog, setTabIndex }) => {
           {errors.passwordConfirmation && errors.passwordConfirmation.message}
         </FormErrorMessage>
       </FormControl>
-      <Button mt={4} colorScheme="teal" isLoading={isSubmitting} type="submit">
+      <Button
+        mt={4}
+        colorScheme="teal"
+        isLoading={isSubmitting}
+        type="submit"
+        isFullWidth
+      >
         Sign Up
       </Button>
       <Box display="flex" gap="5px" marginTop="1rem">

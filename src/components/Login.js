@@ -5,23 +5,38 @@ import {
   FormLabel,
   Input,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "../features/authSlice";
-import { useLogInMutation } from "../services/authApi";
+import { useLogInMutation, useSignUpMutation } from "../services/authApi";
+import { toastList } from "../utils/toastList";
 
 const Login = ({ setOpenAccessDialog, setTabIndex }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [logIn, { data: user, error }] = useLogInMutation();
+  const [signUp, { data: tester, isLoading: isSigningUp }] =
+    useSignUpMutation();
 
   const handleLogin = async () => {
     await logIn({ email, password });
   };
 
+  const handleTest = async () => {
+    const dateString = new Date().valueOf().toString();
+    const tester = {
+      name: "Awesome Tester",
+      email: `tester${dateString}@test.com`,
+      password: "test",
+    };
+    await signUp(tester);
+  };
+
   const dispatch = useDispatch();
+  const toast = useToast();
 
   useEffect(() => {
     if (user) {
@@ -29,7 +44,17 @@ const Login = ({ setOpenAccessDialog, setTabIndex }) => {
       localStorage.user = JSON.stringify(user);
       setOpenAccessDialog(false);
     }
-  }, [user, dispatch, setOpenAccessDialog]);
+    if (tester) {
+      dispatch(setUser({ user: tester }));
+      localStorage.user = JSON.stringify(tester);
+      setEmail(tester.email);
+      setPassword("test");
+      toast(toastList.testerToast);
+      setTimeout(() => {
+        setOpenAccessDialog(false);
+      }, 2000);
+    }
+  }, [user, tester, dispatch, setOpenAccessDialog]);
 
   return (
     <>
@@ -74,8 +99,20 @@ const Login = ({ setOpenAccessDialog, setTabIndex }) => {
           onClick={handleLogin}
           colorScheme="teal"
           marginTop="1rem"
+          isFullWidth
         >
           Log In
+        </Button>
+        <Button
+          type="submit"
+          onClick={handleTest}
+          colorScheme="orange"
+          marginTop="5px"
+          isFullWidth
+          isLoading={isSigningUp}
+          loadingText="Generating Test Account"
+        >
+          Test
         </Button>
         <Box display="flex" gap="5px" marginTop="1rem">
           <Text fontSize="sm">Don't have an account?</Text>

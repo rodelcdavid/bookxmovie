@@ -29,4 +29,11 @@ export const toastList = {
     duration: 3000,
     isClosable: true,
   },
+  testerToast: {
+    title: "Welcome and happy testing!",
+    position: "top",
+    status: "warning",
+    duration: 3000,
+    isClosable: true,
+  },
 };
