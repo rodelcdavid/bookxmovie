@@ -38,7 +38,6 @@ const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
 
   const handleLogOut = () => {
     const guestUser = { id: "guest" };
-    //TODO: reset other states (filter)
     setTimeout(() => {
       dispatch(setUser({ user: guestUser }));
       localStorage.setItem("user", JSON.stringify(guestUser));
