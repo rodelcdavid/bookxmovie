@@ -169,11 +169,10 @@ const Showdown = ({ setOpenAccessDialog }) => {
           display="flex"
           gap="10px"
           justifyContent="center"
-          marginRight="1rem"
           sx={{
             "@media (min-width:960px)": {
               justifyContent: "flex-end",
-              marginRight: 0,
+              marginRight: "1rem",
             },
           }}
         >
