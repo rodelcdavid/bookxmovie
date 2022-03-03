@@ -173,6 +173,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
           sx={{
             "@media (min-width:960px)": {
               justifyContent: "flex-end",
+              marginRight: 0,
             },
           }}
         >
