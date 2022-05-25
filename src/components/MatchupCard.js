@@ -1,6 +1,14 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import { Box, Button, Heading, Text, useToast } from "@chakra-ui/react";
-import React from "react";
+import { DeleteIcon, EditIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Button,
+  Heading,
+  Image,
+  Text,
+  Tooltip,
+  useToast,
+} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import {
   useAddVoteMutation,
   useDeleteMatchupMutation,
@@ -8,6 +16,7 @@ import {
 import { toastList } from "../utils/toastList";
 import Book from "./Book";
 import Movie from "./Movie";
+import vs from "../assets/vs.png";
 
 const MatchupCard = ({
   matchup,
@@ -16,6 +25,9 @@ const MatchupCard = ({
   setOpenEditVoteModal,
   setSelectedMatchup,
 }) => {
+  //View stats state
+  const [isStatsVisible, setIsStatsVisible] = useState(false);
+
   //Async actions
   const [deleteMatchup, { isLoading: isDeleting }] = useDeleteMatchupMutation();
   const [addVote, { isLoading: isVoting }] = useAddVoteMutation();
@@ -30,6 +42,7 @@ const MatchupCard = ({
       //proceed vote
     } else {
       await addVote({ userId, matchupId, votedFor });
+      setIsStatsVisible(true);
       toast(toastList.voteToast);
     }
   };
@@ -71,6 +84,10 @@ const MatchupCard = ({
     }
   };
 
+  useEffect(() => {
+    setIsStatsVisible(false);
+  }, [userId]);
+
   return (
     <>
       <Box
@@ -106,6 +123,7 @@ const MatchupCard = ({
               fontWeight="bold"
               cursor="pointer"
               width="100%"
+              borderRadius="3px"
             >
               Reveal Stats
             </Button>
@@ -114,9 +132,11 @@ const MatchupCard = ({
               <Heading
                 size="md"
                 sx={{
-                  borderBottom: "1px solid rgba(0,0,0,0.87)",
+                  borderBottom: "1px solid teal",
                   width: "70%",
                   margin: "0 auto",
+                  position: "relative",
+                  paddingBottom: "0.2rem",
                 }}
               >
                 {whichWasBetter(matchup.bookVotes, matchup.movieVotes)}
@@ -142,22 +162,55 @@ const MatchupCard = ({
             isVoting={isVoting}
             handleVote={handleVote}
             votePercentage={votePercentage}
+            isStatsVisible={isStatsVisible}
           />
 
-          <Heading
-            size="lg"
-            sx={{ marginTop: "8.5rem", color: "rgba(0,0,0,0.87)" }}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: "28px",
+            }}
           >
-            VS
-          </Heading>
+            <Tooltip
+              label={isStatsVisible ? "Hide vote %" : "Show vote %"}
+              hasArrow
+              placement="top"
+            >
+              <Button
+                onClick={() =>
+                  userId === "guest"
+                    ? handleVote()
+                    : setIsStatsVisible((prev) => !prev)
+                }
+                colorScheme="teal"
+                variant="outline"
+                size="xs"
+                marginTop="1.7rem"
+              >
+                {isStatsVisible ? <ViewOffIcon /> : <ViewIcon />}
+              </Button>
+            </Tooltip>
+            <Image
+              src={vs}
+              alt=""
+              width="100px"
+              position="absolute"
+              zIndex="1"
+              top="9rem"
+              left="50%"
+              transform="translateX(-53%)"
+            />
 
-          {/* Movie */}
+            {/* Movie */}
+          </Box>
           <Movie
             matchup={matchup}
             userId={userId}
             isVoting={isVoting}
             handleVote={handleVote}
             votePercentage={votePercentage}
+            isStatsVisible={isStatsVisible}
           />
         </Box>
         {userId === 1 && (
@@ -171,7 +224,7 @@ const MatchupCard = ({
               size="xs"
               sx={{
                 position: "absolute",
-                right: 1,
+                right: 2,
                 top: 1,
               }}
             >
@@ -184,7 +237,7 @@ const MatchupCard = ({
               size="xs"
               sx={{
                 position: "absolute",
-                right: 1,
+                right: 2,
                 top: "37px",
               }}
             >

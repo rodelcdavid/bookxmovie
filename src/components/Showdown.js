@@ -185,11 +185,12 @@ const Showdown = ({ setOpenAccessDialog }) => {
             >
               Sort
             </MenuButton>
-            <MenuList>
+            <MenuList zIndex="999">
               <MenuOptionGroup
                 type="radio"
                 value={filters.sortBy || "popularity"}
                 onChange={(value) => dispatch(setSortBy({ sortBy: value }))}
+                zIndex="999"
               >
                 <MenuItemOption value="popularity">Popularity</MenuItemOption>
                 <MenuItemOption value="numvotes">
@@ -208,7 +209,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
             >
               Filter
             </MenuButton>
-            <MenuList>
+            <MenuList zIndex="999">
               <MenuOptionGroup
                 title="Which was better"
                 type="radio"
