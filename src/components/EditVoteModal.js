@@ -59,7 +59,11 @@ const EditVoteModal = ({
     >
       <ModalOverlay>
         <ModalContent>
-          <ModalHeader fontSize="lg" fontWeight="bold">
+          <ModalHeader
+            fontSize="lg"
+            fontWeight="bold"
+            borderBottom="1px solid teal"
+          >
             Edit Votes
           </ModalHeader>
 

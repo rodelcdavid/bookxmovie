@@ -126,7 +126,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
         sx={{
           textAlign: "center",
           color: "rgba(0,0,0,0.87)",
-          padding: "0.5rem",
+          padding: "0 0.5rem",
         }}
       >
         <Heading size="md">
@@ -163,7 +163,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
           Search
         </Button>
       </Box>
-      <Divider margin="1rem auto" borderColor="rgba(0,0,0,0.87)" />
+      <Divider margin="1rem auto" borderColor="teal" />
       {!isLoading && userId !== "guest" && (
         <Box
           display="flex"

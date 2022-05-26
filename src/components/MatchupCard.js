@@ -73,14 +73,17 @@ const MatchupCard = ({
   };
 
   const whichWasBetter = (bookVotes, movieVotes) => {
+    if (!isStatsVisible) {
+      return "Which one's better?";
+    }
     if (bookVotes > movieVotes) {
-      return "BOOK was better";
+      return "BOOK was better!";
     } else if (movieVotes > bookVotes) {
-      return "MOVIE was better";
+      return "MOVIE was better!";
     } else if (movieVotes + bookVotes === 0) {
       return "No votes yet";
     } else {
-      return "BOTH were great";
+      return "BOTH were great!";
     }
   };
 
@@ -114,38 +117,22 @@ const MatchupCard = ({
             alignItems: "center",
           }}
         >
-          {userId === "guest" ? (
-            <Button
-              variant="solid"
-              colorScheme="teal"
-              onClick={handleVote}
-              fontSize="lg"
-              fontWeight="bold"
-              cursor="pointer"
-              width="100%"
-              borderRadius="3px"
-            >
-              Reveal Stats
-            </Button>
-          ) : (
-            <>
-              <Heading
-                size="md"
-                sx={{
-                  borderBottom: "1px solid teal",
-                  width: "70%",
-                  margin: "0 auto",
-                  position: "relative",
-                  paddingBottom: "0.2rem",
-                }}
-              >
-                {whichWasBetter(matchup.bookVotes, matchup.movieVotes)}
-              </Heading>
-              <Text sx={{ fontSize: "0.75rem" }}>
-                Total votes: {matchup.bookVotes + matchup.movieVotes}
-              </Text>
-            </>
-          )}
+          <Heading
+            size="md"
+            sx={{
+              borderBottom: "1px solid rgba(0,0,0,0.87)",
+              width: "75%",
+              margin: "0 auto",
+              position: "relative",
+              paddingBottom: "0.2rem",
+            }}
+          >
+            {whichWasBetter(matchup.bookVotes, matchup.movieVotes)}
+          </Heading>
+          <Text sx={{ fontSize: "0.75rem" }}>
+            Total votes:{" "}
+            {isStatsVisible ? matchup.bookVotes + matchup.movieVotes : "—"}
+          </Text>
         </Box>
         <Box
           sx={{
@@ -169,11 +156,11 @@ const MatchupCard = ({
             sx={{
               display: "flex",
               flexDirection: "column",
-              width: "28px",
+              width: "24px",
             }}
           >
             <Tooltip
-              label={isStatsVisible ? "Hide vote %" : "Show vote %"}
+              label={isStatsVisible ? "Hide stats" : "Show stats"}
               hasArrow
               placement="top"
             >
@@ -186,7 +173,6 @@ const MatchupCard = ({
                 colorScheme="teal"
                 variant="outline"
                 size="xs"
-                marginTop="1.7rem"
               >
                 {isStatsVisible ? <ViewOffIcon /> : <ViewIcon />}
               </Button>
