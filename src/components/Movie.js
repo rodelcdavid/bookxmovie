@@ -77,7 +77,7 @@ const Movie = ({
           alt=""
           width="120px"
           height="180px"
-          border="1px solid #000"
+          border="1px solid rgba(0,0,0,0.87)"
         />
       </Box>
 

@@ -29,9 +29,11 @@ const schema = yup.object({
       async (email) => {
         return new Promise(async (resolve, reject) => {
           try {
-            const res = await fetch(
-              `https://bookxmovie-api.herokuapp.com/check-email/${email}`
-            );
+            const dev = process.env.NODE_ENV === "development";
+            const baseUrl = dev
+              ? "http://localhost:7000"
+              : "https://bookxmovie-api.herokuapp.com";
+            const res = await fetch(`${baseUrl}/check-email/${email}`);
             if (res.ok) {
               resolve(true);
             } else {

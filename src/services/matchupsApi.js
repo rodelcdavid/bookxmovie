@@ -1,6 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const baseUrl = "https://bookxmovie-api.herokuapp.com";
+const dev = process.env.NODE_ENV === "development";
+const baseUrl = dev
+  ? "http://localhost:7000"
+  : "https://bookxmovie-api.herokuapp.com";
 // Define a service using a base URL and expected endpoints
 export const matchupsApi = createApi({
   reducerPath: "matchupsApi",
