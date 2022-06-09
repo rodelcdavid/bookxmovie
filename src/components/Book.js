@@ -9,6 +9,7 @@ const Book = ({
   handleVote,
   votePercentage,
   isStatsVisible,
+  voted,
 }) => {
   return (
     <Box

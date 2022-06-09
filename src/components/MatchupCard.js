@@ -8,7 +8,7 @@ import {
   Tooltip,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   useAddVoteMutation,
   useDeleteMatchupMutation,
@@ -30,7 +30,8 @@ const MatchupCard = ({
 
   //Async actions
   const [deleteMatchup, { isLoading: isDeleting }] = useDeleteMatchupMutation();
-  const [addVote, { isLoading: isVoting }] = useAddVoteMutation();
+  const [addVote, { isSuccess: voted, isLoading: isVoting }] =
+    useAddVoteMutation();
 
   const toast = useToast();
 
@@ -42,10 +43,20 @@ const MatchupCard = ({
       //proceed vote
     } else {
       await addVote({ userId, matchupId, votedFor });
+    }
+  };
+
+  const initial = useRef(true);
+  useEffect(() => {
+    if (initial.current) {
+      initial.current = false;
+      return;
+    }
+    if (matchup.votedFor) {
       setIsStatsVisible(true);
       toast(toastList.voteToast);
     }
-  };
+  }, [matchup, toast, setIsStatsVisible]);
 
   const handleDelete = async (matchupId) => {
     await deleteMatchup({ matchupId });
@@ -150,6 +161,7 @@ const MatchupCard = ({
             handleVote={handleVote}
             votePercentage={votePercentage}
             isStatsVisible={isStatsVisible}
+            voted={voted}
           />
 
           <Box
