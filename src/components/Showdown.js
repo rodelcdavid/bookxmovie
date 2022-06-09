@@ -243,7 +243,8 @@ const Showdown = ({ setOpenAccessDialog }) => {
       ) : (
         displayList && (
           <>
-            <InfiniteScroll
+            {/* Infinite Scroll or Box ? */}
+            <Box
               dataLength={displayList.length}
               next={fetchMoreData}
               hasMore={hasMore}
@@ -255,7 +256,8 @@ const Showdown = ({ setOpenAccessDialog }) => {
                 padding: "1rem 0",
               }}
             >
-              {displayList.map((matchup, index) => {
+              {/* displayList if InfiniteScroll, filteredList if Box */}
+              {filteredList.map((matchup, index) => {
                 return (
                   <MatchupCard
                     key={matchup.id}
@@ -267,7 +269,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
                   />
                 );
               })}
-            </InfiniteScroll>
+            </Box>
             {!filteredList.length && (
               <Text fontStyle="italic" textAlign="center">
                 Nothing to show.

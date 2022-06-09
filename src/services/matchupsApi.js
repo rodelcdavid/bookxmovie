@@ -8,6 +8,7 @@ const baseUrl = dev
 export const matchupsApi = createApi({
   reducerPath: "matchupsApi",
   baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
+  tagTypes: ["Matchup"],
   endpoints: (builder) => ({
     getMatchups: builder.query({
       query: (userId) => `matchups/${userId}`,
