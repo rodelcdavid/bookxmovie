@@ -14,8 +14,10 @@ import FindBook from "./FindBook";
 import FindMovie from "./FindMovie";
 import Selected from "./Selected";
 import { toastList } from "../utils/toastList";
+import { useDispatch } from "react-redux";
+import { setOpenModal } from "../features/findSlice";
 
-const FindAndMatch = ({ setOpenModal }) => {
+const FindAndMatch = () => {
   //use Promise.all to fetch all bookId
   //get book.selflink
 
@@ -28,6 +30,8 @@ const FindAndMatch = ({ setOpenModal }) => {
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   const toast = useToast();
+
+  const dispatch = useDispatch();
 
   const [addMatchup] = useAddMatchupMutation();
 
@@ -47,7 +51,7 @@ const FindAndMatch = ({ setOpenModal }) => {
 
     await addMatchup(matchup);
 
-    setOpenModal(false);
+    dispatch(setOpenModal(false));
 
     toast(toastList.addToast);
   };

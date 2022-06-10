@@ -4,10 +4,12 @@ import { authApi } from "../services/authApi";
 import { matchupsApi } from "../services/matchupsApi";
 import authReducer from "../features/authSlice";
 import filterReducer from "../features/filterSlice";
+import findReducer from "../features/findSlice";
 export const store = configureStore({
   reducer: {
     authState: authReducer,
     filterState: filterReducer,
+    findState: findReducer,
     [matchupsApi.reducerPath]: matchupsApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
   },
