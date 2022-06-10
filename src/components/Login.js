@@ -9,11 +9,11 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setUser } from "../features/authSlice";
+import { setOpenAccessDialog, setUser } from "../features/authSlice";
 import { useLogInMutation, useSignUpMutation } from "../services/authApi";
 import { toastList } from "../utils/toastList";
 
-const Login = ({ setOpenAccessDialog, setTabIndex }) => {
+const Login = ({ setTabIndex }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -42,7 +42,7 @@ const Login = ({ setOpenAccessDialog, setTabIndex }) => {
     if (user) {
       dispatch(setUser({ user }));
       localStorage.user = JSON.stringify(user);
-      setOpenAccessDialog(false);
+      dispatch(setOpenAccessDialog(false));
     }
     if (tester) {
       dispatch(setUser({ user: tester }));
@@ -51,10 +51,10 @@ const Login = ({ setOpenAccessDialog, setTabIndex }) => {
       setPassword("test");
       toast(toastList.testerToast);
       setTimeout(() => {
-        setOpenAccessDialog(false);
+        dispatch(setOpenAccessDialog(false));
       }, 2000);
     }
-  }, [user, tester, dispatch, setOpenAccessDialog]);
+  }, [user, tester, dispatch]);
 
   return (
     <>

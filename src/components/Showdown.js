@@ -36,7 +36,7 @@ import {
   setVoted,
 } from "../features/filterSlice";
 
-const Showdown = ({ setOpenAccessDialog }) => {
+const Showdown = () => {
   const { user } = useSelector((state) => state.authState);
   const { id: userId } = user;
 
@@ -245,9 +245,9 @@ const Showdown = ({ setOpenAccessDialog }) => {
           <>
             {/* Infinite Scroll or Box ? */}
             <Box
-              dataLength={displayList.length}
-              next={fetchMoreData}
-              hasMore={hasMore}
+              // dataLength={displayList.length}
+              // next={fetchMoreData}
+              // hasMore={hasMore}
               style={{
                 justifyItems: "center",
                 display: "grid",
@@ -263,7 +263,6 @@ const Showdown = ({ setOpenAccessDialog }) => {
                     key={matchup.id}
                     matchup={matchup}
                     userId={userId}
-                    setOpenAccessDialog={setOpenAccessDialog}
                     setOpenEditVoteModal={setOpenEditVoteModal}
                     setSelectedMatchup={setSelectedMatchup}
                   />

@@ -17,11 +17,12 @@ import { toastList } from "../utils/toastList";
 import Book from "./Book";
 import Movie from "./Movie";
 import vs from "../assets/vs.png";
+import { useDispatch } from "react-redux";
+import { setOpenAccessDialog } from "../features/authSlice";
 
 const MatchupCard = ({
   matchup,
   userId,
-  setOpenAccessDialog,
   setOpenEditVoteModal,
   setSelectedMatchup,
 }) => {
@@ -35,10 +36,12 @@ const MatchupCard = ({
 
   const toast = useToast();
 
+  const dispatch = useDispatch();
+
   const handleVote = async (matchupId, votedFor) => {
     if (userId === "guest") {
       //open login dialog
-      setOpenAccessDialog(true);
+      dispatch(setOpenAccessDialog(true));
       toast(toastList.accessToast);
       //proceed vote
     } else {
