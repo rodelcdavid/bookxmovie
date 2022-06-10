@@ -14,9 +14,13 @@ import {
 } from "@chakra-ui/react";
 import { useSignUpMutation } from "../services/authApi";
 import { useDispatch } from "react-redux";
-import { setUser } from "../features/authSlice";
+import {
+  setOpenAccessDialog,
+  setTabIndex,
+  setUser,
+} from "../features/authSlice";
 
-//Validation
+/* Validation */
 const schema = yup.object({
   name: yup.string().required("This field is required."),
   email: yup
@@ -53,7 +57,8 @@ const schema = yup.object({
     .oneOf([yup.ref("password"), null], "Passwords must match"),
 });
 
-const SignUp = ({ setOpenAccessDialog, setTabIndex }) => {
+const SignUp = () => {
+  /* React hook form */
   const {
     handleSubmit,
     register,
@@ -63,17 +68,20 @@ const SignUp = ({ setOpenAccessDialog, setTabIndex }) => {
     resolver: yupResolver(schema),
   });
 
+  /* Redux */
   const [signUp, { data: user, isLoading, isSuccess }] = useSignUpMutation();
   const dispatch = useDispatch();
 
+  /* Useeffects */
   useEffect(() => {
     if (user) {
       dispatch(setUser({ user }));
       localStorage.user = JSON.stringify(user);
-      setOpenAccessDialog(false);
+      dispatch(setOpenAccessDialog(false));
     }
-  }, [user, dispatch, setOpenAccessDialog]);
+  }, [user, dispatch]);
 
+  /* Handlers */
   const onSignUp = async (data) => {
     if (data) {
       await signUp(data);
@@ -133,7 +141,7 @@ const SignUp = ({ setOpenAccessDialog, setTabIndex }) => {
       <Box display="flex" gap="5px" marginTop="1rem">
         <Text fontSize="sm">Already have an account?</Text>
         <Button
-          onClick={() => setTabIndex(0)}
+          onClick={() => dispatch(setTabIndex(0))}
           variant="link"
           size="sm"
           colorScheme="teal"

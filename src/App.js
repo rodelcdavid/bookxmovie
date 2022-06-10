@@ -6,7 +6,6 @@ import Showdown from "./components/Showdown";
 
 function App() {
   const { user } = useSelector((state) => state.authState);
-  const [openAccessDialog, setOpenAccessDialog] = useState(false);
 
   useEffect(() => {
     // const prevUser = localStorage.getItem("user");
@@ -14,11 +13,8 @@ function App() {
 
   return (
     <>
-      <AppHeader
-        openAccessDialog={openAccessDialog}
-        setOpenAccessDialog={setOpenAccessDialog}
-      />
-      <Showdown setOpenAccessDialog={setOpenAccessDialog} />
+      <AppHeader />
+      <Showdown />
       {user.id === 1 && <FindAndMatchModal />}
     </>
   );

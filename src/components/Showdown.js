@@ -36,23 +36,19 @@ import {
   setVoted,
 } from "../features/filterSlice";
 
-const Showdown = ({ setOpenAccessDialog }) => {
+const Showdown = () => {
+  /* Redux */
   const { user } = useSelector((state) => state.authState);
   const { id: userId } = user;
-
-  // Edit Vote Modal
-  const [selectedMatchup, setSelectedMatchup] = useState(null);
-  const [openEditVoteModal, setOpenEditVoteModal] = useState(false);
-
   const { data: matchups, isLoading } = useGetMatchupsQuery(userId);
-
-  /* Filters */
-  const [inputSearch, setInputSearch] = useState("");
-  const [filteredList, setFilteredList] = useState(null);
-
   const { filters } = useSelector((state) => state.filterState);
   const dispatch = useDispatch();
 
+  /* Local state */
+  const [inputSearch, setInputSearch] = useState("");
+  const [filteredList, setFilteredList] = useState(null);
+
+  /* Utils */
   const applyFilters = () => {
     let tempFilteredList = matchups;
 
@@ -79,10 +75,6 @@ const Showdown = ({ setOpenAccessDialog }) => {
     setFilteredList(tempFilteredList);
   };
 
-  useEffect(() => {
-    applyFilters();
-  }, [filters]);
-
   /* Infinite Scroll */
   const loadCount = 16;
   const initialVisible = 8;
@@ -99,6 +91,11 @@ const Showdown = ({ setOpenAccessDialog }) => {
     setDisplayList(filteredList.slice(0, visible + loadCount));
     setVisible((prev) => prev + loadCount);
   };
+
+  /* Useeffects */
+  useEffect(() => {
+    applyFilters();
+  }, [filters]);
 
   useEffect(() => {
     if (matchups) {
@@ -245,9 +242,9 @@ const Showdown = ({ setOpenAccessDialog }) => {
           <>
             {/* Infinite Scroll or Box ? */}
             <Box
-              dataLength={displayList.length}
-              next={fetchMoreData}
-              hasMore={hasMore}
+              // dataLength={displayList.length}
+              // next={fetchMoreData}
+              // hasMore={hasMore}
               style={{
                 justifyItems: "center",
                 display: "grid",
@@ -263,9 +260,6 @@ const Showdown = ({ setOpenAccessDialog }) => {
                     key={matchup.id}
                     matchup={matchup}
                     userId={userId}
-                    setOpenAccessDialog={setOpenAccessDialog}
-                    setOpenEditVoteModal={setOpenEditVoteModal}
-                    setSelectedMatchup={setSelectedMatchup}
                   />
                 );
               })}
@@ -278,11 +272,7 @@ const Showdown = ({ setOpenAccessDialog }) => {
           </>
         )
       )}
-      <EditVoteModal
-        openEditVoteModal={openEditVoteModal}
-        setOpenEditVoteModal={setOpenEditVoteModal}
-        selectedMatchup={selectedMatchup}
-      />
+      <EditVoteModal />
     </Box>
   );
 };

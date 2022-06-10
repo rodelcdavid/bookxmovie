@@ -17,51 +17,45 @@ import { toastList } from "../utils/toastList";
 import Book from "./Book";
 import Movie from "./Movie";
 import vs from "../assets/vs.png";
-
-const MatchupCard = ({
-  matchup,
-  userId,
-  setOpenAccessDialog,
+import { useDispatch } from "react-redux";
+import { setOpenAccessDialog } from "../features/authSlice";
+import {
   setOpenEditVoteModal,
   setSelectedMatchup,
-}) => {
-  //View stats state
+} from "../features/matchupsSlice";
+
+const MatchupCard = ({ matchup, userId }) => {
+  /* Local state */
   const [isStatsVisible, setIsStatsVisible] = useState(false);
 
-  //Async actions
+  /* Redux */
   const [deleteMatchup, { isLoading: isDeleting }] = useDeleteMatchupMutation();
   const [addVote, { isSuccess: voted, isLoading: isVoting }] =
     useAddVoteMutation();
+  const dispatch = useDispatch();
 
-  const toast = useToast();
-
+  /* Handlers */
   const handleVote = async (matchupId, votedFor) => {
     if (userId === "guest") {
       //open login dialog
-      setOpenAccessDialog(true);
+      dispatch(setOpenAccessDialog(true));
       toast(toastList.accessToast);
       //proceed vote
     } else {
       await addVote({ userId, matchupId, votedFor });
-    }
-  };
-
-  const initial = useRef(true);
-  useEffect(() => {
-    if (initial.current) {
-      initial.current = false;
-      return;
-    }
-    if (matchup.votedFor) {
       setIsStatsVisible(true);
+      //vote toast should not be on this mapped components
       toast(toastList.voteToast);
     }
-  }, [matchup, toast, setIsStatsVisible]);
+  };
 
   const handleDelete = async (matchupId) => {
     await deleteMatchup({ matchupId });
     toast(toastList.deleteToast);
   };
+
+  /* Utils */
+  const toast = useToast();
 
   const votePercentage = (bookVotes, movieVotes, type) => {
     if (bookVotes + movieVotes !== 0) {
@@ -98,6 +92,7 @@ const MatchupCard = ({
     }
   };
 
+  /* Useeffects */
   useEffect(() => {
     setIsStatsVisible(false);
   }, [userId]);
@@ -216,8 +211,8 @@ const MatchupCard = ({
             <Button
               colorScheme="teal"
               onClick={() => {
-                setSelectedMatchup(matchup);
-                setOpenEditVoteModal(true);
+                dispatch(setSelectedMatchup(matchup));
+                dispatch(setOpenEditVoteModal(true));
               }}
               size="xs"
               sx={{

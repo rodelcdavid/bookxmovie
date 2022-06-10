@@ -13,28 +13,29 @@ import {
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import logo from "../assets/logo.png";
-import { setUser } from "../features/authSlice";
+import {
+  setOpenAccessDialog,
+  setTabIndex,
+  setUser,
+} from "../features/authSlice";
 import { resetFilters } from "../features/filterSlice";
 import { toastList } from "../utils/toastList";
 import AccessDialog from "./AccessDialog";
 
-const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
-  const [tabIndex, setTabIndex] = useState(0);
-
+const AppHeader = () => {
+  /* Redux */
   const { user } = useSelector((state) => state.authState);
-
   const dispatch = useDispatch();
 
+  /* Handlers */
   const handleAccess = (type) => {
-    setOpenAccessDialog(true);
+    dispatch(setOpenAccessDialog(true));
     if (type === "signup") {
-      setTabIndex(1);
+      dispatch(setTabIndex(1));
     } else {
-      setTabIndex(0);
+      dispatch(setTabIndex(0));
     }
   };
-
-  const toast = useToast();
 
   const handleLogOut = () => {
     const guestUser = { id: "guest" };
@@ -45,6 +46,9 @@ const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
       toast(toastList.logOutToast);
     }, 1500);
   };
+
+  /* Utils */
+  const toast = useToast();
 
   return (
     <Box
@@ -121,12 +125,7 @@ const AppHeader = ({ openAccessDialog, setOpenAccessDialog }) => {
         </Box>
       )}
 
-      <AccessDialog
-        openAccessDialog={openAccessDialog}
-        setOpenAccessDialog={setOpenAccessDialog}
-        tabIndex={tabIndex}
-        setTabIndex={setTabIndex}
-      />
+      <AccessDialog />
     </Box>
   );
 };

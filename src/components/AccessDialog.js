@@ -13,24 +13,29 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import React, { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setOpenAccessDialog, setTabIndex } from "../features/authSlice";
 import Login from "./Login";
 import SignUp from "./SignUp";
 
-const AccessDialog = ({
-  openAccessDialog,
-  setOpenAccessDialog,
-  tabIndex,
-  setTabIndex,
-}) => {
+const AccessDialog = () => {
+  /* Redux */
+  const { openAccessDialog, tabIndex } = useSelector(
+    (state) => state.authState
+  );
+  const dispatch = useDispatch();
+
+  /* Refs */
   const cancelRef = useRef();
+
   return (
     <>
       <AlertDialog
         isOpen={openAccessDialog}
         leastDestructiveRef={cancelRef}
         onClose={() => {
-          setOpenAccessDialog(false);
-          setTabIndex(0);
+          dispatch(setOpenAccessDialog(false));
+          dispatch(setTabIndex(0));
         }}
         preserveScrollBarGap
       >
@@ -48,7 +53,7 @@ const AccessDialog = ({
                 // minHeight="20rem"
               >
                 <Tabs
-                  onChange={(index) => setTabIndex(index)}
+                  onChange={(index) => dispatch(setTabIndex(index))}
                   index={tabIndex}
                   defaultIndex={0}
                   isFitted
@@ -62,16 +67,10 @@ const AccessDialog = ({
 
                   <TabPanels>
                     <TabPanel>
-                      <Login
-                        setOpenAccessDialog={setOpenAccessDialog}
-                        setTabIndex={setTabIndex}
-                      />
+                      <Login />
                     </TabPanel>
                     <TabPanel>
-                      <SignUp
-                        setOpenAccessDialog={setOpenAccessDialog}
-                        setTabIndex={setTabIndex}
-                      />
+                      <SignUp />
                     </TabPanel>
                   </TabPanels>
                 </Tabs>

@@ -18,25 +18,23 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setOpenEditVoteModal } from "../features/matchupsSlice";
 import { useUpdateVoteMutation } from "../services/matchupsApi";
 
-const EditVoteModal = ({
-  openEditVoteModal,
-  setOpenEditVoteModal,
-  selectedMatchup,
-}) => {
+const EditVoteModal = () => {
+  /* Local State */
   const [bookVotes, setBookVotes] = useState(0);
   const [movieVotes, setMovieVotes] = useState(0);
 
-  useEffect(() => {
-    if (selectedMatchup) {
-      setBookVotes(selectedMatchup.bookVotes);
-      setMovieVotes(selectedMatchup.movieVotes);
-    }
-  }, [selectedMatchup]);
-
+  /* Redux */
+  const { selectedMatchup, openEditVoteModal } = useSelector(
+    (state) => state.matchupsState
+  );
   const [updateVote, { isLoading }] = useUpdateVoteMutation();
+  const dispatch = useDispatch();
 
+  /* Handlers */
   const handleEditVote = async (matchupId, bookVotes, movieVotes) => {
     await updateVote({
       matchupId,
@@ -44,16 +42,24 @@ const EditVoteModal = ({
       movieVotes: Number(movieVotes),
     });
     if (!isLoading) {
-      setOpenEditVoteModal(false);
+      dispatch(setOpenEditVoteModal(false));
     }
   };
+
+  /* Useeffects */
+  useEffect(() => {
+    if (selectedMatchup) {
+      setBookVotes(selectedMatchup.bookVotes);
+      setMovieVotes(selectedMatchup.movieVotes);
+    }
+  }, [selectedMatchup]);
 
   return (
     <Modal
       isOpen={openEditVoteModal}
       preserveScrollBarGap={true}
       onClose={() => {
-        setOpenEditVoteModal(false);
+        dispatch(setOpenEditVoteModal(false));
       }}
       isCentered
     >
@@ -116,7 +122,9 @@ const EditVoteModal = ({
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={() => setOpenEditVoteModal(false)}>Cancel</Button>
+            <Button onClick={() => dispatch(setOpenEditVoteModal(false))}>
+              Cancel
+            </Button>
             <Button
               isLoading={isLoading}
               colorScheme="red"

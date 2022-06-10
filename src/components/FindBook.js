@@ -1,12 +1,20 @@
 import { Box, Button, Image, Input, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedBook } from "../features/findSlice";
 
-const FindBook = ({ setSelectedBook, selectedBook }) => {
-  const bookApiKey = process.env.REACT_APP_BOOK_API_KEY;
-
+const FindBook = () => {
+  /* Local state */
   const [inputBook, setInputBook] = useState("");
   const [bookResults, setBookResults] = useState(null);
+  /* Redux */
+  const { selectedBook } = useSelector((state) => state.findState);
+  const dispatch = useDispatch();
 
+  /* Utils */
+  const bookApiKey = process.env.REACT_APP_BOOK_API_KEY;
+
+  /* Handlers */
   const handleSearchBook = () => {
     fetch(
       `https://www.googleapis.com/books/v1/volumes?q=${inputBook}&key=${bookApiKey}&maxResults=40&printType=books`
@@ -26,7 +34,15 @@ const FindBook = ({ setSelectedBook, selectedBook }) => {
   return (
     <Box sx={{ textAlign: "center" }}>
       <Box width="80%" margin="0 auto" display="flex" gap="5px">
-        <Input type="search" onChange={(e) => setInputBook(e.target.value)} />
+        <Input
+          type="search"
+          onChange={(e) => setInputBook(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearchBook();
+            }
+          }}
+        />
         <Button onClick={handleSearchBook} colorScheme="teal">
           Search
         </Button>
@@ -69,7 +85,7 @@ const FindBook = ({ setSelectedBook, selectedBook }) => {
                   },
                 }}
                 key={book.id}
-                onClick={() => setSelectedBook(book)}
+                onClick={() => dispatch(setSelectedBook(book))}
               >
                 <Image
                   src={

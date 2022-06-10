@@ -1,12 +1,21 @@
 import { Box, Button, Image, Input, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedMovie } from "../features/findSlice";
 
-const FindMovie = ({ setSelectedMovie, selectedMovie }) => {
-  const movieApiKey = process.env.REACT_APP_MOVIE_API_KEY;
+const FindMovie = () => {
+  /* Local State */
+  const [movieResults, setMovieResults] = useState(null);
   const [inputMovie, setInputMovie] = useState("");
 
-  const [movieResults, setMovieResults] = useState(null);
+  /* Redux */
+  const { selectedMovie } = useSelector((state) => state.findState);
+  const dispatch = useDispatch();
 
+  /* Utils */
+  const movieApiKey = process.env.REACT_APP_MOVIE_API_KEY;
+
+  /* Handlers */
   const handleSearchMovie = () => {
     fetch(
       `https://api.themoviedb.org/3/search/movie?api_key=${movieApiKey}&query=${inputMovie}`
@@ -18,7 +27,15 @@ const FindMovie = ({ setSelectedMovie, selectedMovie }) => {
   return (
     <Box sx={{ textAlign: "center" }}>
       <Box width="80%" margin="0 auto" display="flex" gap="5px">
-        <Input type="search" onChange={(e) => setInputMovie(e.target.value)} />
+        <Input
+          type="search"
+          onChange={(e) => setInputMovie(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearchMovie();
+            }
+          }}
+        />
         <Button onClick={handleSearchMovie} colorScheme="teal">
           Search
         </Button>
@@ -61,7 +78,7 @@ const FindMovie = ({ setSelectedMovie, selectedMovie }) => {
                 }}
                 key={movie.id}
                 onClick={() => {
-                  setSelectedMovie(movie);
+                  dispatch(setSelectedMovie(movie));
                 }}
               >
                 <Image
