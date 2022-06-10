@@ -1,9 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  //   user: JSON.parse(localStorage.getItem("user")) || { id: "guest" },
-  //   openAccessDialog: false,
-  //   tabIndex: 0,
   openModal: false,
   selectedBook: null,
   selectedMovie: null,
@@ -22,9 +19,6 @@ export const findSlice = createSlice({
     setSelectedMovie: (state, { payload }) => {
       state.selectedMovie = payload;
     },
-    // setTabIndex: (state, { payload }) => {
-    //   state.tabIndex = payload;
-    // },
   },
 });
 

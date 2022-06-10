@@ -40,10 +40,6 @@ const Showdown = () => {
   const { user } = useSelector((state) => state.authState);
   const { id: userId } = user;
 
-  // Edit Vote Modal
-  const [selectedMatchup, setSelectedMatchup] = useState(null);
-  const [openEditVoteModal, setOpenEditVoteModal] = useState(false);
-
   const { data: matchups, isLoading } = useGetMatchupsQuery(userId);
 
   /* Filters */
@@ -263,8 +259,6 @@ const Showdown = () => {
                     key={matchup.id}
                     matchup={matchup}
                     userId={userId}
-                    setOpenEditVoteModal={setOpenEditVoteModal}
-                    setSelectedMatchup={setSelectedMatchup}
                   />
                 );
               })}
@@ -277,11 +271,7 @@ const Showdown = () => {
           </>
         )
       )}
-      <EditVoteModal
-        openEditVoteModal={openEditVoteModal}
-        setOpenEditVoteModal={setOpenEditVoteModal}
-        selectedMatchup={selectedMatchup}
-      />
+      <EditVoteModal />
     </Box>
   );
 };

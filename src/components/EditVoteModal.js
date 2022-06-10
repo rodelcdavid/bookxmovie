@@ -18,13 +18,17 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setOpenEditVoteModal } from "../features/matchupsSlice";
 import { useUpdateVoteMutation } from "../services/matchupsApi";
 
-const EditVoteModal = ({
-  openEditVoteModal,
-  setOpenEditVoteModal,
-  selectedMatchup,
-}) => {
+const EditVoteModal = () => {
+  const { selectedMatchup, openEditVoteModal } = useSelector(
+    (state) => state.matchupsState
+  );
+
+  const dispatch = useDispatch();
+
   const [bookVotes, setBookVotes] = useState(0);
   const [movieVotes, setMovieVotes] = useState(0);
 
@@ -44,7 +48,7 @@ const EditVoteModal = ({
       movieVotes: Number(movieVotes),
     });
     if (!isLoading) {
-      setOpenEditVoteModal(false);
+      dispatch(setOpenEditVoteModal(false));
     }
   };
 
@@ -53,7 +57,7 @@ const EditVoteModal = ({
       isOpen={openEditVoteModal}
       preserveScrollBarGap={true}
       onClose={() => {
-        setOpenEditVoteModal(false);
+        dispatch(setOpenEditVoteModal(false));
       }}
       isCentered
     >
@@ -116,7 +120,9 @@ const EditVoteModal = ({
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={() => setOpenEditVoteModal(false)}>Cancel</Button>
+            <Button onClick={() => dispatch(setOpenEditVoteModal(false))}>
+              Cancel
+            </Button>
             <Button
               isLoading={isLoading}
               colorScheme="red"

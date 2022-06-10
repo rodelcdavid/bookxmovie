@@ -19,13 +19,12 @@ import Movie from "./Movie";
 import vs from "../assets/vs.png";
 import { useDispatch } from "react-redux";
 import { setOpenAccessDialog } from "../features/authSlice";
-
-const MatchupCard = ({
-  matchup,
-  userId,
+import {
   setOpenEditVoteModal,
   setSelectedMatchup,
-}) => {
+} from "../features/matchupsSlice";
+
+const MatchupCard = ({ matchup, userId }) => {
   //View stats state
   const [isStatsVisible, setIsStatsVisible] = useState(false);
 
@@ -219,8 +218,8 @@ const MatchupCard = ({
             <Button
               colorScheme="teal"
               onClick={() => {
-                setSelectedMatchup(matchup);
-                setOpenEditVoteModal(true);
+                dispatch(setSelectedMatchup(matchup));
+                dispatch(setOpenEditVoteModal(true));
               }}
               size="xs"
               sx={{
