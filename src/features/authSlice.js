@@ -17,7 +17,7 @@ export const authSlice = createSlice({
       state.openAccessDialog = payload;
     },
     setTabIndex: (state, { payload }) => {
-      state.user = payload.tabIndex;
+      state.tabIndex = payload;
     },
   },
 });

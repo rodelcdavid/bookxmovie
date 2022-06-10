@@ -14,7 +14,11 @@ import {
 } from "@chakra-ui/react";
 import { useSignUpMutation } from "../services/authApi";
 import { useDispatch } from "react-redux";
-import { setOpenAccessDialog, setUser } from "../features/authSlice";
+import {
+  setOpenAccessDialog,
+  setTabIndex,
+  setUser,
+} from "../features/authSlice";
 
 //Validation
 const schema = yup.object({
@@ -53,7 +57,7 @@ const schema = yup.object({
     .oneOf([yup.ref("password"), null], "Passwords must match"),
 });
 
-const SignUp = ({ setTabIndex }) => {
+const SignUp = () => {
   const {
     handleSubmit,
     register,
@@ -133,7 +137,7 @@ const SignUp = ({ setTabIndex }) => {
       <Box display="flex" gap="5px" marginTop="1rem">
         <Text fontSize="sm">Already have an account?</Text>
         <Button
-          onClick={() => setTabIndex(0)}
+          onClick={() => dispatch(setTabIndex(0))}
           variant="link"
           size="sm"
           colorScheme="teal"

@@ -9,11 +9,15 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setOpenAccessDialog, setUser } from "../features/authSlice";
+import {
+  setOpenAccessDialog,
+  setTabIndex,
+  setUser,
+} from "../features/authSlice";
 import { useLogInMutation, useSignUpMutation } from "../services/authApi";
 import { toastList } from "../utils/toastList";
 
-const Login = ({ setTabIndex }) => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -117,7 +121,7 @@ const Login = ({ setTabIndex }) => {
         <Box display="flex" gap="5px" marginTop="1rem">
           <Text fontSize="sm">Don't have an account?</Text>
           <Button
-            onClick={() => setTabIndex(1)}
+            onClick={() => dispatch(setTabIndex(1))}
             variant="link"
             size="sm"
             colorScheme="teal"

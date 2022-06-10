@@ -13,14 +13,16 @@ import {
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import logo from "../assets/logo.png";
-import { setOpenAccessDialog, setUser } from "../features/authSlice";
+import {
+  setOpenAccessDialog,
+  setTabIndex,
+  setUser,
+} from "../features/authSlice";
 import { resetFilters } from "../features/filterSlice";
 import { toastList } from "../utils/toastList";
 import AccessDialog from "./AccessDialog";
 
 const AppHeader = () => {
-  const [tabIndex, setTabIndex] = useState(0);
-
   const { user } = useSelector((state) => state.authState);
 
   const dispatch = useDispatch();
@@ -28,9 +30,9 @@ const AppHeader = () => {
   const handleAccess = (type) => {
     dispatch(setOpenAccessDialog(true));
     if (type === "signup") {
-      setTabIndex(1);
+      dispatch(setTabIndex(1));
     } else {
-      setTabIndex(0);
+      dispatch(setTabIndex(0));
     }
   };
 
@@ -121,7 +123,7 @@ const AppHeader = () => {
         </Box>
       )}
 
-      <AccessDialog tabIndex={tabIndex} setTabIndex={setTabIndex} />
+      <AccessDialog />
     </Box>
   );
 };
