@@ -12,21 +12,47 @@ import {
   NumberInputField,
   NumberInputStepper,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
+import { useAddMatchupMutation } from "../services/matchupsApi";
+import { toastList } from "../utils/toastList";
+import { setOpenModal } from "../features/findSlice";
 
-const Selected = (handleAddToShowdown) => {
+const Selected = () => {
   const { selectedBook, selectedMovie } = useSelector(
     (state) => state.findState
   );
   const [bookVotes, setBookVotes] = useState(1);
   const [movieVotes, setMovieVotes] = useState(1);
+
+  const [addMatchup, { isLoading }] = useAddMatchupMutation();
+  const toast = useToast();
+  const dispatch = useDispatch();
+
+  const handleAddToShowdown = async (bookVotes, movieVotes) => {
+    const id = uuidv4();
+    const matchup = {
+      id: id,
+      bookInfo: selectedBook,
+      movieInfo: selectedMovie,
+      bookVotes: bookVotes,
+      movieVotes: movieVotes,
+      popularity:
+        (selectedBook.volumeInfo.ratingsCount || 0) +
+        (selectedMovie.vote_count || 0),
+    };
+    await addMatchup(matchup);
+    toast(toastList.addToast);
+    setTimeout(() => {
+      dispatch(setOpenModal(false));
+    }, 200);
+  };
+
   return (
     <Box sx={{ textAlign: "center" }}>
-      {/* <Heading textAlign="center">Selected</Heading> */}
-
-      {/*  */}
       <Box
         sx={{
           padding: "1rem",
@@ -150,6 +176,7 @@ const Selected = (handleAddToShowdown) => {
         colorScheme="teal"
         marginTop="1rem"
         disabled={selectedBook && selectedMovie ? false : true}
+        isLoading={isLoading}
       >
         Add to Showdown
       </Button>

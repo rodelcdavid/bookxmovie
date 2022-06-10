@@ -11,7 +11,11 @@ import {
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setOpenModal } from "../features/findSlice";
+import {
+  setOpenModal,
+  setSelectedBook,
+  setSelectedMovie,
+} from "../features/findSlice";
 import FindAndMatch from "./FindAndMatch";
 
 const FindAndMatchModal = () => {
@@ -32,7 +36,12 @@ const FindAndMatchModal = () => {
           fontSize: "1.3rem",
           zIndex: 3,
         }}
-        onClick={() => dispatch(setOpenModal(true))}
+        onClick={() => {
+          dispatch(setOpenModal(true));
+          // Reset
+          dispatch(setSelectedBook(null));
+          dispatch(setSelectedMovie(null));
+        }}
         colorScheme="teal"
       >
         +

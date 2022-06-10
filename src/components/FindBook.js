@@ -32,7 +32,15 @@ const FindBook = () => {
   return (
     <Box sx={{ textAlign: "center" }}>
       <Box width="80%" margin="0 auto" display="flex" gap="5px">
-        <Input type="search" onChange={(e) => setInputBook(e.target.value)} />
+        <Input
+          type="search"
+          onChange={(e) => setInputBook(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearchBook();
+            }
+          }}
+        />
         <Button onClick={handleSearchBook} colorScheme="teal">
           Search
         </Button>

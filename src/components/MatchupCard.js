@@ -45,20 +45,22 @@ const MatchupCard = ({ matchup, userId }) => {
       //proceed vote
     } else {
       await addVote({ userId, matchupId, votedFor });
+      setIsStatsVisible(true);
+      //vote toast should not be on this mapped components
+      toast(toastList.voteToast);
     }
   };
 
-  const initial = useRef(true);
-  useEffect(() => {
-    if (initial.current) {
-      initial.current = false;
-      return;
-    }
-    if (matchup.votedFor) {
-      setIsStatsVisible(true);
-      toast(toastList.voteToast);
-    }
-  }, [matchup, toast, setIsStatsVisible]);
+  // const initial = useRef(true);
+  // useEffect(() => {
+  //   if (initial.current) {
+  //     initial.current = false;
+  //     return;
+  //   }
+  //   if (matchup.votedFor) {
+
+  //   }
+  // }, [matchup, toast, setIsStatsVisible]);
 
   const handleDelete = async (matchupId) => {
     await deleteMatchup({ matchupId });

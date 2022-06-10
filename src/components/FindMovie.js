@@ -22,7 +22,15 @@ const FindMovie = () => {
   return (
     <Box sx={{ textAlign: "center" }}>
       <Box width="80%" margin="0 auto" display="flex" gap="5px">
-        <Input type="search" onChange={(e) => setInputMovie(e.target.value)} />
+        <Input
+          type="search"
+          onChange={(e) => setInputMovie(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearchMovie();
+            }
+          }}
+        />
         <Button onClick={handleSearchMovie} colorScheme="teal">
           Search
         </Button>
