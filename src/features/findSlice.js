@@ -4,6 +4,9 @@ const initialState = {
   //   user: JSON.parse(localStorage.getItem("user")) || { id: "guest" },
   //   openAccessDialog: false,
   //   tabIndex: 0,
+  openModal: false,
+  selectedBook: null,
+  selectedMovie: null,
 };
 
 export const findSlice = createSlice({
@@ -13,9 +16,12 @@ export const findSlice = createSlice({
     setOpenModal: (state, { payload }) => {
       state.openModal = payload;
     },
-    // setOpenAccessDialog: (state, { payload }) => {
-    //   state.openAccessDialog = payload;
-    // },
+    setSelectedBook: (state, { payload }) => {
+      state.selectedBook = payload;
+    },
+    setSelectedMovie: (state, { payload }) => {
+      state.selectedMovie = payload;
+    },
     // setTabIndex: (state, { payload }) => {
     //   state.tabIndex = payload;
     // },
@@ -23,6 +29,7 @@ export const findSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setOpenModal } = findSlice.actions;
+export const { setOpenModal, setSelectedBook, setSelectedMovie } =
+  findSlice.actions;
 
 export default findSlice.reducer;

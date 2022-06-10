@@ -14,7 +14,7 @@ import FindBook from "./FindBook";
 import FindMovie from "./FindMovie";
 import Selected from "./Selected";
 import { toastList } from "../utils/toastList";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setOpenModal } from "../features/findSlice";
 
 const FindAndMatch = () => {
@@ -26,8 +26,9 @@ const FindAndMatch = () => {
 
   //Move this to server
 
-  const [selectedBook, setSelectedBook] = useState(null);
-  const [selectedMovie, setSelectedMovie] = useState(null);
+  const { selectedBook, selectedMovie } = useSelector(
+    (state) => state.findState
+  );
 
   const toast = useToast();
 
@@ -76,23 +77,13 @@ const FindAndMatch = () => {
 
             <TabPanels>
               <TabPanel>
-                <FindBook
-                  setSelectedBook={setSelectedBook}
-                  selectedBook={selectedBook}
-                />
+                <FindBook />
               </TabPanel>
               <TabPanel>
-                <FindMovie
-                  setSelectedMovie={setSelectedMovie}
-                  selectedMovie={selectedMovie}
-                />
+                <FindMovie />
               </TabPanel>
               <TabPanel>
-                <Selected
-                  selectedBook={selectedBook}
-                  selectedMovie={selectedMovie}
-                  handleAddToShowdown={handleAddToShowdown}
-                />
+                <Selected handleAddToShowdown={handleAddToShowdown} />
               </TabPanel>
             </TabPanels>
           </Tabs>

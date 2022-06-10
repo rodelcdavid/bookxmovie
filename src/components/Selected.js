@@ -14,8 +14,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
-const Selected = ({ selectedBook, selectedMovie, handleAddToShowdown }) => {
+const Selected = (handleAddToShowdown) => {
+  const { selectedBook, selectedMovie } = useSelector(
+    (state) => state.findState
+  );
   const [bookVotes, setBookVotes] = useState(1);
   const [movieVotes, setMovieVotes] = useState(1);
   return (

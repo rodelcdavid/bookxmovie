@@ -1,11 +1,17 @@
 import { Box, Button, Image, Input, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedBook } from "../features/findSlice";
 
-const FindBook = ({ setSelectedBook, selectedBook }) => {
+const FindBook = () => {
   const bookApiKey = process.env.REACT_APP_BOOK_API_KEY;
 
   const [inputBook, setInputBook] = useState("");
   const [bookResults, setBookResults] = useState(null);
+
+  const { selectedBook } = useSelector((state) => state.findState);
+
+  const dispatch = useDispatch();
 
   const handleSearchBook = () => {
     fetch(
@@ -69,7 +75,7 @@ const FindBook = ({ setSelectedBook, selectedBook }) => {
                   },
                 }}
                 key={book.id}
-                onClick={() => setSelectedBook(book)}
+                onClick={() => dispatch(setSelectedBook(book))}
               >
                 <Image
                   src={

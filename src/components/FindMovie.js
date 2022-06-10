@@ -1,11 +1,15 @@
 import { Box, Button, Image, Input, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedMovie } from "../features/findSlice";
 
-const FindMovie = ({ setSelectedMovie, selectedMovie }) => {
+const FindMovie = () => {
   const movieApiKey = process.env.REACT_APP_MOVIE_API_KEY;
   const [inputMovie, setInputMovie] = useState("");
 
   const [movieResults, setMovieResults] = useState(null);
+  const { selectedMovie } = useSelector((state) => state.findState);
+  const dispatch = useDispatch();
 
   const handleSearchMovie = () => {
     fetch(
@@ -61,7 +65,7 @@ const FindMovie = ({ setSelectedMovie, selectedMovie }) => {
                 }}
                 key={movie.id}
                 onClick={() => {
-                  setSelectedMovie(movie);
+                  dispatch(setSelectedMovie(movie));
                 }}
               >
                 <Image
