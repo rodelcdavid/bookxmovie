@@ -19,6 +19,7 @@ import {
 import FindAndMatch from "./FindAndMatch";
 
 const FindAndMatchModal = () => {
+  /* Redux */
   const { openModal } = useSelector((state) => state.findState);
   const dispatch = useDispatch();
 

@@ -4,13 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedMovie } from "../features/findSlice";
 
 const FindMovie = () => {
-  const movieApiKey = process.env.REACT_APP_MOVIE_API_KEY;
+  /* Local State */
+  const [movieResults, setMovieResults] = useState(null);
   const [inputMovie, setInputMovie] = useState("");
 
-  const [movieResults, setMovieResults] = useState(null);
+  /* Redux */
   const { selectedMovie } = useSelector((state) => state.findState);
   const dispatch = useDispatch();
 
+  /* Utils */
+  const movieApiKey = process.env.REACT_APP_MOVIE_API_KEY;
+
+  /* Handlers */
   const handleSearchMovie = () => {
     fetch(
       `https://api.themoviedb.org/3/search/movie?api_key=${movieApiKey}&query=${inputMovie}`

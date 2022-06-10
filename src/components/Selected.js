@@ -22,16 +22,21 @@ import { toastList } from "../utils/toastList";
 import { setOpenModal } from "../features/findSlice";
 
 const Selected = () => {
-  const { selectedBook, selectedMovie } = useSelector(
-    (state) => state.findState
-  );
+  /* Local state */
   const [bookVotes, setBookVotes] = useState(1);
   const [movieVotes, setMovieVotes] = useState(1);
 
+  /* Redux */
+  const { selectedBook, selectedMovie } = useSelector(
+    (state) => state.findState
+  );
   const [addMatchup, { isLoading }] = useAddMatchupMutation();
-  const toast = useToast();
   const dispatch = useDispatch();
 
+  /* Utils */
+  const toast = useToast();
+
+  /* Handlers */
   const handleAddToShowdown = async (bookVotes, movieVotes) => {
     const id = uuidv4();
     const matchup = {

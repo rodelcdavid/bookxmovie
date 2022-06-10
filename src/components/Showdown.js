@@ -37,18 +37,18 @@ import {
 } from "../features/filterSlice";
 
 const Showdown = () => {
+  /* Redux */
   const { user } = useSelector((state) => state.authState);
   const { id: userId } = user;
-
   const { data: matchups, isLoading } = useGetMatchupsQuery(userId);
-
-  /* Filters */
-  const [inputSearch, setInputSearch] = useState("");
-  const [filteredList, setFilteredList] = useState(null);
-
   const { filters } = useSelector((state) => state.filterState);
   const dispatch = useDispatch();
 
+  /* Local state */
+  const [inputSearch, setInputSearch] = useState("");
+  const [filteredList, setFilteredList] = useState(null);
+
+  /* Utils */
   const applyFilters = () => {
     let tempFilteredList = matchups;
 
@@ -75,10 +75,6 @@ const Showdown = () => {
     setFilteredList(tempFilteredList);
   };
 
-  useEffect(() => {
-    applyFilters();
-  }, [filters]);
-
   /* Infinite Scroll */
   const loadCount = 16;
   const initialVisible = 8;
@@ -95,6 +91,11 @@ const Showdown = () => {
     setDisplayList(filteredList.slice(0, visible + loadCount));
     setVisible((prev) => prev + loadCount);
   };
+
+  /* Useeffects */
+  useEffect(() => {
+    applyFilters();
+  }, [filters]);
 
   useEffect(() => {
     if (matchups) {

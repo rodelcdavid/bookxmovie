@@ -18,13 +18,17 @@ import { useLogInMutation, useSignUpMutation } from "../services/authApi";
 import { toastList } from "../utils/toastList";
 
 const Login = () => {
+  /* Local state */
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  /* Redux */
   const [logIn, { data: user, error }] = useLogInMutation();
   const [signUp, { data: tester, isLoading: isSigningUp }] =
     useSignUpMutation();
+  const dispatch = useDispatch();
 
+  /* Handlers */
   const handleLogin = async () => {
     await logIn({ email, password });
   };
@@ -39,9 +43,10 @@ const Login = () => {
     await signUp(tester);
   };
 
-  const dispatch = useDispatch();
+  /* Utils */
   const toast = useToast();
 
+  /* Useeffects */
   useEffect(() => {
     if (user) {
       dispatch(setUser({ user }));

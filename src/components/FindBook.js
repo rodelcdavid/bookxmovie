@@ -4,15 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedBook } from "../features/findSlice";
 
 const FindBook = () => {
-  const bookApiKey = process.env.REACT_APP_BOOK_API_KEY;
-
+  /* Local state */
   const [inputBook, setInputBook] = useState("");
   const [bookResults, setBookResults] = useState(null);
-
+  /* Redux */
   const { selectedBook } = useSelector((state) => state.findState);
-
   const dispatch = useDispatch();
 
+  /* Utils */
+  const bookApiKey = process.env.REACT_APP_BOOK_API_KEY;
+
+  /* Handlers */
   const handleSearchBook = () => {
     fetch(
       `https://www.googleapis.com/books/v1/volumes?q=${inputBook}&key=${bookApiKey}&maxResults=40&printType=books`

@@ -20,7 +20,7 @@ import {
   setUser,
 } from "../features/authSlice";
 
-//Validation
+/* Validation */
 const schema = yup.object({
   name: yup.string().required("This field is required."),
   email: yup
@@ -58,6 +58,7 @@ const schema = yup.object({
 });
 
 const SignUp = () => {
+  /* React hook form */
   const {
     handleSubmit,
     register,
@@ -67,9 +68,11 @@ const SignUp = () => {
     resolver: yupResolver(schema),
   });
 
+  /* Redux */
   const [signUp, { data: user, isLoading, isSuccess }] = useSignUpMutation();
   const dispatch = useDispatch();
 
+  /* Useeffects */
   useEffect(() => {
     if (user) {
       dispatch(setUser({ user }));
@@ -78,6 +81,7 @@ const SignUp = () => {
     }
   }, [user, dispatch]);
 
+  /* Handlers */
   const onSignUp = async (data) => {
     if (data) {
       await signUp(data);

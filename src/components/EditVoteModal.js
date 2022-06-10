@@ -23,24 +23,18 @@ import { setOpenEditVoteModal } from "../features/matchupsSlice";
 import { useUpdateVoteMutation } from "../services/matchupsApi";
 
 const EditVoteModal = () => {
-  const { selectedMatchup, openEditVoteModal } = useSelector(
-    (state) => state.matchupsState
-  );
-
-  const dispatch = useDispatch();
-
+  /* Local State */
   const [bookVotes, setBookVotes] = useState(0);
   const [movieVotes, setMovieVotes] = useState(0);
 
-  useEffect(() => {
-    if (selectedMatchup) {
-      setBookVotes(selectedMatchup.bookVotes);
-      setMovieVotes(selectedMatchup.movieVotes);
-    }
-  }, [selectedMatchup]);
-
+  /* Redux */
+  const { selectedMatchup, openEditVoteModal } = useSelector(
+    (state) => state.matchupsState
+  );
   const [updateVote, { isLoading }] = useUpdateVoteMutation();
+  const dispatch = useDispatch();
 
+  /* Handlers */
   const handleEditVote = async (matchupId, bookVotes, movieVotes) => {
     await updateVote({
       matchupId,
@@ -51,6 +45,14 @@ const EditVoteModal = () => {
       dispatch(setOpenEditVoteModal(false));
     }
   };
+
+  /* Useeffects */
+  useEffect(() => {
+    if (selectedMatchup) {
+      setBookVotes(selectedMatchup.bookVotes);
+      setMovieVotes(selectedMatchup.movieVotes);
+    }
+  }, [selectedMatchup]);
 
   return (
     <Modal

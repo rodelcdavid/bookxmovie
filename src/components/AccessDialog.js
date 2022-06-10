@@ -19,12 +19,15 @@ import Login from "./Login";
 import SignUp from "./SignUp";
 
 const AccessDialog = () => {
+  /* Redux */
   const { openAccessDialog, tabIndex } = useSelector(
     (state) => state.authState
   );
-
   const dispatch = useDispatch();
+
+  /* Refs */
   const cancelRef = useRef();
+
   return (
     <>
       <AlertDialog

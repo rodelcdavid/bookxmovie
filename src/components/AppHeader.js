@@ -23,10 +23,11 @@ import { toastList } from "../utils/toastList";
 import AccessDialog from "./AccessDialog";
 
 const AppHeader = () => {
+  /* Redux */
   const { user } = useSelector((state) => state.authState);
-
   const dispatch = useDispatch();
 
+  /* Handlers */
   const handleAccess = (type) => {
     dispatch(setOpenAccessDialog(true));
     if (type === "signup") {
@@ -35,8 +36,6 @@ const AppHeader = () => {
       dispatch(setTabIndex(0));
     }
   };
-
-  const toast = useToast();
 
   const handleLogOut = () => {
     const guestUser = { id: "guest" };
@@ -47,6 +46,9 @@ const AppHeader = () => {
       toast(toastList.logOutToast);
     }, 1500);
   };
+
+  /* Utils */
+  const toast = useToast();
 
   return (
     <Box

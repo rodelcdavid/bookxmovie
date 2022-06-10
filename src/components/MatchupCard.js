@@ -25,18 +25,16 @@ import {
 } from "../features/matchupsSlice";
 
 const MatchupCard = ({ matchup, userId }) => {
-  //View stats state
+  /* Local state */
   const [isStatsVisible, setIsStatsVisible] = useState(false);
 
-  //Async actions
+  /* Redux */
   const [deleteMatchup, { isLoading: isDeleting }] = useDeleteMatchupMutation();
   const [addVote, { isSuccess: voted, isLoading: isVoting }] =
     useAddVoteMutation();
-
-  const toast = useToast();
-
   const dispatch = useDispatch();
 
+  /* Handlers */
   const handleVote = async (matchupId, votedFor) => {
     if (userId === "guest") {
       //open login dialog
@@ -51,21 +49,13 @@ const MatchupCard = ({ matchup, userId }) => {
     }
   };
 
-  // const initial = useRef(true);
-  // useEffect(() => {
-  //   if (initial.current) {
-  //     initial.current = false;
-  //     return;
-  //   }
-  //   if (matchup.votedFor) {
-
-  //   }
-  // }, [matchup, toast, setIsStatsVisible]);
-
   const handleDelete = async (matchupId) => {
     await deleteMatchup({ matchupId });
     toast(toastList.deleteToast);
   };
+
+  /* Utils */
+  const toast = useToast();
 
   const votePercentage = (bookVotes, movieVotes, type) => {
     if (bookVotes + movieVotes !== 0) {
@@ -102,6 +92,7 @@ const MatchupCard = ({ matchup, userId }) => {
     }
   };
 
+  /* Useeffects */
   useEffect(() => {
     setIsStatsVisible(false);
   }, [userId]);
