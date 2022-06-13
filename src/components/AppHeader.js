@@ -27,6 +27,9 @@ const AppHeader = () => {
   const { user } = useSelector((state) => state.authState);
   const dispatch = useDispatch();
 
+  /* Utils */
+  const toast = useToast();
+
   /* Handlers */
   const handleAccess = (type) => {
     dispatch(setOpenAccessDialog(true));
@@ -46,9 +49,6 @@ const AppHeader = () => {
       toast(toastList.logOutToast);
     }, 1500);
   };
-
-  /* Utils */
-  const toast = useToast();
 
   return (
     <Box

@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 
 import { BiFilter, BiSort } from "react-icons/bi";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useGetMatchupsQuery } from "../services/matchupsApi";
@@ -28,7 +28,7 @@ import {
   onSortFilter,
   onVotedFilter,
 } from "../utils/filters";
-import InfiniteScroll from "react-infinite-scroll-component";
+// import InfiniteScroll from "react-infinite-scroll-component";
 import {
   setBetter,
   setSearch,
@@ -37,6 +37,8 @@ import {
 } from "../features/filterSlice";
 
 const Showdown = () => {
+  /* Local state */
+
   /* Redux */
   const { user } = useSelector((state) => state.authState);
   const { id: userId } = user;
@@ -48,8 +50,8 @@ const Showdown = () => {
   const [inputSearch, setInputSearch] = useState("");
   const [filteredList, setFilteredList] = useState(null);
 
-  /* Utils */
-  const applyFilters = () => {
+  const applyFilters = useRef(() => {});
+  applyFilters.current = () => {
     let tempFilteredList = matchups;
 
     /* Search Filter */
@@ -76,25 +78,25 @@ const Showdown = () => {
   };
 
   /* Infinite Scroll */
-  const loadCount = 16;
-  const initialVisible = 8;
-  const [displayList, setDisplayList] = useState(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [visible, setVisible] = useState(initialVisible);
+  // const loadCount = 16;
+  // const initialVisible = 8;
+  // const [displayList, setDisplayList] = useState(null);
+  // const [hasMore, setHasMore] = useState(true);
+  // const [visible, setVisible] = useState(initialVisible);
 
-  const fetchMoreData = () => {
-    if (displayList.length >= filteredList.length) {
-      setHasMore(false);
-      return;
-    }
+  // const fetchMoreData = () => {
+  //   if (displayList.length >= filteredList.length) {
+  //     setHasMore(false);
+  //     return;
+  //   }
 
-    setDisplayList(filteredList.slice(0, visible + loadCount));
-    setVisible((prev) => prev + loadCount);
-  };
+  //   setDisplayList(filteredList.slice(0, visible + loadCount));
+  //   setVisible((prev) => prev + loadCount);
+  // };
 
   /* Useeffects */
   useEffect(() => {
-    applyFilters();
+    applyFilters.current();
   }, [filters]);
 
   useEffect(() => {
@@ -103,13 +105,13 @@ const Showdown = () => {
     }
   }, [matchups]);
 
-  useEffect(() => {
-    if (filteredList) {
-      setDisplayList(filteredList.slice(0, initialVisible));
-      setVisible(initialVisible);
-      setHasMore(true);
-    }
-  }, [filteredList]);
+  // useEffect(() => {
+  //   if (filteredList) {
+  //     setDisplayList(filteredList.slice(0, initialVisible));
+  //     setVisible(initialVisible);
+  //     setHasMore(true);
+  //   }
+  // }, [filteredList]);
 
   return (
     <Box
@@ -238,7 +240,8 @@ const Showdown = () => {
           <Spinner />
         </Box>
       ) : (
-        displayList && (
+        // displayList or filteredlist
+        filteredList && (
           <>
             {/* Infinite Scroll or Box ? */}
             <Box

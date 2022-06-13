@@ -8,7 +8,7 @@ import {
   Tooltip,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useAddVoteMutation,
   useDeleteMatchupMutation,
@@ -34,6 +34,9 @@ const MatchupCard = ({ matchup, userId }) => {
     useAddVoteMutation();
   const dispatch = useDispatch();
 
+  /* Utils */
+  const toast = useToast();
+
   /* Handlers */
   const handleVote = async (matchupId, votedFor) => {
     if (userId === "guest") {
@@ -43,9 +46,10 @@ const MatchupCard = ({ matchup, userId }) => {
       //proceed vote
     } else {
       await addVote({ userId, matchupId, votedFor });
-      setIsStatsVisible(true);
-      //vote toast should not be on this mapped components
       toast(toastList.voteToast);
+      setTimeout(() => {
+        setIsStatsVisible(true);
+      }, 200);
     }
   };
 
@@ -53,9 +57,6 @@ const MatchupCard = ({ matchup, userId }) => {
     await deleteMatchup({ matchupId });
     toast(toastList.deleteToast);
   };
-
-  /* Utils */
-  const toast = useToast();
 
   const votePercentage = (bookVotes, movieVotes, type) => {
     if (bookVotes + movieVotes !== 0) {

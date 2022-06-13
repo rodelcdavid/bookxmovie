@@ -9,7 +9,7 @@ const Book = ({
   handleVote,
   votePercentage,
   isStatsVisible,
-  voted,
+  // voted,
 }) => {
   return (
     <Box
@@ -27,13 +27,13 @@ const Book = ({
         isLoading={isVoting}
         colorScheme="teal"
         size="xs"
-        borderRadius="3px"
+        borderRadius="0"
         width="120px"
         marginBottom="0.2rem"
         disabled={matchup.votedFor ? true : false}
         position="relative"
       >
-        {matchup.votedFor ? "You already voted" : "Vote for Book"}
+        Vote for Book
       </Button>
 
       <Box

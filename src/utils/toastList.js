@@ -12,7 +12,7 @@ export const toastList = {
     isClosable: true,
   },
   voteToast: {
-    title: "Thank you for voting!",
+    title: "Thanks for voting!",
     status: "success",
     duration: 3000,
     isClosable: true,

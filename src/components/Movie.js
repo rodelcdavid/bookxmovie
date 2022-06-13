@@ -25,11 +25,13 @@ const Movie = ({
         colorScheme="teal"
         size="xs"
         width="120px"
-        borderRadius="3px"
+        borderRadius="0"
         marginBottom="0.2rem"
         isDisabled={matchup.votedFor ? true : false}
+        // visibility={matchup.votedFor ? "hidden" : "visible"}
       >
-        {matchup.votedFor ? "You already voted" : "Vote for Movie"}
+        {/* {matchup.votedFor ? "Movie" : "Vote for Movie"} */}
+        Vote for Movie
       </Button>
 
       <Box
