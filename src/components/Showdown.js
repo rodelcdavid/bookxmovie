@@ -252,7 +252,8 @@ const Showdown = () => {
                 justifyItems: "center",
                 display: "grid",
                 gridTemplateColumns: "repeat( auto-fit, minmax(320px, 1fr) )",
-                rowGap: "1rem",
+                rowGap: "5rem",
+                columnGap: "1.5rem",
                 padding: "1rem 0",
               }}
             >

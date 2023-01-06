@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import logo from "../assets/logo.png";
+import logo2 from "../assets/logo-2.png";
 import {
   setOpenAccessDialog,
   setTabIndex,
@@ -81,7 +81,7 @@ const AppHeader = () => {
           },
         }}
       >
-        <Image src={logo} alt="" htmlWidth="50px" marginRight="10px" />
+        <Image src={logo2} alt="" htmlWidth="50px" marginRight="10px" />
 
         <Text>book</Text>
         <Text fontSize="5xl">X</Text>
