@@ -22,7 +22,6 @@ export const authSlice = createSlice({
   },
 });
 
-// Action creators are generated for each case reducer function
 export const { setUser, setOpenAccessDialog, setTabIndex } = authSlice.actions;
 
 export default authSlice.reducer;
