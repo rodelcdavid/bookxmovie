@@ -26,17 +26,15 @@ const FindAndMatchModal = () => {
   return (
     <Box>
       <Button
-        sx={{
-          position: "fixed",
-          bottom: "20px",
-          right: "20px",
-          borderRadius: "100%",
-          width: "60px",
-          height: "60px",
-          fontWeight: "bolder",
-          fontSize: "1.3rem",
-          zIndex: 3,
-        }}
+        pos="fixed"
+        bottom="20px"
+        right="20px"
+        borderRadius="100%"
+        w="60px"
+        h="60px"
+        fontWeight="bolder"
+        fontSize="1.3rem"
+        zIndex="3"
         onClick={() => {
           dispatch(setOpenModal(true));
           // Reset

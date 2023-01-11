@@ -10,15 +10,7 @@ const Movie = ({
   isStatsVisible,
 }) => {
   return (
-    <Box
-      sx={{
-        width: "300px",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
+    <Box w="300px" h="100%" display="flex" flexDir="column" alignItems="center">
       <Button
         onClick={() => handleVote(matchup.id, "movie")}
         isLoading={isVoting}
@@ -28,50 +20,44 @@ const Movie = ({
         borderRadius="0"
         marginBottom="0.2rem"
         isDisabled={matchup.votedFor ? true : false}
-        // visibility={matchup.votedFor ? "hidden" : "visible"}
       >
-        {/* {matchup.votedFor ? "Movie" : "Vote for Movie"} */}
         Vote for Movie
       </Button>
 
       <Box
-        sx={{
-          position: "relative",
-          overflow: "hidden",
-
-          "&::after": {
-            content: `"Voted"`,
-            position: "absolute",
-            width: "70px",
-            fontSize: "0.7rem",
-            fontWeight: "bolder",
-            top: "10px",
-            right: "-17px",
-            color: "#000",
-            backgroundColor: "gold",
-            transform: "rotate(45deg)",
-            display: matchup.votedFor === "movie" ? "block" : "none",
-          },
-
-          "&::before": {
-            content: `"${votePercentage(
-              matchup.bookVotes,
-              matchup.movieVotes,
-              "movie"
-            )}%"`,
-            paddingTop: "4.2rem",
-            position: "absolute",
-            width: "120px",
-            height: "180px",
-            fontSize: "1.8rem",
-            fontWeight: "bolder",
-            top: "0",
-            right: "0",
-            color: "#fff",
-            backgroundColor: "rgba(0,0,0,0.6)",
-            opacity: isStatsVisible ? "1" : "0",
-            transition: "opacity 0.3s ease-out",
-          },
+        pos="relative"
+        overflow="hidden"
+        _after={{
+          content: `"Voted"`,
+          position: "absolute",
+          width: "70px",
+          fontSize: "0.7rem",
+          fontWeight: "bolder",
+          top: "10px",
+          right: "-17px",
+          color: "#000",
+          backgroundColor: "gold",
+          transform: "rotate(45deg)",
+          display: matchup.votedFor === "movie" ? "block" : "none",
+        }}
+        _before={{
+          content: `"${votePercentage(
+            matchup.bookVotes,
+            matchup.movieVotes,
+            "movie"
+          )}%"`,
+          paddingTop: "4.2rem",
+          position: "absolute",
+          width: "120px",
+          height: "180px",
+          fontSize: "1.8rem",
+          fontWeight: "bolder",
+          top: "0",
+          right: "0",
+          color: "#fff",
+          backgroundColor: "rgba(0,0,0,0.6)",
+          opacity: isStatsVisible ? "1" : "0",
+          transition: "opacity 0.3s ease-out",
         }}
       >
         <Image

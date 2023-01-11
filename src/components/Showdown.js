@@ -28,7 +28,6 @@ import {
   onSortFilter,
   onVotedFilter,
 } from "../utils/filters";
-// import InfiniteScroll from "react-infinite-scroll-component";
 import {
   setBetter,
   setSearch,
@@ -114,38 +113,23 @@ const Showdown = () => {
   // }, [filteredList]);
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "#F8F3D4",
-        padding: "1rem 0",
-        minHeight: "calc(100vh - 72px)",
-      }}
-    >
-      <Box
-        sx={{
-          textAlign: "center",
-          color: "rgba(0,0,0,0.87)",
-          padding: "0 0.5rem",
-        }}
-      >
+    <Box bgColor="#F8F3D4" padding="1rem 0" minH="calc(100vh - 72px)">
+      <Box textAlign="center" color="rgba(0,0,0,0.87)" padding="0 0.5rem">
         <Heading size="md">
           Browse for books and movies and see which one people think was better.
         </Heading>
       </Box>
       <Box
-        sx={{
-          width: "30%",
-          minWidth: "300px",
-          margin: "0 auto",
-          display: "flex",
-          gap: "5px",
-          marginTop: "1rem",
-        }}
+        w="30%"
+        minW="300px"
+        margin="0 auto"
+        display="flex"
+        gap="5px"
+        mt="1rem"
       >
         <Input
           type="search"
           placeholder="Search for book or movie"
-          sx={{ backgroundColor: "#fff" }}
           value={inputSearch}
           onChange={(e) => setInputSearch(e.target.value)}
           onKeyDown={(e) => {
@@ -154,6 +138,7 @@ const Showdown = () => {
               dispatch(setSearch({ search: inputSearch }));
             }
           }}
+          bgColor="#fff"
         />
         <Button
           onClick={() => dispatch(setSearch({ search: inputSearch }))}
@@ -164,17 +149,7 @@ const Showdown = () => {
       </Box>
       <Divider margin="1rem auto" borderColor="teal" />
       {!isLoading && userId !== "guest" && (
-        <Box
-          display="flex"
-          gap="10px"
-          justifyContent="center"
-          sx={{
-            "@media (min-width:960px)": {
-              justifyContent: "flex-end",
-              marginRight: "1rem",
-            },
-          }}
-        >
+        <Box display="flex" gap="10px" justifyContent="center">
           <Menu>
             <MenuButton
               as={IconButton}

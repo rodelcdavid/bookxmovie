@@ -7,10 +7,6 @@ import Showdown from "./components/Showdown";
 function App() {
   const { user } = useSelector((state) => state.authState);
 
-  useEffect(() => {
-    // const prevUser = localStorage.getItem("user");
-  }, []);
-
   return (
     <>
       <AppHeader />

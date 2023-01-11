@@ -47,11 +47,7 @@ const AccessDialog = () => {
             <AlertDialogCloseButton />
 
             <AlertDialogBody>
-              <Box
-                border="3px solid teal"
-                borderRadius="10px"
-                // minHeight="20rem"
-              >
+              <Box border="3px solid teal" borderRadius="10px">
                 <Tabs
                   onChange={(index) => dispatch(setTabIndex(index))}
                   index={tabIndex}

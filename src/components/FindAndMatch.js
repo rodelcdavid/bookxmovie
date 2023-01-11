@@ -11,7 +11,6 @@ import React, { useState } from "react";
 import FindBook from "./FindBook";
 import FindMovie from "./FindMovie";
 import Selected from "./Selected";
-import { useDispatch, useSelector } from "react-redux";
 
 const FindAndMatch = () => {
   //use Promise.all to fetch all bookId
@@ -24,14 +23,12 @@ const FindAndMatch = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex", gap: "30px" }}>
+      <Box display="flex" gap="30px">
         <Box
-          sx={{
-            width: "800px",
-            height: "450px",
-            border: "1px solid rgba(0,0,0,0.87)",
-            overflow: "auto",
-          }}
+          border="1px solid rgba(0,0,0,0.87)"
+          w="800px"
+          h="450px"
+          overflow="auto"
         >
           <Tabs isFitted variant="enclosed" colorScheme="green">
             <TabList>
