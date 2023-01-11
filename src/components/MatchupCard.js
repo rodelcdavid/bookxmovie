@@ -1,16 +1,29 @@
-import { DeleteIcon, EditIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import {
+  CloseIcon,
+  DeleteIcon,
+  EditIcon,
+  ViewIcon,
+  ViewOffIcon,
+} from "@chakra-ui/icons";
 import {
   Box,
   Button,
+  IconButton,
   Heading,
   Image,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
   Text,
   Tooltip,
   useToast,
 } from "@chakra-ui/react";
+import { FiMoreVertical } from "react-icons/fi";
 import React, { useEffect, useState } from "react";
 import {
   useAddVoteMutation,
+  useRemoveVoteMutation,
   useDeleteMatchupMutation,
 } from "../services/matchupsApi";
 import { toastList } from "../utils/toastList";
@@ -23,16 +36,19 @@ import {
   setOpenEditVoteModal,
   setSelectedMatchup,
 } from "../features/matchupsSlice";
+import { useSelector } from "react-redux";
 
 const MatchupCard = ({ matchup, userId }) => {
   /* Local state */
   const [isStatsVisible, setIsStatsVisible] = useState(false);
 
   /* Redux */
+  const [removeVote, { isLoading: isRemoving }] = useRemoveVoteMutation();
   const [deleteMatchup, { isLoading: isDeleting }] = useDeleteMatchupMutation();
   const [addVote, { isSuccess: voted, isLoading: isVoting }] =
     useAddVoteMutation();
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.authState);
 
   /* Utils */
   const toast = useToast();
@@ -51,6 +67,15 @@ const MatchupCard = ({ matchup, userId }) => {
         setIsStatsVisible(true);
       }, 200);
     }
+  };
+
+  const handleRemoveVote = async (matchupId, votedFor) => {
+    await removeVote({
+      matchupId,
+      userId,
+      votedFor,
+    });
+    toast(toastList.removeVoteToast);
   };
 
   const handleDelete = async (matchupId) => {
@@ -101,53 +126,44 @@ const MatchupCard = ({ matchup, userId }) => {
   return (
     <>
       <Box
-        sx={{
-          boxShadow: "0 5px 10px rgba(0,0,0,0.6)",
-          borderRadius: "10px",
-          width: "300px",
-          overflow: "hidden",
-          backgroundColor: "#fff",
-          position: "relative",
-        }}
+        boxShadow="0 5px 10px rgba(0,0,0,0.6)"
+        borderRadius="10px"
+        w="300px"
+        overflow="hidden"
+        bgColor="#fff"
+        pos="relative"
       >
         <Box
-          sx={{
-            textAlign: "center",
-            margin: "0 auto",
-            backgroundColor: "#FFDE7D",
-            color: "rgba(0,0,0,0.87)",
-            padding: "0.5rem",
-            height: "4rem",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
+          textAlign="center"
+          bgColor="#FFDE7D"
+          color="rgba(0,0,0,0.87)"
+          pos="relative"
+          h="4rem"
+          display="flex"
+          flexDir="column"
+          justifyContent="center"
+          alignItems="center"
         >
           <Heading
             size="md"
-            sx={{
-              borderBottom: "1px solid rgba(0,0,0,0.87)",
-              width: "75%",
-              margin: "0 auto",
-              position: "relative",
-              paddingBottom: "0.2rem",
-            }}
+            borderBottom="1px solid rgba(0,0,0,0.87)"
+            w="75%"
+            m="0 auto"
+            pos="relative"
+            paddingBottom="0.2rem"
           >
             {whichWasBetter(matchup.bookVotes, matchup.movieVotes)}
           </Heading>
-          <Text sx={{ fontSize: "0.75rem" }}>
+          <Text fontSize="0.75rem">
             Total votes:{" "}
             {isStatsVisible ? matchup.bookVotes + matchup.movieVotes : "—"}
           </Text>
         </Box>
         <Box
-          sx={{
-            padding: "0.5rem 0",
-            display: "flex",
-            justifyContent: "center",
-            textAlign: "center",
-          }}
+          padding="0.5rem 0"
+          display="flex"
+          justifyContent="center"
+          textAlign="center"
         >
           {/* Book */}
           <Book
@@ -160,31 +176,7 @@ const MatchupCard = ({ matchup, userId }) => {
             voted={voted}
           />
 
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              width: "24px",
-            }}
-          >
-            <Tooltip
-              label={isStatsVisible ? "Hide stats" : "Show stats"}
-              hasArrow
-              placement="top"
-            >
-              <Button
-                onClick={() =>
-                  userId === "guest"
-                    ? handleVote()
-                    : setIsStatsVisible((prev) => !prev)
-                }
-                colorScheme="teal"
-                variant="outline"
-                size="xs"
-              >
-                {isStatsVisible ? <ViewOffIcon /> : <ViewIcon />}
-              </Button>
-            </Tooltip>
+          <Box display="flex" flexDir="column" w="24px">
             <Image
               src={vs}
               alt=""
@@ -207,37 +199,77 @@ const MatchupCard = ({ matchup, userId }) => {
             isStatsVisible={isStatsVisible}
           />
         </Box>
-        {userId === 1 && (
-          <>
-            <Button
-              colorScheme="teal"
-              onClick={() => {
-                dispatch(setSelectedMatchup(matchup));
-                dispatch(setOpenEditVoteModal(true));
-              }}
-              size="xs"
-              sx={{
-                position: "absolute",
-                right: 2,
-                top: 1,
-              }}
-            >
-              <EditIcon />
-            </Button>
-            <Button
-              colorScheme="red"
-              onClick={() => handleDelete(matchup.id)}
-              isLoading={isDeleting}
-              size="xs"
-              sx={{
-                position: "absolute",
-                right: 2,
-                top: "37px",
-              }}
-            >
-              <DeleteIcon />
-            </Button>
-          </>
+
+        {userId !== "guest" && (
+          <Menu>
+            {({ isOpen }) => (
+              <>
+                <MenuButton
+                  isActive={isOpen}
+                  as={IconButton}
+                  size="lg"
+                  icon={<FiMoreVertical />}
+                  bg="transparent"
+                  style={{ opacity: 1 }}
+                  _active={{ backgroundColor: "rgba(0,0,0,0.10)" }}
+                  pos="absolute"
+                  right="0"
+                  top="12px"
+                  borderRadius="100%"
+                  bgColor="#FFDE7D"
+                  _focus={{ boxShadow: "none", backgroundColor: "#FFDE7D" }}
+                  _hover={{ backgroundColor: "rgba(0,0,0,0.10)" }}
+                />
+
+                <MenuList
+                  sx={{
+                    "& span": {
+                      display: "flex",
+                      alignItems: "center",
+                    },
+                  }}
+                >
+                  <MenuItem
+                    onClick={() => setIsStatsVisible((prev) => !prev)}
+                    icon={isStatsVisible ? <ViewOffIcon /> : <ViewIcon />}
+                  >
+                    {isStatsVisible ? "Hide" : "Show"} Stats
+                  </MenuItem>
+                  {matchup.votedFor && (
+                    <MenuItem
+                      onClick={() =>
+                        handleRemoveVote(matchup.id, matchup.votedFor)
+                      }
+                      icon={<CloseIcon />}
+                    >
+                      Remove Vote
+                    </MenuItem>
+                  )}
+
+                  {user.id === 1 && (
+                    <>
+                      <MenuItem
+                        onClick={() => {
+                          dispatch(setSelectedMatchup(matchup));
+                          dispatch(setOpenEditVoteModal(true));
+                        }}
+                        icon={<EditIcon />}
+                      >
+                        Edit Votes
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => handleDelete(matchup.id)}
+                        icon={<DeleteIcon />}
+                        color="red"
+                      >
+                        Delete
+                      </MenuItem>
+                    </>
+                  )}
+                </MenuList>
+              </>
+            )}
+          </Menu>
         )}
       </Box>
     </>

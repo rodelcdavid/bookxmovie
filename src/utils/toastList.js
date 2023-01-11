@@ -17,6 +17,14 @@ export const toastList = {
     duration: 3000,
     isClosable: true,
   },
+
+  removeVoteToast: {
+    title: "Vote removed",
+    status: "success",
+    duration: 3000,
+    isClosable: true,
+  },
+
   accessToast: {
     title: "Please login to continue.",
     status: "warning",

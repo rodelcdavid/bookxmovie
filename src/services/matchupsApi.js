@@ -57,6 +57,16 @@ export const matchupsApi = createApi({
       invalidatesTags: ["Matchup"],
     }),
 
+    //removeVote
+    removeVote: builder.mutation({
+      query: ({ matchupId, ...patch }) => ({
+        url: `remove-vote/${matchupId}`,
+        method: "PATCH",
+        body: patch,
+      }),
+      invalidatesTags: ["Matchup"],
+    }),
+
     //deleteMatchup
     deleteMatchup: builder.mutation({
       query: (matchupId) => ({
@@ -69,12 +79,11 @@ export const matchupsApi = createApi({
   }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
 export const {
   useGetMatchupsQuery,
   useAddMatchupMutation,
   useUpdateVoteMutation,
+  useRemoveVoteMutation,
   useDeleteMatchupMutation,
   useAddVoteMutation,
 } = matchupsApi;
