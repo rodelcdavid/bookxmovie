@@ -10,6 +10,13 @@ const theme = extendTheme({
       },
     },
   },
+  breakpoints: {
+    sm: "320px",
+    md: "664px",
+    lg: "960px",
+    xl: "1200px",
+    "2xl": "1536px",
+  },
 });
 
 export default theme;

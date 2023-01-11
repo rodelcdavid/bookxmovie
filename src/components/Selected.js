@@ -57,32 +57,20 @@ const Selected = () => {
   };
 
   return (
-    <Box sx={{ textAlign: "center" }}>
+    <Box textAlign="center">
       <Box
-        sx={{
-          padding: "1rem",
-          display: "flex",
-          flexDirection: "column",
-          gap: "30px",
-          justifyContent: "center",
-          alignItems: "center",
-          borderBottom: "1px solid rgba(0,0,0,0.87)",
-
-          "@media (min-width:400px)": {
-            flexDirection: "row",
-            alignItems: "initial",
-          },
-        }}
+        display="flex"
+        flexDir={["column", "column", "row"]}
+        alignItems={["center", "center", "initial"]}
+        justifyContent="center"
+        borderBottom="1px solid rgba(0,0,0,0.87)"
+        gap="30px"
+        padding="1rem"
       >
         {/* Book */}
 
         {selectedBook ? (
-          <Box
-            sx={{
-              width: "120px",
-              textAlign: "center",
-            }}
-          >
+          <Box w="120px" textAlign="center">
             <Heading size="md">
               {((bookVotes / (bookVotes + movieVotes)) * 100).toFixed(2)}%
             </Heading>
@@ -108,13 +96,13 @@ const Selected = () => {
           </Box>
         )}
 
-        <Box sx={{ textAlign: "center", alignSelf: "center" }}>
+        <Box textAlign="center" alignSelf="center">
           <Heading>VS</Heading>
         </Box>
 
         {/* Movie */}
         {selectedMovie ? (
-          <Box sx={{ width: "120px", textAlign: "center" }}>
+          <Box w="120px" textAlign="center">
             <Heading size="md">
               {((movieVotes / (bookVotes + movieVotes)) * 100).toFixed(2)}%
             </Heading>

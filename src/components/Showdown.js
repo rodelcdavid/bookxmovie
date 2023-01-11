@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 
 import { BiFilter, BiSort } from "react-icons/bi";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useGetMatchupsQuery } from "../services/matchupsApi";
@@ -28,7 +28,6 @@ import {
   onSortFilter,
   onVotedFilter,
 } from "../utils/filters";
-import InfiniteScroll from "react-infinite-scroll-component";
 import {
   setBetter,
   setSearch,
@@ -37,6 +36,8 @@ import {
 } from "../features/filterSlice";
 
 const Showdown = () => {
+  /* Local state */
+
   /* Redux */
   const { user } = useSelector((state) => state.authState);
   const { id: userId } = user;
@@ -48,8 +49,8 @@ const Showdown = () => {
   const [inputSearch, setInputSearch] = useState("");
   const [filteredList, setFilteredList] = useState(null);
 
-  /* Utils */
-  const applyFilters = () => {
+  const applyFilters = useRef(() => {});
+  applyFilters.current = () => {
     let tempFilteredList = matchups;
 
     /* Search Filter */
@@ -76,25 +77,25 @@ const Showdown = () => {
   };
 
   /* Infinite Scroll */
-  const loadCount = 16;
-  const initialVisible = 8;
-  const [displayList, setDisplayList] = useState(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [visible, setVisible] = useState(initialVisible);
+  // const loadCount = 16;
+  // const initialVisible = 8;
+  // const [displayList, setDisplayList] = useState(null);
+  // const [hasMore, setHasMore] = useState(true);
+  // const [visible, setVisible] = useState(initialVisible);
 
-  const fetchMoreData = () => {
-    if (displayList.length >= filteredList.length) {
-      setHasMore(false);
-      return;
-    }
+  // const fetchMoreData = () => {
+  //   if (displayList.length >= filteredList.length) {
+  //     setHasMore(false);
+  //     return;
+  //   }
 
-    setDisplayList(filteredList.slice(0, visible + loadCount));
-    setVisible((prev) => prev + loadCount);
-  };
+  //   setDisplayList(filteredList.slice(0, visible + loadCount));
+  //   setVisible((prev) => prev + loadCount);
+  // };
 
   /* Useeffects */
   useEffect(() => {
-    applyFilters();
+    applyFilters.current();
   }, [filters]);
 
   useEffect(() => {
@@ -103,47 +104,32 @@ const Showdown = () => {
     }
   }, [matchups]);
 
-  useEffect(() => {
-    if (filteredList) {
-      setDisplayList(filteredList.slice(0, initialVisible));
-      setVisible(initialVisible);
-      setHasMore(true);
-    }
-  }, [filteredList]);
+  // useEffect(() => {
+  //   if (filteredList) {
+  //     setDisplayList(filteredList.slice(0, initialVisible));
+  //     setVisible(initialVisible);
+  //     setHasMore(true);
+  //   }
+  // }, [filteredList]);
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "#F8F3D4",
-        padding: "1rem 0",
-        minHeight: "calc(100vh - 72px)",
-      }}
-    >
-      <Box
-        sx={{
-          textAlign: "center",
-          color: "rgba(0,0,0,0.87)",
-          padding: "0 0.5rem",
-        }}
-      >
+    <Box bgColor="#F8F3D4" padding="1rem 0" minH="calc(100vh - 72px)">
+      <Box textAlign="center" color="rgba(0,0,0,0.87)" padding="0 0.5rem">
         <Heading size="md">
           Browse for books and movies and see which one people think was better.
         </Heading>
       </Box>
       <Box
-        sx={{
-          width: "30%",
-          minWidth: "300px",
-          margin: "0 auto",
-          display: "flex",
-          gap: "5px",
-          marginTop: "1rem",
-        }}
+        w="30%"
+        minW="300px"
+        margin="0 auto"
+        display="flex"
+        gap="5px"
+        mt="1rem"
       >
         <Input
           type="search"
           placeholder="Search for book or movie"
-          sx={{ backgroundColor: "#fff" }}
           value={inputSearch}
           onChange={(e) => setInputSearch(e.target.value)}
           onKeyDown={(e) => {
@@ -152,6 +138,7 @@ const Showdown = () => {
               dispatch(setSearch({ search: inputSearch }));
             }
           }}
+          bgColor="#fff"
         />
         <Button
           onClick={() => dispatch(setSearch({ search: inputSearch }))}
@@ -162,17 +149,7 @@ const Showdown = () => {
       </Box>
       <Divider margin="1rem auto" borderColor="teal" />
       {!isLoading && userId !== "guest" && (
-        <Box
-          display="flex"
-          gap="10px"
-          justifyContent="center"
-          sx={{
-            "@media (min-width:960px)": {
-              justifyContent: "flex-end",
-              marginRight: "1rem",
-            },
-          }}
-        >
+        <Box display="flex" gap="10px" justifyContent="center">
           <Menu>
             <MenuButton
               as={IconButton}
@@ -238,7 +215,8 @@ const Showdown = () => {
           <Spinner />
         </Box>
       ) : (
-        displayList && (
+        // displayList or filteredlist
+        filteredList && (
           <>
             {/* Infinite Scroll or Box ? */}
             <Box
@@ -249,7 +227,8 @@ const Showdown = () => {
                 justifyItems: "center",
                 display: "grid",
                 gridTemplateColumns: "repeat( auto-fit, minmax(320px, 1fr) )",
-                rowGap: "1rem",
+                rowGap: "5rem",
+                columnGap: "1.5rem",
                 padding: "1rem 0",
               }}
             >

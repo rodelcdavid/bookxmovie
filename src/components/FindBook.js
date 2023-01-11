@@ -32,10 +32,11 @@ const FindBook = () => {
   };
 
   return (
-    <Box sx={{ textAlign: "center" }}>
+    <Box textAlign="center">
       <Box width="80%" margin="0 auto" display="flex" gap="5px">
         <Input
           type="search"
+          placeholder="Find a book"
           onChange={(e) => setInputBook(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
@@ -50,39 +51,35 @@ const FindBook = () => {
 
       {bookResults && (
         <Box
-          sx={{
-            display: "flex",
-            gap: "20px",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            marginTop: "1rem",
-          }}
+          display="flex"
+          gap="20px"
+          flexWrap="wrap"
+          justifyContent="center"
+          mt="1rem"
         >
           {bookResults.items.map((book) => {
             return (
               <Box
-                sx={{
-                  cursor: "pointer",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  width: "150px",
-                  border: selectedBook === book ? "1px solid teal" : "none",
-                  position: "relative",
-                  overflow: "hidden",
-                  "&::after": {
-                    content: `"selected"`,
-                    position: "absolute",
-                    backgroundColor: "teal",
-                    color: "#fff",
-                    transform: "rotate(-45deg)",
-                    fontSize: "0.8rem",
-                    padding: "0.3rem 1rem",
-                    borderRadius: "5px",
-                    display: selectedBook === book ? "block" : "none",
-                    top: "5px",
-                    left: "-20px",
-                  },
+                cursor="pointer"
+                display="flex"
+                flexDir="column"
+                alignItems="center"
+                w="150px"
+                border={selectedBook === book ? "1px solid teal" : "none"}
+                pos="relative"
+                overflow="hidden"
+                _after={{
+                  content: `"selected"`,
+                  position: "absolute",
+                  backgroundColor: "teal",
+                  color: "#fff",
+                  transform: "rotate(-45deg)",
+                  fontSize: "0.8rem",
+                  padding: "0.3rem 1rem",
+                  borderRadius: "5px",
+                  display: selectedBook === book ? "block" : "none",
+                  top: "5px",
+                  left: "-20px",
                 }}
                 key={book.id}
                 onClick={() => dispatch(setSelectedBook(book))}
@@ -97,7 +94,7 @@ const FindBook = () => {
                   width="150px"
                   height="200px"
                 />
-                <Text sx={{ textAlign: "center" }} fontWeight="bold">
+                <Text textAlign="center" fontWeight="bold">
                   {book.volumeInfo.title}
                 </Text>
                 <Text>{book.volumeInfo.ratingsCount || 0}</Text>

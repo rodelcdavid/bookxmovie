@@ -28,6 +28,9 @@ const Login = () => {
     useSignUpMutation();
   const dispatch = useDispatch();
 
+  /* Utils */
+  const toast = useToast();
+
   /* Handlers */
   const handleLogin = async () => {
     await logIn({ email, password });
@@ -42,9 +45,6 @@ const Login = () => {
     };
     await signUp(tester);
   };
-
-  /* Utils */
-  const toast = useToast();
 
   /* Useeffects */
   useEffect(() => {
@@ -63,7 +63,7 @@ const Login = () => {
         dispatch(setOpenAccessDialog(false));
       }, 2000);
     }
-  }, [user, tester, dispatch]);
+  }, [user, tester, dispatch, toast]);
 
   return (
     <>

@@ -25,10 +25,11 @@ const FindMovie = () => {
   };
 
   return (
-    <Box sx={{ textAlign: "center" }}>
+    <Box textAlign="center">
       <Box width="80%" margin="0 auto" display="flex" gap="5px">
         <Input
           type="search"
+          placeholder="Find a movie"
           onChange={(e) => setInputMovie(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
@@ -41,40 +42,36 @@ const FindMovie = () => {
         </Button>
       </Box>
       <Box
-        sx={{
-          display: "flex",
-          gap: "20px",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          marginTop: "1rem",
-        }}
+        display="flex"
+        gap="20px"
+        flexWrap="wrap"
+        justifyContent="center"
+        marginTop="1rem"
       >
         {movieResults &&
           movieResults.results.map((movie) => {
             return (
               <Box
-                sx={{
-                  cursor: "pointer",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  width: "150px",
-                  border: selectedMovie === movie ? "1px solid teal" : "none",
-                  position: "relative",
-                  overflow: "hidden",
-                  "&::after": {
-                    content: `"selected"`,
-                    position: "absolute",
-                    backgroundColor: "teal",
-                    color: "#fff",
-                    transform: "rotate(-45deg)",
-                    fontSize: "0.8rem",
-                    padding: "0.3rem 1rem",
-                    borderRadius: "5px",
-                    display: selectedMovie === movie ? "block" : "none",
-                    top: "5px",
-                    left: "-20px",
-                  },
+                cursor="pointer"
+                display="flex"
+                flexDir="column"
+                alignItems="center"
+                w="150px"
+                border={selectedMovie === movie ? "1px solid teal" : "none"}
+                pos="relative"
+                overflow="hidden"
+                _after={{
+                  content: `"selected"`,
+                  position: "absolute",
+                  backgroundColor: "teal",
+                  color: "#fff",
+                  transform: "rotate(-45deg)",
+                  fontSize: "0.8rem",
+                  padding: "0.3rem 1rem",
+                  borderRadius: "5px",
+                  display: selectedMovie === movie ? "block" : "none",
+                  top: "5px",
+                  left: "-20px",
                 }}
                 key={movie.id}
                 onClick={() => {
@@ -91,10 +88,10 @@ const FindMovie = () => {
                   width="150px"
                   height="200px"
                 />
-                <Text sx={{ textAlign: "center" }} fontWeight="bold">
+                <Text textAlign="center" fontWeight="bold">
                   {movie.title}
                 </Text>
-                <Text sx={{ textAlign: "center" }}>{movie.vote_count}</Text>
+                <Text textAlign="center">{movie.vote_count}</Text>
               </Box>
             );
           })}

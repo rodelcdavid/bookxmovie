@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import logo from "../assets/logo.png";
+import logo2 from "../assets/logo-2.png";
 import {
   setOpenAccessDialog,
   setTabIndex,
@@ -26,6 +26,9 @@ const AppHeader = () => {
   /* Redux */
   const { user } = useSelector((state) => state.authState);
   const dispatch = useDispatch();
+
+  /* Utils */
+  const toast = useToast();
 
   /* Handlers */
   const handleAccess = (type) => {
@@ -47,46 +50,28 @@ const AppHeader = () => {
     }, 1500);
   };
 
-  /* Utils */
-  const toast = useToast();
-
   return (
-    <Box
-      sx={{
-        backgroundColor: "teal",
-        display: "flex",
-        alignItems: "center",
-        height: "72px",
-      }}
-    >
+    <Box bgColor="teal" display="flex" alignItems="center" h="72px">
+      {/* Logo */}
       <Box
-        sx={{
-          color: "#FFDE7D",
-          fontWeight: "bolder",
-          fontSize: "1.5rem",
-          display: "flex",
-          alignItems: "center",
-          marginRight: "auto",
-          marginLeft: "10px",
-          cursor: "pointer",
-
-          "& > p": {
-            display: "none",
-          },
-
-          "@media(min-width:640px)": {
-            "& > p": {
-              display: "block",
-            },
-          },
-        }}
+        color="#FFDE7D"
+        fontWeight="bolder"
+        fontSize="1.5rem"
+        display="flex"
+        alignItems="center"
+        marginRight="auto"
+        marginLeft="10px"
+        cursor="pointer"
       >
-        <Image src={logo} alt="" htmlWidth="50px" marginRight="10px" />
-
-        <Text>book</Text>
-        <Text fontSize="5xl">X</Text>
-        <Text>movie</Text>
+        <Image src={logo2} alt="" htmlWidth="50px" marginRight="10px" />
+        <Box display={["none", "none", "flex"]} alignItems="center">
+          <Text>book</Text>
+          <Text fontSize="5xl">X</Text>
+          <Text>movie</Text>
+        </Box>
       </Box>
+
+      {/* User / Access */}
       {user.id !== "guest" ? (
         <Box marginRight="10px">
           <Menu closeOnSelect={false}>
@@ -101,15 +86,16 @@ const AppHeader = () => {
       ) : (
         <Box marginLeft="auto" marginRight="10px" display="flex" gap="5px">
           <Button
+            onClick={() => handleAccess("login")}
             colorScheme="yellow"
             color="teal.700"
             _hover={{ backgroundColor: "yellow.200" }}
             _active={{ backgroundColor: "yellow.200" }}
-            onClick={() => handleAccess("login")}
           >
             Log in
           </Button>
           <Button
+            onClick={() => handleAccess("signup")}
             variant="ghost"
             color="#FFDE7D"
             _hover={{ backgroundColor: "none", color: "yellow.200" }}
@@ -118,7 +104,6 @@ const AppHeader = () => {
               color: "yellow.200",
             }}
             _focus={{ outline: "none" }}
-            onClick={() => handleAccess("signup")}
           >
             Sign Up
           </Button>
