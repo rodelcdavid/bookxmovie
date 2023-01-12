@@ -37,8 +37,6 @@ import {
 import { useSelector } from "react-redux";
 
 const MatchupCard = ({ matchup, userId }) => {
-  console.log("rendered");
-
   /* Local state */
   const [isStatsVisible, setIsStatsVisible] = useState(false);
 
