@@ -69,15 +69,13 @@ const Login = () => {
     <>
       {error?.status === 400 && (
         <Box
-          style={{
-            color: "black",
-            textAlign: "center",
-            padding: "0.5rem",
-            marginTop: "1rem",
-            border: "solid 1px red",
-            backgroundColor: "seashell",
-            fontSize: "0.8rem",
-          }}
+          color="black"
+          textAlign="center"
+          padding="0.5rem"
+          mt="1rem"
+          border="solid 1px red"
+          bgColor="seashell"
+          fontSize="0.8rem"
         >
           Email and password combination is incorrect. Please try again.
         </Box>

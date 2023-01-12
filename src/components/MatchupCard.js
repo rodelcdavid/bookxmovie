@@ -211,7 +211,7 @@ const MatchupCard = ({ matchup, userId }) => {
                   size="lg"
                   icon={<FiMoreVertical />}
                   bg="transparent"
-                  style={{ opacity: 1 }}
+                  opacity="1"
                   _active={{ backgroundColor: "rgba(0,0,0,0.10)" }}
                   pos="absolute"
                   right="0"
