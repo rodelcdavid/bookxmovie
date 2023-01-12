@@ -37,6 +37,8 @@ import {
 
 const Showdown = () => {
   /* Local state */
+  const [inputSearch, setInputSearch] = useState("");
+  const [filteredList, setFilteredList] = useState(null);
 
   /* Redux */
   const { user } = useSelector((state) => state.authState);
@@ -44,10 +46,6 @@ const Showdown = () => {
   const { data: matchups, isLoading } = useGetMatchupsQuery(userId);
   const { filters } = useSelector((state) => state.filterState);
   const dispatch = useDispatch();
-
-  /* Local state */
-  const [inputSearch, setInputSearch] = useState("");
-  const [filteredList, setFilteredList] = useState(null);
 
   const applyFilters = useRef(() => {});
   applyFilters.current = () => {
@@ -76,23 +74,6 @@ const Showdown = () => {
     setFilteredList(tempFilteredList);
   };
 
-  /* Infinite Scroll */
-  // const loadCount = 16;
-  // const initialVisible = 8;
-  // const [displayList, setDisplayList] = useState(null);
-  // const [hasMore, setHasMore] = useState(true);
-  // const [visible, setVisible] = useState(initialVisible);
-
-  // const fetchMoreData = () => {
-  //   if (displayList.length >= filteredList.length) {
-  //     setHasMore(false);
-  //     return;
-  //   }
-
-  //   setDisplayList(filteredList.slice(0, visible + loadCount));
-  //   setVisible((prev) => prev + loadCount);
-  // };
-
   /* Useeffects */
   useEffect(() => {
     applyFilters.current();
@@ -101,16 +82,9 @@ const Showdown = () => {
   useEffect(() => {
     if (matchups) {
       setFilteredList(matchups);
+      applyFilters.current();
     }
   }, [matchups]);
-
-  // useEffect(() => {
-  //   if (filteredList) {
-  //     setDisplayList(filteredList.slice(0, initialVisible));
-  //     setVisible(initialVisible);
-  //     setHasMore(true);
-  //   }
-  // }, [filteredList]);
 
   return (
     <Box bgColor="#F8F3D4" padding="1rem 0" minH="calc(100vh - 72px)">
@@ -128,9 +102,6 @@ const Showdown = () => {
         mt="1rem"
       >
         <Input
-          type="search"
-          placeholder="Search for book or movie"
-          value={inputSearch}
           onChange={(e) => setInputSearch(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
@@ -138,6 +109,9 @@ const Showdown = () => {
               dispatch(setSearch({ search: inputSearch }));
             }
           }}
+          type="search"
+          placeholder="Search for book or movie"
+          value={inputSearch}
           bgColor="#fff"
         />
         <Button
@@ -161,9 +135,9 @@ const Showdown = () => {
             </MenuButton>
             <MenuList zIndex="999">
               <MenuOptionGroup
+                onChange={(value) => dispatch(setSortBy({ sortBy: value }))}
                 type="radio"
                 value={filters.sortBy || "popularity"}
-                onChange={(value) => dispatch(setSortBy({ sortBy: value }))}
                 zIndex="999"
               >
                 <MenuItemOption value="popularity">Popularity</MenuItemOption>
@@ -185,10 +159,10 @@ const Showdown = () => {
             </MenuButton>
             <MenuList zIndex="999">
               <MenuOptionGroup
+                onChange={(value) => dispatch(setBetter({ better: value }))}
                 title="Which was better"
                 type="radio"
                 value={filters.better || "all"}
-                onChange={(value) => dispatch(setBetter({ better: value }))}
               >
                 <MenuItemOption value="all">Show all</MenuItemOption>
                 <MenuItemOption value="book">Book was better</MenuItemOption>
@@ -196,10 +170,10 @@ const Showdown = () => {
                 <MenuItemOption value="both">Both were great</MenuItemOption>
               </MenuOptionGroup>
               <MenuOptionGroup
+                onChange={(value) => dispatch(setVoted({ voted: value }))}
                 title="Voted"
                 type="radio"
                 value={filters.voted || "all"}
-                onChange={(value) => dispatch(setVoted({ voted: value }))}
               >
                 <MenuItemOption value="all">Show all</MenuItemOption>
                 <MenuItemOption value="voted">Already voted</MenuItemOption>
@@ -220,17 +194,12 @@ const Showdown = () => {
           <>
             {/* Infinite Scroll or Box ? */}
             <Box
-              // dataLength={displayList.length}
-              // next={fetchMoreData}
-              // hasMore={hasMore}
-              style={{
-                justifyItems: "center",
-                display: "grid",
-                gridTemplateColumns: "repeat( auto-fit, minmax(320px, 1fr) )",
-                rowGap: "5rem",
-                columnGap: "1.5rem",
-                padding: "1rem 0",
-              }}
+              justifyItems="center"
+              display="grid"
+              gridTemplateColumns="repeat( auto-fit, minmax(320px, 1fr) )"
+              rowGap="5rem"
+              columnGap="1.5rem"
+              padding="1rem 0"
             >
               {/* displayList if InfiniteScroll, filteredList if Box */}
               {filteredList.map((matchup, index) => {
