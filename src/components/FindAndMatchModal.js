@@ -9,7 +9,7 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setOpenModal,
@@ -26,6 +26,12 @@ const FindAndMatchModal = () => {
   return (
     <Box>
       <Button
+        onClick={() => {
+          dispatch(setOpenModal(true));
+          // Reset
+          dispatch(setSelectedBook(null));
+          dispatch(setSelectedMovie(null));
+        }}
         pos="fixed"
         bottom="20px"
         right="20px"
@@ -35,12 +41,6 @@ const FindAndMatchModal = () => {
         fontWeight="bolder"
         fontSize="1.3rem"
         zIndex="3"
-        onClick={() => {
-          dispatch(setOpenModal(true));
-          // Reset
-          dispatch(setSelectedBook(null));
-          dispatch(setSelectedMovie(null));
-        }}
         colorScheme="teal"
       >
         +

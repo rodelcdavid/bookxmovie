@@ -91,21 +91,21 @@ const Login = () => {
       >
         <FormLabel htmlFor="login-email">Email</FormLabel>
         <Input
+          onChange={(e) => setEmail(e.target.value)}
           id="login-email"
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
         />
         <FormLabel htmlFor="login-password">Password</FormLabel>
         <Input
+          onChange={(e) => setPassword(e.target.value)}
           id="login-password"
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
         />
         <Button
-          type="submit"
           onClick={handleLogin}
+          type="submit"
           colorScheme="teal"
           marginTop="1rem"
           isFullWidth
@@ -113,8 +113,8 @@ const Login = () => {
           Log In
         </Button>
         <Button
-          type="submit"
           onClick={handleTest}
+          type="submit"
           colorScheme="orange"
           marginTop="5px"
           isFullWidth
