@@ -5,9 +5,8 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React from "react";
 import FindBook from "./FindBook";
 import FindMovie from "./FindMovie";
 import Selected from "./Selected";

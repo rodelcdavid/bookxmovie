@@ -28,14 +28,14 @@ const FindMovie = () => {
     <Box textAlign="center">
       <Box width="80%" margin="0 auto" display="flex" gap="5px">
         <Input
-          type="search"
-          placeholder="Find a movie"
           onChange={(e) => setInputMovie(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               handleSearchMovie();
             }
           }}
+          type="search"
+          placeholder="Find a movie"
         />
         <Button onClick={handleSearchMovie} colorScheme="teal">
           Search
@@ -52,6 +52,9 @@ const FindMovie = () => {
           movieResults.results.map((movie) => {
             return (
               <Box
+                onClick={() => {
+                  dispatch(setSelectedMovie(movie));
+                }}
                 cursor="pointer"
                 display="flex"
                 flexDir="column"
@@ -74,9 +77,6 @@ const FindMovie = () => {
                   left: "-20px",
                 }}
                 key={movie.id}
-                onClick={() => {
-                  dispatch(setSelectedMovie(movie));
-                }}
               >
                 <Image
                   src={

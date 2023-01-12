@@ -31,12 +31,12 @@ const AccessDialog = () => {
   return (
     <>
       <AlertDialog
-        isOpen={openAccessDialog}
-        leastDestructiveRef={cancelRef}
         onClose={() => {
           dispatch(setOpenAccessDialog(false));
           dispatch(setTabIndex(0));
         }}
+        isOpen={openAccessDialog}
+        leastDestructiveRef={cancelRef}
         preserveScrollBarGap
       >
         <AlertDialogOverlay>

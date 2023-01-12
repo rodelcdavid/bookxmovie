@@ -35,14 +35,14 @@ const FindBook = () => {
     <Box textAlign="center">
       <Box width="80%" margin="0 auto" display="flex" gap="5px">
         <Input
-          type="search"
-          placeholder="Find a book"
           onChange={(e) => setInputBook(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               handleSearchBook();
             }
           }}
+          type="search"
+          placeholder="Find a book"
         />
         <Button onClick={handleSearchBook} colorScheme="teal">
           Search
@@ -60,6 +60,7 @@ const FindBook = () => {
           {bookResults.items.map((book) => {
             return (
               <Box
+                onClick={() => dispatch(setSelectedBook(book))}
                 cursor="pointer"
                 display="flex"
                 flexDir="column"
@@ -82,7 +83,6 @@ const FindBook = () => {
                   left: "-20px",
                 }}
                 key={book.id}
-                onClick={() => dispatch(setSelectedBook(book))}
               >
                 <Image
                   src={
