@@ -10,7 +10,7 @@ import {
   MenuItem,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import logo2 from "../assets/logo-2.png";
 import {

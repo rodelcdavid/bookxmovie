@@ -5,7 +5,6 @@ import {
   FormLabel,
   Heading,
   Image,
-  Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -132,12 +131,12 @@ const Selected = () => {
         <FormControl display="flex" flexDir="column" alignItems="center">
           <FormLabel htmlFor="book-votes">Initial book votes:</FormLabel>
           <NumberInput
+            onChange={(value) => setBookVotes(Number(value))}
             id="book-votes"
             size="md"
             maxW={24}
             min={0}
             value={bookVotes}
-            onChange={(value) => setBookVotes(Number(value))}
           >
             <NumberInputField />
             <NumberInputStepper>
@@ -149,12 +148,12 @@ const Selected = () => {
         <FormControl display="flex" flexDir="column" alignItems="center">
           <FormLabel htmlFor="movie-votes">Initial movie votes:</FormLabel>
           <NumberInput
+            onChange={(value) => setMovieVotes(Number(value))}
             id="movie-votes"
             size="md"
             maxW={24}
             min={0}
             value={movieVotes}
-            onChange={(value) => setMovieVotes(Number(value))}
           >
             <NumberInputField />
             <NumberInputStepper>

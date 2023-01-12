@@ -1,10 +1,10 @@
-import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Image, Text } from "@chakra-ui/react";
 
 import React from "react";
 
 const Book = ({
   matchup,
-  userId,
+
   isVoting,
   handleVote,
   votePercentage,

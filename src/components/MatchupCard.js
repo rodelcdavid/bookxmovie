@@ -7,7 +7,6 @@ import {
 } from "@chakra-ui/icons";
 import {
   Box,
-  Button,
   IconButton,
   Heading,
   Image,
@@ -16,7 +15,6 @@ import {
   MenuList,
   MenuItem,
   Text,
-  Tooltip,
   useToast,
 } from "@chakra-ui/react";
 import { FiMoreVertical } from "react-icons/fi";
@@ -39,12 +37,14 @@ import {
 import { useSelector } from "react-redux";
 
 const MatchupCard = ({ matchup, userId }) => {
+  console.log("rendered");
+
   /* Local state */
   const [isStatsVisible, setIsStatsVisible] = useState(false);
 
   /* Redux */
-  const [removeVote, { isLoading: isRemoving }] = useRemoveVoteMutation();
-  const [deleteMatchup, { isLoading: isDeleting }] = useDeleteMatchupMutation();
+  const [removeVote] = useRemoveVoteMutation();
+  const [deleteMatchup] = useDeleteMatchupMutation();
   const [addVote, { isSuccess: voted, isLoading: isVoting }] =
     useAddVoteMutation();
   const dispatch = useDispatch();
@@ -200,6 +200,7 @@ const MatchupCard = ({ matchup, userId }) => {
           />
         </Box>
 
+        {/* open when: clicked, remove vote or delete, close after */}
         {userId !== "guest" && (
           <Menu>
             {({ isOpen }) => (
@@ -276,4 +277,4 @@ const MatchupCard = ({ matchup, userId }) => {
   );
 };
 
-export default MatchupCard;
+export default React.memo(MatchupCard);
