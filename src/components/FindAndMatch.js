@@ -1,25 +1,10 @@
-import {
-  Box,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from "@chakra-ui/react";
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import React from "react";
 import FindBook from "./FindBook";
 import FindMovie from "./FindMovie";
 import Selected from "./Selected";
 
 const FindAndMatch = () => {
-  //use Promise.all to fetch all bookId
-  //get book.selflink
-
-  //use Promise.all to fetch all movieId
-  //  const movieFetchUrl = `https://api.themoviedb.org/3/movie/671?api_key=fbdfc6969e8fbe78212c30a2dcc64f58&language=en-US`
-
-  //Move this to server
-
   return (
     <>
       <Box display="flex" gap="30px">

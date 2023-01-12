@@ -105,7 +105,6 @@ const Showdown = () => {
           onChange={(e) => setInputSearch(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              // setFilters({ ...filters, search: inputSearch });
               dispatch(setSearch({ search: inputSearch }));
             }
           }}
@@ -189,10 +188,8 @@ const Showdown = () => {
           <Spinner />
         </Box>
       ) : (
-        // displayList or filteredlist
         filteredList && (
           <>
-            {/* Infinite Scroll or Box ? */}
             <Box
               justifyItems="center"
               display="grid"
@@ -201,7 +198,6 @@ const Showdown = () => {
               columnGap="1.5rem"
               padding="1rem 0"
             >
-              {/* displayList if InfiniteScroll, filteredList if Box */}
               {filteredList.map((matchup, index) => {
                 return (
                   <MatchupCard
