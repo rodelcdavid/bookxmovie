@@ -36,7 +36,7 @@ const schema = yup.object({
             const dev = process.env.NODE_ENV === "development";
             const baseUrl = dev
               ? "http://localhost:7000"
-              : "https://bookxmovie-api.herokuapp.com";
+              : process.env.REACT_APP_SERVER_URL;
             const res = await fetch(`${baseUrl}/check-email/${email}`);
             if (res.ok) {
               resolve(true);
