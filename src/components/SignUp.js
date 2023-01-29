@@ -37,7 +37,7 @@ const schema = yup.object({
             const baseUrl = dev
               ? "http://localhost:7000"
               : process.env.REACT_APP_SERVER_URL;
-            const res = await fetch(`${baseUrl}/check-email/${email}`);
+            const res = await fetch(`${baseUrl}/api/auth/check-email/${email}`);
             if (res.ok) {
               resolve(true);
             } else {
