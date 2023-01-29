@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const dev = process.env.NODE_ENV === "development";
 const baseUrl = dev
   ? "http://localhost:7000"
-  : "https://bookxmovie-api.herokuapp.com";
+  : process.env.REACT_APP_SERVER_URL;
 
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
@@ -13,7 +13,7 @@ export const authApi = createApi({
     //signUp
     signUp: builder.mutation({
       query: (user) => ({
-        url: "signup",
+        url: "api/auth/signup",
         method: "POST",
         body: user,
       }),
@@ -22,7 +22,7 @@ export const authApi = createApi({
 
     logIn: builder.mutation({
       query: (user) => ({
-        url: "login",
+        url: "api/auth/login",
         method: "POST",
         body: user,
       }),

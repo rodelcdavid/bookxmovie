@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const dev = process.env.NODE_ENV === "development";
 const baseUrl = dev
   ? "http://localhost:7000"
-  : "https://bookxmovie-api.herokuapp.com";
+  : process.env.REACT_APP_SERVER_URL;
 // Define a service using a base URL and expected endpoints
 export const matchupsApi = createApi({
   reducerPath: "matchupsApi",
@@ -11,7 +11,7 @@ export const matchupsApi = createApi({
   tagTypes: ["Matchup"],
   endpoints: (builder) => ({
     getMatchups: builder.query({
-      query: (userId) => `matchups/${userId}`,
+      query: (userId) => `api/matchups/get-all/${userId}`,
       providesTags: ["Matchup"],
       transformResponse: (response) => {
         response = response.map((matchup) => {
@@ -28,10 +28,10 @@ export const matchupsApi = createApi({
         return response;
       },
     }),
-    //addmatchup
+    //addmatchup-admin
     addMatchup: builder.mutation({
       query: (matchup) => ({
-        url: "add",
+        url: "api/admin/matchups/add-matchup",
         method: "POST",
         body: matchup,
       }),
@@ -40,17 +40,17 @@ export const matchupsApi = createApi({
 
     addVote: builder.mutation({
       query: ({ matchupId, ...rest }) => ({
-        url: `vote/${matchupId}`,
+        url: `api/matchups/add-vote/${matchupId}`,
         method: "POST",
         body: rest,
       }),
       invalidatesTags: ["Matchup"],
     }),
 
-    //editVote
+    //editVote-admin
     updateVote: builder.mutation({
       query: ({ matchupId, ...patch }) => ({
-        url: `votes/${matchupId}`,
+        url: `api/admin/matchups/edit-votes/${matchupId}`,
         method: "PATCH",
         body: patch,
       }),
@@ -60,17 +60,17 @@ export const matchupsApi = createApi({
     //removeVote
     removeVote: builder.mutation({
       query: ({ matchupId, ...patch }) => ({
-        url: `remove-vote/${matchupId}`,
+        url: `api/matchups/remove-vote/${matchupId}`,
         method: "PATCH",
         body: patch,
       }),
       invalidatesTags: ["Matchup"],
     }),
 
-    //deleteMatchup
+    //deleteMatchup-admin
     deleteMatchup: builder.mutation({
       query: (matchupId) => ({
-        url: "delete",
+        url: "api/admin/matchups/delete-matchup",
         method: "DELETE",
         body: matchupId,
       }),
