@@ -26,3 +26,7 @@ User
 2. After logging in, you can now vote for either book or movie.
 3. You can show/hide the stats of a matchup by clicking the three dots in the card.
 4. You can also remove and update your vote.
+
+## API
+Here is the link for this project's API
+- [bookxmovie-api](https://github.com/rodelcdavid/bookxmovie-api)
